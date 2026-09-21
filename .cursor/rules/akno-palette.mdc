@@ -1,0 +1,22 @@
+---
+description: Palette de couleurs officielle du site AKNO
+alwaysApply: true
+---
+
+# Palette AKNO
+
+Utiliser exclusivement ces couleurs pour l’UI du site (CSS, Tailwind, composants) :
+
+| Token | Hex | Usage |
+| --- | --- | --- |
+| `noir` | `#050505` | Fonds sombres, sections hero |
+| `gris` | `#F0F2F7` | Fonds clairs, surfaces |
+| `cta` | `#6B7CFF` | Boutons et liens d’action |
+| `rose` | `#FF7AA2` | Accents, highlights |
+| `texte` | `#15203A` | Texte principal |
+
+Variables CSS : `--akno-noir`, `--akno-gris`, `--akno-cta`, `--akno-rose`, `--akno-texte` dans `app/globals.css`.
+
+Constantes TS : `src/lib/colors.ts`.
+
+Classes Tailwind : `bg-akno-noir`, `text-akno-cta`, `bg-akno-gris`, etc.

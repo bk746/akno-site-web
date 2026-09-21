@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-REMOTE="https://github.com/bk746/akno-web-end.git"
+REMOTE="https://github.com/bk746/akno-site-web.git"
 
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git init -b main

@@ -6,7 +6,7 @@ import http from "isomorphic-git/http/node";
 import ignore from "ignore";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
-const REMOTE = "https://github.com/bk746/akno-web-end.git";
+const REMOTE = "https://github.com/bk746/akno-site-web.git";
 const COMMIT_MESSAGE = "Initial commit — AKNO site";
 
 function getGitHubAuth() {

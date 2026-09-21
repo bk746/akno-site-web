@@ -106,7 +106,7 @@ export function ServiceCard({ service, isFlipped, onToggle }: ServiceCardProps) 
                 >
                   {service.ctaLabel}
                   <ArrowUpRight
-                    className="size-3.5 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                    className="size-3.5"
                     aria-hidden
                   />
                 </ContactCta>

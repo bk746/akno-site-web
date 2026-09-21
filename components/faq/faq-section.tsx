@@ -38,7 +38,7 @@ export function FaqSection() {
           <p className="faq-section__cta-label">Encore une question ?</p>
           <ContactCta className="faq-section__cta-button btn btn-primary group">
             Réserver un appel
-            <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="size-4" />
           </ContactCta>
         </div>
       </div>

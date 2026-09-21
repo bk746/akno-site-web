@@ -48,7 +48,7 @@ export function AboutSection() {
             <div className="about-ctas">
               <ContactCta className="about-cta-primary btn btn-primary group">
                 On en parle
-                <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="size-4" />
               </ContactCta>
               <Link href="#realisations" className="about-cta-ghost btn btn-ghost">
                 Voir des projets

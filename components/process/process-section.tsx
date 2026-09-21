@@ -37,7 +37,7 @@ export function ProcessSection() {
           <ContactCta className="process-section__button btn btn-primary group">
             Je démarre mon projet
             <ArrowUpRight
-              className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="size-4"
               aria-hidden
             />
           </ContactCta>

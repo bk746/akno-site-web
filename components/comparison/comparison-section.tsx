@@ -153,7 +153,7 @@ export function ComparisonSection() {
           <ContactCta className="comparison-section__cta-button btn btn-primary group">
             Je réserve mon appel
             <ArrowUpRight
-              className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="size-4"
               aria-hidden
             />
           </ContactCta>

@@ -103,7 +103,11 @@ async function main() {
     });
   }
 
-  await git.branch({ fs, dir: ROOT, ref: "main", checkout: true });
+  try {
+    await git.checkout({ fs, dir: ROOT, ref: "main" });
+  } catch {
+    await git.branch({ fs, dir: ROOT, ref: "main", checkout: true });
+  }
   await syncRemote();
 
   const auth = getGitHubAuth();

@@ -37,6 +37,9 @@ export function AknoMicroInteractions() {
         document.documentElement.scrollHeight - window.innerHeight;
     };
 
+    let scrollEndTimer = 0;
+    const root = document.documentElement;
+
     const update = () => {
       raf = 0;
       const y = window.scrollY;
@@ -48,6 +51,12 @@ export function AknoMicroInteractions() {
         if (visible) bar.setAttribute("data-visible", "");
         else bar.removeAttribute("data-visible");
       }
+
+      root.classList.add("is-scrolling");
+      window.clearTimeout(scrollEndTimer);
+      scrollEndTimer = window.setTimeout(() => {
+        root.classList.remove("is-scrolling");
+      }, 150);
     };
     const schedule = () => {
       if (raf) return;
@@ -70,6 +79,8 @@ export function AknoMicroInteractions() {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", onResize);
       if (raf) window.cancelAnimationFrame(raf);
+      window.clearTimeout(scrollEndTimer);
+      root.classList.remove("is-scrolling");
     };
   }, []);
 

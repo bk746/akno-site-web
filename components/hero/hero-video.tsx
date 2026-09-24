@@ -25,19 +25,13 @@ export function HeroVideo({ className }: HeroVideoProps) {
     let cancelled = false;
     let started = false;
 
-    const syncPlayback = async () => {
-      if (cancelled || started) return;
-      if (!document.documentElement.classList.contains("intro-complete")) return;
-
-      const rect = wrap.getBoundingClientRect();
-      const inView = rect.height > 0 && rect.bottom > 48 && rect.top < window.innerHeight * 0.95;
-
-      if (!inView) return;
-
-      video.muted = true;
-      video.defaultMuted = true;
-
+    const playIfAllowed = async () => {
+      if (cancelled || !document.documentElement.classList.contains("intro-complete")) {
+        return;
+      }
       try {
+        video.muted = true;
+        video.defaultMuted = true;
         await video.play();
         if (cancelled) return;
         started = true;
@@ -47,47 +41,60 @@ export function HeroVideo({ className }: HeroVideoProps) {
       }
     };
 
-    const kick = () => {
-      void syncPlayback();
+    const pauseVideo = () => {
+      if (cancelled || video.paused) return;
+      video.pause();
+      setPhase("paused");
     };
 
-    const io = new IntersectionObserver(kick, { threshold: [0, 0.15] });
-    io.observe(wrap);
-    video.addEventListener("canplay", kick);
-    video.addEventListener("loadeddata", kick);
-    video.addEventListener("playing", () => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry || cancelled) return;
+
+        if (entry.isIntersecting) {
+          if (!started) {
+            void playIfAllowed();
+          } else if (video.paused && !video.ended) {
+            void playIfAllowed();
+          }
+        } else if (started) {
+          pauseVideo();
+        }
+      },
+      { threshold: 0, rootMargin: "0px 0px 48px 0px" },
+    );
+
+    const onCanPlay = () => void playIfAllowed();
+    const onLoadedData = () => void playIfAllowed();
+    const onPlaying = () => {
       if (!cancelled) setPhase("playing");
-    });
-    const onScroll = () => {
-      if (!started || cancelled || video.ended) return;
-      const rect = wrap.getBoundingClientRect();
-      const inView = rect.bottom > 0 && rect.top < window.innerHeight;
-      if (!inView && !video.paused) {
-        video.pause();
-        setPhase("paused");
-      }
     };
 
-    const stopWaiting = whenIntroReady(kick);
+    io.observe(wrap);
+    video.addEventListener("canplay", onCanPlay);
+    video.addEventListener("loadeddata", onLoadedData);
+    video.addEventListener("playing", onPlaying);
+
+    const stopWaiting = whenIntroReady(() => void playIfAllowed());
     const poll = window.setInterval(() => {
       if (cancelled || started) {
         window.clearInterval(poll);
         return;
       }
-      kick();
+      void playIfAllowed();
     }, 400);
 
-    kick();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    void playIfAllowed();
 
     return () => {
       cancelled = true;
       stopWaiting();
       io.disconnect();
       window.clearInterval(poll);
-      window.removeEventListener("scroll", onScroll);
-      video.removeEventListener("canplay", kick);
-      video.removeEventListener("loadeddata", kick);
+      video.removeEventListener("canplay", onCanPlay);
+      video.removeEventListener("loadeddata", onLoadedData);
+      video.removeEventListener("playing", onPlaying);
       video.pause();
     };
   }, []);

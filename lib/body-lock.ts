@@ -1,12 +1,22 @@
-export function lockBodyScroll() {
-  const { body } = document;
+type LockOptions = {
+  /** Force le scroll en haut avant de verrouiller (intro). */
+  forceScrollTop?: boolean;
+};
+
+export function lockBodyScroll(options?: LockOptions) {
+  const { body, documentElement } = document;
   if (body.dataset.aknoScrollLock === "1") return;
 
+  if (options?.forceScrollTop) {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }
+
   const scrollY = window.scrollY;
-  const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+  const scrollbar = window.innerWidth - documentElement.clientWidth;
 
   body.dataset.aknoScrollLock = "1";
   body.dataset.aknoScrollY = String(scrollY);
+  documentElement.style.overflow = "hidden";
   body.style.overflow = "hidden";
   body.style.paddingRight = scrollbar ? `${scrollbar}px` : "";
   body.style.position = "fixed";
@@ -15,10 +25,11 @@ export function lockBodyScroll() {
 }
 
 export function unlockBodyScroll() {
-  const { body } = document;
+  const { body, documentElement } = document;
   if (body.dataset.aknoScrollLock !== "1") return;
 
   const scrollY = Number(body.dataset.aknoScrollY || 0);
+  documentElement.style.overflow = "";
   body.style.overflow = "";
   body.style.paddingRight = "";
   body.style.position = "";
@@ -26,6 +37,5 @@ export function unlockBodyScroll() {
   body.style.width = "";
   delete body.dataset.aknoScrollLock;
   delete body.dataset.aknoScrollY;
-  // Restauration instantanée, sans animation.
   window.scrollTo({ top: scrollY, left: 0, behavior: "instant" });
 }

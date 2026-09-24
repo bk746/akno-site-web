@@ -2,65 +2,86 @@
 
 import { useEffect } from "react";
 
+import {
+  initHashOnLoad,
+  markRevealInView,
+  parseAnchorFromHref,
+  scrollToAnchorId,
+} from "@/lib/anchor-scroll";
 import { whenIntroReady } from "@/lib/when-intro-ready";
 
 const REVEAL_SELECTOR = "[data-akno-reveal], [data-akno-reveal-stagger]";
-const THRESHOLD = 0.14;
-const ROOT_MARGIN = "0px 0px -6% 0px";
+const REVEAL_LEAF_SELECTOR = "[data-akno-reveal]";
+const THRESHOLD = 0;
+const ROOT_MARGIN = "0px 0px 15% 0px";
 const MOTION_READY_CLASS = "akno-motion-ready";
 
-function isInRevealViewport(node: Element) {
-  const rect = node.getBoundingClientRect();
-  const vh = window.innerHeight;
-  return rect.top < vh * 0.94 && rect.bottom > vh * 0.04;
+function isDisplayed(node: Element) {
+  if (!(node instanceof HTMLElement)) return false;
+  return window.getComputedStyle(node).display !== "none";
 }
 
-function syncVisibleReveals() {
-  document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR).forEach((node) => {
-    if (isInRevealViewport(node)) {
+function applyRevealSafetyNet() {
+  document.querySelectorAll<HTMLElement>(REVEAL_LEAF_SELECTOR).forEach((node) => {
+    if (node.classList.contains("is-inview") || !isDisplayed(node)) return;
+    const rect = node.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (rect.bottom < 0 || (rect.top < vh * 1.02 && rect.bottom > -vh * 0.05)) {
       node.classList.add("is-inview");
     }
   });
-}
 
-function initScrollPosition() {
-  if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-  }
-
-  const hash = window.location.hash;
-  if (!hash) {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    return;
-  }
-
-  const id = decodeURIComponent(hash.slice(1));
-  const target = document.getElementById(id);
-  if (target) {
-    target.scrollIntoView({ block: "start", behavior: "instant" });
-  } else {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }
+  document
+    .querySelectorAll<HTMLElement>("[data-akno-reveal-stagger]:not(.is-inview)")
+    .forEach((parent) => {
+      if (!isDisplayed(parent)) return;
+      const rect = parent.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top < window.innerHeight * 1.02) {
+        markRevealInView(parent);
+      }
+    });
 }
 
 export function AknoMotionRoot() {
   useEffect(() => {
     let observer: IntersectionObserver | null = null;
-    let raf = 0;
+    let safetyRaf = 0;
+    let hashStop: (() => void) | undefined;
+    let observed = new Set<Element>();
+
+    const observeNode = (node: HTMLElement) => {
+      if (!observer || node.classList.contains("is-inview")) return;
+      if (!isDisplayed(node)) return;
+      if (observed.has(node)) return;
+      observed.add(node);
+      observer.observe(node);
+    };
+
+    const scanAndObserve = () => {
+      document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR).forEach((node) => {
+        observeNode(node);
+      });
+    };
+
+    const scheduleSafety = () => {
+      if (safetyRaf) return;
+      safetyRaf = window.requestAnimationFrame(() => {
+        safetyRaf = 0;
+        applyRevealSafetyNet();
+      });
+    };
 
     const start = () => {
-      initScrollPosition();
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
 
       const root = document.documentElement;
       root.classList.add(MOTION_READY_CLASS);
 
-      const nodes = Array.from(
-        document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR),
-      );
+      hashStop = initHashOnLoad();
 
-      syncVisibleReveals();
-
-      if (nodes.length === 0) return;
+      applyRevealSafetyNet();
 
       const seen = new WeakSet<Element>();
 
@@ -69,21 +90,36 @@ export function AknoMotionRoot() {
           entries.forEach((entry) => {
             if (!entry.isIntersecting || seen.has(entry.target)) return;
             seen.add(entry.target);
-            entry.target.classList.add("is-inview");
+            markRevealInView(entry.target);
             observer?.unobserve(entry.target);
+            observed.delete(entry.target);
           });
         },
         { threshold: THRESHOLD, rootMargin: ROOT_MARGIN },
       );
 
-      nodes.forEach((node) => {
-        if (!node.classList.contains("is-inview")) {
-          observer?.observe(node);
-        }
-      });
+      scanAndObserve();
+      scheduleSafety();
 
-      raf = window.requestAnimationFrame(syncVisibleReveals);
+      const ro = new ResizeObserver(() => {
+        scanAndObserve();
+        scheduleSafety();
+      });
+      ro.observe(document.body);
+
+      window.addEventListener("scroll", scheduleSafety, { passive: true });
+
+      return () => {
+        ro.disconnect();
+        window.removeEventListener("scroll", scheduleSafety);
+      };
     };
+
+    let teardownMotion: (() => void) | undefined;
+
+    const stopWaiting = whenIntroReady(() => {
+      teardownMotion = start();
+    });
 
     const onAnchorClick = (event: MouseEvent) => {
       if (
@@ -106,34 +142,27 @@ export function AknoMotionRoot() {
       }
 
       const href = link.getAttribute("href");
-      if (!href || !href.startsWith("#") || href.length < 2) return;
+      if (!href) return;
 
-      const id = decodeURIComponent(href.slice(1));
-      const section = document.getElementById(id);
-      if (!section) return;
+      const id = parseAnchorFromHref(href, window.location.pathname);
+      if (!id || !document.getElementById(id)) return;
 
       event.preventDefault();
+      hashStop?.();
+      hashStop = undefined;
 
-      const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      section.scrollIntoView({
-        behavior: reduceMotion ? "instant" : "smooth",
-        block: "start",
-      });
-
-      history.pushState(null, "", `#${id}`);
+      scrollToAnchorId(id);
+      history.replaceState(null, "", `#${encodeURIComponent(id)}`);
     };
 
     document.addEventListener("click", onAnchorClick);
 
-    const stopWaiting = whenIntroReady(start);
-
     return () => {
       document.removeEventListener("click", onAnchorClick);
       stopWaiting();
-      if (raf) window.cancelAnimationFrame(raf);
+      hashStop?.();
+      teardownMotion?.();
+      if (safetyRaf) window.cancelAnimationFrame(safetyRaf);
       observer?.disconnect();
     };
   }, []);

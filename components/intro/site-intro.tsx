@@ -5,7 +5,9 @@ import Image from "next/image";
 
 import { EclypseOrb } from "@/components/eclypse/eclypse-orb";
 import { useIntro } from "@/components/intro/intro-provider";
+import { lockBodyScroll, unlockBodyScroll } from "@/lib/body-lock";
 import { isMobileViewport, prefersReducedMotion } from "@/lib/device";
+import { whenIntroReady } from "@/lib/when-intro-ready";
 import logoAkno from "@/src/images/logo-akno-plus.png";
 
 function shouldSkipIntro() {
@@ -39,6 +41,11 @@ export function SiteIntro() {
     }
 
     document.documentElement.classList.add("intro-pending");
+    lockBodyScroll({ forceScrollTop: true });
+    const stopIntroWatch = whenIntroReady(() => {
+      unlockBodyScroll();
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    });
 
     const showFrame = window.requestAnimationFrame(() => {
       setVisible(true);
@@ -56,6 +63,8 @@ export function SiteIntro() {
     }, 3400);
 
     return () => {
+      stopIntroWatch();
+      unlockBodyScroll();
       window.cancelAnimationFrame(showFrame);
       clearTimers();
     };

@@ -2,56 +2,27 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
+import {
+  remeasureHeaderTone,
+  resolveHeaderOnLight,
+} from "@/lib/header-tone";
 import { whenIntroReady } from "@/lib/when-intro-ready";
 import logoAkno from "@/src/images/logo-akno-plus.png";
 
 const SCROLL_GLASS_THRESHOLD = 56;
-/** Sous le header fixe : ce qui est réellement visible derrière le logo. */
-const SURFACE_PROBE_Y = 52;
-
-function isLightSurfaceAtHeader() {
-  const x = Math.round(Math.min(window.innerWidth * 0.14, 120));
-  const y = SURFACE_PROBE_Y;
-  const stack = document.elementsFromPoint(x, y);
-
-  for (const el of stack) {
-    if (!(el instanceof HTMLElement)) continue;
-    if (el.closest(".site-header")) continue;
-
-    if (el.closest("[data-akno-surface='dark']")) {
-      return false;
-    }
-
-    if (
-      el.closest(".akno-surface-light") ||
-      el.closest("[data-akno-surface='light']")
-    ) {
-      return true;
-    }
-
-    if (el.closest(".site-shell, main")) {
-      return false;
-    }
-  }
-
-  return false;
-}
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [onLight, setOnLight] = useState(false);
   const [toneReady, setToneReady] = useState(false);
+  const onLightRef = useRef(false);
 
   useEffect(() => {
     let raf = 0;
-    /* Le hit-test (elementsFromPoint) ne tourne que si la page a bougé
-       d'au moins quelques px : inutile de le refaire à chaque frame. */
-    let lastProbeY = Number.NaN;
-    let force = false;
 
     const update = () => {
       raf = 0;
@@ -60,32 +31,33 @@ export function SiteHeader() {
       const y = window.scrollY;
       setScrolled(y > SCROLL_GLASS_THRESHOLD);
 
-      if (force || Number.isNaN(lastProbeY) || Math.abs(y - lastProbeY) >= 6) {
-        lastProbeY = y;
-        force = false;
-        setOnLight(isLightSurfaceAtHeader());
-        setToneReady(true);
+      const next = resolveHeaderOnLight(y, onLightRef.current);
+      if (next !== onLightRef.current) {
+        onLightRef.current = next;
+        setOnLight(next);
       }
+      setToneReady(true);
     };
 
     const schedule = () => {
       if (raf) return;
       raf = window.requestAnimationFrame(update);
     };
-    const scheduleForced = () => {
-      force = true;
+
+    const measureAndUpdate = () => {
+      remeasureHeaderTone();
       schedule();
     };
 
-    update();
-    const stopIntroWatch = whenIntroReady(scheduleForced);
+    measureAndUpdate();
+    const stopIntroWatch = whenIntroReady(measureAndUpdate);
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", scheduleForced, { passive: true });
+    window.addEventListener("resize", measureAndUpdate, { passive: true });
 
     return () => {
       stopIntroWatch();
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", scheduleForced);
+      window.removeEventListener("resize", measureAndUpdate);
       if (raf) window.cancelAnimationFrame(raf);
     };
   }, []);

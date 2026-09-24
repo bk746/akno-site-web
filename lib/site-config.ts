@@ -8,9 +8,8 @@ export const SITE_TAGLINE = "Sites qui convertissent";
 export const SITE_DESCRIPTION =
   "On conçoit ton site, on analyse tes données, et on pousse ton trafic au maximum.";
 
+/** Email unique — contact, légal, formulaire, footer */
 export const CONTACT_EMAIL = "hello@akno.fr";
-
-export const LEGAL_EMAIL = "aknoweb.contact@gmail.com";
 
 /**
  * TODO(prod) — Renseigner les URL officielles des profils AKNO (ex. https://www.linkedin.com/in/…).

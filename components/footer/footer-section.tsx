@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import logoAkno from "@/src/images/logo-akno-plus.png";
-import { SOCIAL_PROFILES } from "@/lib/site-config";
+import { CONTACT_EMAIL, SOCIAL_PROFILES } from "@/lib/site-config";
 
 const MENU_LINKS = [
   { label: "Accueil", href: "/" },
@@ -111,8 +111,11 @@ export function FooterSection() {
             <p className="site-footer__col-title">Contact</p>
             <ul className="site-footer__links">
               <li>
-                <a href="mailto:hello@akno.fr" className="site-footer__link">
-                  hello@akno.fr
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="site-footer__link"
+                >
+                  {CONTACT_EMAIL}
                 </a>
               </li>
               <li>

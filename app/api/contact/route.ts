@@ -1,4 +1,5 @@
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { CONTACT_EMAIL } from "@/lib/site-config";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -75,7 +76,7 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? "hello@akno.fr";
+  const to = process.env.CONTACT_TO_EMAIL ?? CONTACT_EMAIL;
   const from =
     process.env.CONTACT_FROM_EMAIL ?? "AKNO Contact <onboarding@resend.dev>";
 

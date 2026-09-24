@@ -123,23 +123,19 @@ export function ComparisonSection() {
                 <h3 className="comparison-mobile-card__criterion">{row.criterion}</h3>
                 <div className="comparison-mobile-card__akno">
                   <ComparisonCheckIcon />
-                  <div>
-                    <p className="comparison-mobile-card__label">AKNO</p>
-                    <p className="comparison-mobile-card__text comparison-mobile-card__text--akno">
-                      {row.akno}
-                    </p>
-                  </div>
+                  <p className="comparison-mobile-card__label">AKNO</p>
+                  <p className="comparison-mobile-card__text comparison-mobile-card__text--akno">
+                    {row.akno}
+                  </p>
                 </div>
                 <div className="comparison-mobile-card__classic">
                   <ComparisonCrossIcon />
-                  <div>
-                    <p className="comparison-mobile-card__label">
-                      Approche classique
-                    </p>
-                    <p className="comparison-mobile-card__text comparison-mobile-card__text--classic">
-                      {row.classic}
-                    </p>
-                  </div>
+                  <p className="comparison-mobile-card__label">
+                    Approche classique
+                  </p>
+                  <p className="comparison-mobile-card__text comparison-mobile-card__text--classic">
+                    {row.classic}
+                  </p>
                 </div>
               </article>
             </li>

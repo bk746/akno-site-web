@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useId, useState } from "react";
 import Link from "next/link";
 
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
+import { CONTACT_EMAIL } from "@/lib/site-config";
 
 const BUDGET_OPTIONS = [
   { value: "", label: "Budget (optionnel)" },
@@ -15,7 +16,6 @@ const BUDGET_OPTIONS = [
 ] as const;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const CONTACT_EMAIL = "hello@akno.fr";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -138,7 +138,7 @@ export function ContactForm({
         return;
       }
 
-      setErrorHint("Envoi impossible. Réessaie ou écris à hello@akno.fr.");
+      setErrorHint(`Envoi impossible. Réessaie ou écris à ${CONTACT_EMAIL}.`);
       setState("error");
     } catch {
       window.location.href = buildMailto(payload);
@@ -282,8 +282,8 @@ export function ContactForm({
       ) : null}
 
       <p className="contact-form__legal">
-        En envoyant ce formulaire, vous acceptez que vos données soient
-        utilisées pour répondre à votre demande.{" "}
+        Vos données sont utilisées uniquement pour répondre à votre demande.
+        En savoir plus :{" "}
         <Link href="/confidentialite" className="contact-form__legal-link">
           Politique de confidentialité
         </Link>

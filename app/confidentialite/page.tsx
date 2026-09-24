@@ -6,7 +6,10 @@ import {
   LegalTableOfContents,
 } from "@/components/legal/legal-document";
 import { LegalPageShell } from "@/components/legal/legal-page-shell";
-import { getConfidentialiteSections } from "@/lib/legal/mentions-legales-content";
+import {
+  CONFIDENTIALITE_LAST_UPDATED,
+  getConfidentialiteSections,
+} from "@/lib/legal/mentions-legales-content";
 
 export const metadata: Metadata = {
   title: "Confidentialité",
@@ -33,6 +36,9 @@ export default function ConfidentialitePage() {
     >
       <LegalTableOfContents sections={sections} />
       <LegalDocument sections={sections} />
+      <p className="legal-page__text" data-akno-reveal>
+        Dernière mise à jour : {CONFIDENTIALITE_LAST_UPDATED}
+      </p>
       <aside className="legal-page__note-card" data-akno-reveal>
         <p className="legal-page__note-title">Besoin du cadre complet ?</p>
         <p className="legal-page__note-text">

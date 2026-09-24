@@ -7,7 +7,7 @@ export function WantsSection() {
   return (
     <section
       id="ambitions"
-      className="wants-section akno-surface-light relative z-[1]"
+      className="wants-section akno-deferred-section akno-surface-light relative z-[1]"
       aria-labelledby="wants-heading"
     >
       <div className="mx-auto max-w-[1160px] px-6 pt-16 sm:pt-20 lg:px-6 lg:pt-24">

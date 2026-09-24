@@ -2970,7 +2970,7 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
   margin: 0;
   font-size: 12px;
   line-height: 1.45;
-  color: rgba(21, 32, 58, 0.42);
+  color: #5a657a;
 }
 
 /* ——— À propos ——— */
@@ -4086,13 +4086,26 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
   color: #8ba4ff;
 }
 
-.contact-overlay__main {
-  position: relative;
-  padding: 1.35rem 1.35rem 1.25rem;
+.contact-overlay__header,
+.contact-overlay__quick-actions,
+.contact-overlay__reassurance,
+.contact-overlay__separator,
+.contact-overlay__footer {
+  display: none;
 }
 
-@media (min-width: 800px) {
+.contact-overlay__close--mobile {
+  display: none;
+}
+
+.contact-overlay__body {
+  position: relative;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
   .contact-overlay__panel {
+    display: grid;
     grid-template-columns: 250px minmax(0, 1fr);
     width: min(100%, 820px);
     overflow: hidden;
@@ -4115,7 +4128,7 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
     font-size: 13px;
   }
 
-  .contact-overlay__main {
+  .contact-overlay__scroll {
     max-height: min(92dvh, 820px);
     overflow: auto;
     padding: 1.75rem 1.75rem 1.5rem;
@@ -4307,6 +4320,274 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
 @media (prefers-reduced-motion: reduce) {
   .contact-overlay__panel {
     animation: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-overlay {
+    align-items: stretch;
+    justify-content: stretch;
+    padding: 0;
+  }
+
+  .contact-overlay__backdrop {
+    background: rgba(5, 5, 5, 0.35);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .contact-overlay__panel {
+    display: flex;
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    flex-direction: column;
+    grid-template-columns: unset;
+    overflow: hidden;
+    border-radius: 0;
+    margin: 0;
+    box-shadow: none;
+    animation: contact-overlay-mobile-in 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  @keyframes contact-overlay-mobile-in {
+    from {
+      transform: translate3d(0, 100%, 0);
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .contact-overlay__brand {
+    display: none;
+  }
+
+  .contact-overlay__header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    min-height: calc(56px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 12px 0 20px;
+    background: #ffffff;
+    border-bottom: 1px solid transparent;
+  }
+
+  .contact-overlay__header--scrolled {
+    border-bottom-color: #eceef3;
+  }
+
+  .contact-overlay__header-logo {
+    width: auto;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .contact-overlay__close--mobile {
+    position: static;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 44px;
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: #0b1220;
+    cursor: pointer;
+  }
+
+  .contact-overlay__close--desktop {
+    display: none;
+  }
+
+  .contact-overlay__body {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .contact-overlay__scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px;
+    scrollbar-width: none;
+  }
+
+  .contact-overlay__scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .contact-overlay__quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+
+  .contact-overlay__action {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .contact-overlay__action--call {
+    background: #5b7cfa;
+    color: #ffffff;
+  }
+
+  .contact-overlay__action--mail {
+    border: 1px solid #e3e6ee;
+    background: #ffffff;
+    color: #0b1220;
+  }
+
+  .contact-overlay__reassurance {
+    display: block;
+    margin: 0.75rem 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #6e6e73;
+  }
+
+  .contact-overlay__separator {
+    display: block;
+    margin: 1.25rem 0 1rem;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    color: #6e6e73;
+  }
+
+  .contact-overlay__eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+  }
+
+  .contact-overlay__title {
+    margin-top: 0.35rem;
+    padding-right: 0;
+    font-size: 26px;
+  }
+
+  .contact-overlay__lead {
+    margin: 0.5rem 0 0;
+    font-size: 15px;
+    line-height: 1.45;
+    color: #6e6e73;
+  }
+
+  .contact-overlay__footer {
+    display: block;
+    flex-shrink: 0;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: #ffffff;
+    border-top: 1px solid #eceef3;
+  }
+
+  .contact-overlay__footer-submit {
+    display: inline-flex;
+    width: 100%;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 999px;
+    background: var(--akno-cta);
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .contact-overlay__footer-submit:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+
+  .contact-form--overlay-mobile {
+    gap: 0;
+  }
+
+  .contact-form--overlay-mobile .contact-form__field {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .contact-form--overlay-mobile .contact-form__field:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .contact-form--overlay-mobile .contact-form__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #0b1220;
+  }
+
+  .contact-form--overlay-mobile .contact-form__input {
+    min-height: 52px;
+    border: 1px solid transparent;
+    background: #f5f6f9;
+    font-size: 16px;
+  }
+
+  .contact-form--overlay-mobile .contact-form__input:focus {
+    border-color: #5b7cfa;
+    box-shadow: 0 0 0 3px rgba(91, 124, 250, 0.15);
+    background: #ffffff;
+  }
+
+  .contact-form--overlay-mobile .contact-form__textarea {
+    min-height: 120px;
+    resize: none;
+  }
+
+  .contact-form__field-error {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.35;
+    color: #e5484d;
+  }
+
+  .contact-form__submit--in-form-hidden {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @media (max-width: 767px) {
+    .contact-overlay__panel {
+      animation: contact-overlay-mobile-fade 240ms ease;
+    }
+
+    @keyframes contact-overlay-mobile-fade {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
   }
 }
 
@@ -4604,7 +4885,6 @@ html.intro-complete .site-header__cta {
 html.intro-pending .akno-enter {
   animation: none !important;
   opacity: 0 !important;
-  filter: blur(6px);
   transform: translate3d(0, 14px, 0);
 }
 
@@ -4636,6 +4916,17 @@ html.intro-complete .akno-enter--6 {
   animation-delay: 420ms;
 }
 
+.akno-deferred-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
+@media (min-width: 768px) {
+  .akno-deferred-section {
+    contain-intrinsic-size: auto 880px;
+  }
+}
+
 @property --breathe {
   syntax: "<number>";
   initial-value: 0;
@@ -4647,7 +4938,23 @@ html.intro-complete .akno-enter--6 {
   width: 100%;
   aspect-ratio: 1;
   transform-origin: center center;
+  will-change: transform;
   animation: eclypse-breathe 10s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.site-intro__orb-wrap.is-entering,
+.site-intro__orb-wrap.is-exiting,
+.site-intro__copy--left.is-entering,
+.site-intro__copy--left.is-exiting,
+.site-intro__brand.is-entering,
+.site-intro__brand.is-exiting {
+  will-change: transform, opacity;
+}
+
+.site-intro__orb-wrap:not(.is-entering):not(.is-exiting),
+.site-intro__copy--left:not(.is-entering):not(.is-exiting),
+.site-intro__brand:not(.is-entering):not(.is-exiting) {
+  will-change: auto;
 }
 
 .eclypse-orbit__frame {
@@ -4816,13 +5123,11 @@ html.intro-complete .akno-enter--6 {
   from {
     opacity: 0;
     transform: scale(0.7);
-    filter: blur(0);
   }
 
   to {
     opacity: 1;
     transform: scale(1);
-    filter: blur(0);
   }
 }
 
@@ -4830,7 +5135,6 @@ html.intro-complete .akno-enter--6 {
   to {
     opacity: 0;
     transform: scale(3);
-    filter: blur(40px);
   }
 }
 
@@ -5813,12 +6117,4 @@ html.akno-motion-ready
     font-size: 14px;
   }
 
-  .contact-overlay__eyebrow {
-    font-size: 14px;
-    letter-spacing: 0.12em;
-  }
-
-  .contact-overlay__facts li {
-    font-size: 14px;
-  }
 }

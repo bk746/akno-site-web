@@ -14,7 +14,7 @@ export function AboutSection() {
   return (
     <section
       id="a-propos"
-      className="about-section akno-surface-light"
+      className="about-section akno-deferred-section akno-surface-light"
       aria-labelledby="about-heading"
     >
       <div className="about-section__inner">

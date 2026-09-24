@@ -16,7 +16,7 @@ export function ProblemsSection() {
   return (
     <section
       id="diagnostic"
-      className="akno-surface-light relative z-[1]"
+      className="akno-deferred-section akno-surface-light relative z-[1]"
       aria-labelledby="problems-heading"
     >
       <div className="mx-auto max-w-[1120px] px-6 pb-20 pt-[6.25rem] sm:pb-[5.625rem] sm:pt-28 lg:pb-[6.25rem] lg:pt-[7.25rem]">

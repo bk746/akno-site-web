@@ -1,8 +1,8 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 
-import eclypse2 from "@/src/images/eclypse2-x2.png";
-import eclypse3 from "@/src/images/eclypse3X2.png";
+import eclypse2 from "@/src/images/eclypse2-x2.webp";
+import eclypse3 from "@/src/images/eclypse3X2.webp";
 
 export type EclypseOrbTone = "cyan" | "blue" | "green";
 
@@ -31,7 +31,7 @@ export function EclypseOrb({
         width={1218}
         height={1218}
         draggable={false}
-        loading={variant === "hero" ? undefined : "lazy"}
+        loading="lazy"
         quality={70}
         className="eclypse-orbit__frame eclypse-orbit__frame--a"
         sizes="(max-width: 768px) 40vw, 20vw"
@@ -42,7 +42,7 @@ export function EclypseOrb({
         width={1218}
         height={1218}
         draggable={false}
-        loading={variant === "hero" ? undefined : "lazy"}
+        loading="lazy"
         quality={70}
         className="eclypse-orbit__frame eclypse-orbit__frame--b"
         sizes="(max-width: 768px) 40vw, 20vw"

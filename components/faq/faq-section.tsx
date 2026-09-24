@@ -7,7 +7,7 @@ export function FaqSection() {
   return (
     <section
       id="faq"
-      className="faq-section akno-surface-light px-6 py-24 sm:py-28 lg:py-32"
+      className="faq-section akno-deferred-section akno-surface-light px-6 py-24 sm:py-28 lg:py-32"
       aria-labelledby="faq-heading"
     >
       <div className="mx-auto max-w-[1120px]">

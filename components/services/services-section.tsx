@@ -68,7 +68,7 @@ export function ServicesSection() {
     <section
       ref={sectionRef}
       id="services"
-      className="services-section relative bg-akno-noir text-white"
+      className="services-section akno-deferred-section relative bg-akno-noir text-white"
       data-akno-surface="dark"
       data-live={motionLive ? "" : undefined}
       data-played={motionPlayed ? "" : undefined}

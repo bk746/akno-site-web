@@ -10,7 +10,7 @@ export function FinalCtaSection() {
   return (
     <section
       id="contact"
-      className="final-cta-section"
+      className="final-cta-section akno-deferred-section"
       data-akno-surface="dark"
       aria-labelledby="final-cta-heading"
     >

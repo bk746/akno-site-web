@@ -7,7 +7,7 @@ export function ProcessSection() {
   return (
     <section
       id="processus"
-      className="process-section akno-surface-light"
+      className="process-section akno-deferred-section akno-surface-light"
       aria-labelledby="process-heading"
     >
       <div className="process-section__panel">

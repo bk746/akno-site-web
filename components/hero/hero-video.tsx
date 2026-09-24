@@ -4,18 +4,13 @@ import { useEffect, useRef, useState } from "react";
 
 import { whenIntroReady } from "@/lib/when-intro-ready";
 
-const HERO_VIDEO_SRC = "/videos/akno-hero-v5.mp4";
+const HERO_POSTER = "/videos/akno-hero-poster.webp";
 
 type VideoPhase = "idle" | "playing" | "paused" | "ended";
 
 type HeroVideoProps = {
   className?: string;
 };
-
-function attachHeroSource(video: HTMLVideoElement) {
-  if (video.getAttribute("src") === HERO_VIDEO_SRC) return;
-  video.src = HERO_VIDEO_SRC;
-}
 
 export function HeroVideo({ className }: HeroVideoProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -101,8 +96,6 @@ export function HeroVideo({ className }: HeroVideoProps) {
     const video = videoRef.current;
     if (!video) return;
 
-    attachHeroSource(video);
-
     if (phase === "idle" || phase === "ended") {
       video.currentTime = 0;
     }
@@ -139,15 +132,29 @@ export function HeroVideo({ className }: HeroVideoProps) {
         <video
           ref={videoRef}
           className="h-full w-full cursor-pointer object-cover"
-          src={HERO_VIDEO_SRC}
-          preload="auto"
+          poster={HERO_POSTER}
+          preload="metadata"
+          autoPlay
           muted
+          loop
           playsInline
           controls={false}
           onClick={handlePause}
           onEnded={handleEnded}
           aria-label="Vidéo de présentation AKNO"
         >
+          <source
+            src="/videos/akno-hero-720.webm"
+            type="video/webm"
+            media="(max-width: 768px)"
+          />
+          <source
+            src="/videos/akno-hero-720.mp4"
+            type="video/mp4"
+            media="(max-width: 768px)"
+          />
+          <source src="/videos/akno-hero-1080.webm" type="video/webm" />
+          <source src="/videos/akno-hero-1080.mp4" type="video/mp4" />
           Votre navigateur ne prend pas en charge la lecture vidéo.
         </video>
 

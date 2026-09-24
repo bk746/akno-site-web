@@ -1,6 +1,13 @@
 "use client";
 
-import { FormEvent, useEffect, useId, useState } from "react";
+import {
+  type FocusEvent,
+  FormEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
@@ -19,9 +26,16 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
+type FieldKey = "name" | "email" | "projectType" | "message";
+
+type FieldErrors = Partial<Record<FieldKey, string>>;
+
 type ContactFormProps = {
   variant?: "default" | "overlay";
   onSuccess?: () => void;
+  id?: string;
+  mobileSheet?: boolean;
+  onFormStateChange?: (state: FormState) => void;
 };
 
 function buildMailto(payload: {
@@ -48,17 +62,45 @@ function buildMailto(payload: {
 export function ContactForm({
   variant = "default",
   onSuccess,
+  id,
+  mobileSheet = false,
+  onFormStateChange,
 }: ContactFormProps) {
   const fieldId = useId();
   const [state, setState] = useState<FormState>("idle");
-  const [errorHint, setErrorHint] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const isOverlay = variant === "overlay";
+  const focusScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    onFormStateChange?.(state);
+  }, [state, onFormStateChange]);
 
   useEffect(() => {
     if (state !== "success" || !onSuccess) return;
     const timer = window.setTimeout(onSuccess, 1400);
     return () => window.clearTimeout(timer);
   }, [state, onSuccess]);
+
+  useEffect(() => {
+    return () => {
+      if (focusScrollTimer.current) clearTimeout(focusScrollTimer.current);
+    };
+  }, []);
+
+  function handleFieldFocus(event: FocusEvent<HTMLElement>) {
+    if (!mobileSheet) return;
+    if (focusScrollTimer.current) clearTimeout(focusScrollTimer.current);
+    focusScrollTimer.current = setTimeout(() => {
+      event.target.scrollIntoView({
+        block: "center",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+      });
+    }, 300);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -79,31 +121,33 @@ export function ContactForm({
       return;
     }
 
+    const nextErrors: FieldErrors = {};
+
     if (name.length < 2) {
-      setErrorHint("Indique ton nom.");
-      setState("error");
-      return;
+      nextErrors.name = "Indique ton nom.";
     }
 
     if (!EMAIL_RE.test(email)) {
-      setErrorHint("Email invalide.");
-      setState("error");
-      return;
+      nextErrors.email = "Email invalide.";
     }
 
     if (projectType.length < 2) {
-      setErrorHint("Indique l'objet de ton message.");
-      setState("error");
-      return;
+      nextErrors.projectType = "Indique l'objet de ton message.";
     }
 
     if (message.length < 8) {
-      setErrorHint("Quelques mots sur ton projet suffisent.");
+      nextErrors.message = "Quelques mots sur ton projet suffisent.";
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setFieldErrors(nextErrors);
+      setSubmitError(null);
       setState("error");
       return;
     }
 
-    setErrorHint(null);
+    setFieldErrors({});
+    setSubmitError(null);
     setState("submitting");
 
     const payload = { name, email, projectType, budget, message };
@@ -116,7 +160,7 @@ export function ContactForm({
       });
 
       if (response.status === 429) {
-        setErrorHint("Trop de tentatives. Réessaie dans une minute.");
+        setSubmitError("Trop de tentatives. Réessaie dans une minute.");
         setState("error");
         return;
       }
@@ -138,7 +182,7 @@ export function ContactForm({
         return;
       }
 
-      setErrorHint(`Envoi impossible. Réessaie ou écris à ${CONTACT_EMAIL}.`);
+      setSubmitError(`Envoi impossible. Réessaie ou écris à ${CONTACT_EMAIL}.`);
       setState("error");
     } catch {
       window.location.href = buildMailto(payload);
@@ -160,7 +204,10 @@ export function ContactForm({
 
   return (
     <form
-      className={`contact-form${isOverlay ? " contact-form--overlay" : ""}`}
+      id={id}
+      className={`contact-form${isOverlay ? " contact-form--overlay" : ""}${
+        mobileSheet ? " contact-form--overlay-mobile" : ""
+      }`}
       onSubmit={handleSubmit}
       noValidate
     >
@@ -184,12 +231,24 @@ export function ContactForm({
           name="name"
           type="text"
           autoComplete="name"
+          enterKeyHint="next"
           required
           minLength={2}
           className="contact-form__input"
           placeholder="Ton prénom et nom"
           disabled={state === "submitting"}
+          aria-invalid={fieldErrors.name ? true : undefined}
+          aria-describedby={fieldErrors.name ? `${fieldId}-name-error` : undefined}
+          onFocus={handleFieldFocus}
         />
+        {fieldErrors.name ? (
+          <p
+            id={`${fieldId}-name-error`}
+            className="contact-form__field-error"
+          >
+            {fieldErrors.name}
+          </p>
+        ) : null}
       </div>
 
       <div className="contact-form__field">
@@ -200,12 +259,28 @@ export function ContactForm({
           id={`${fieldId}-email`}
           name="email"
           type="email"
+          inputMode="email"
           autoComplete="email"
+          autoCapitalize="off"
+          enterKeyHint="next"
           required
           className="contact-form__input"
           placeholder="hello@entreprise.fr"
           disabled={state === "submitting"}
+          aria-invalid={fieldErrors.email ? true : undefined}
+          aria-describedby={
+            fieldErrors.email ? `${fieldId}-email-error` : undefined
+          }
+          onFocus={handleFieldFocus}
         />
+        {fieldErrors.email ? (
+          <p
+            id={`${fieldId}-email-error`}
+            className="contact-form__field-error"
+          >
+            {fieldErrors.email}
+          </p>
+        ) : null}
       </div>
 
       <div className="contact-form__field">
@@ -216,13 +291,27 @@ export function ContactForm({
           id={`${fieldId}-subject`}
           name="projectType"
           type="text"
+          enterKeyHint="next"
           required
           minLength={2}
           maxLength={120}
           className="contact-form__input"
           placeholder="Ex. Refonte de mon site vitrine"
           disabled={state === "submitting"}
+          aria-invalid={fieldErrors.projectType ? true : undefined}
+          aria-describedby={
+            fieldErrors.projectType ? `${fieldId}-subject-error` : undefined
+          }
+          onFocus={handleFieldFocus}
         />
+        {fieldErrors.projectType ? (
+          <p
+            id={`${fieldId}-subject-error`}
+            className="contact-form__field-error"
+          >
+            {fieldErrors.projectType}
+          </p>
+        ) : null}
       </div>
 
       {!isOverlay ? (
@@ -253,24 +342,38 @@ export function ContactForm({
         <textarea
           id={`${fieldId}-message`}
           name="message"
+          enterKeyHint="send"
           required
           minLength={8}
           rows={isOverlay ? 3 : 4}
           className="contact-form__input contact-form__textarea"
           placeholder="Où en es-tu ? Quel objectif ?"
           disabled={state === "submitting"}
+          aria-invalid={fieldErrors.message ? true : undefined}
+          aria-describedby={
+            fieldErrors.message ? `${fieldId}-message-error` : undefined
+          }
+          onFocus={handleFieldFocus}
         />
+        {fieldErrors.message ? (
+          <p
+            id={`${fieldId}-message-error`}
+            className="contact-form__field-error"
+          >
+            {fieldErrors.message}
+          </p>
+        ) : null}
       </div>
 
-      {errorHint ? (
-        <p className="contact-form__error" role="alert">
-          {errorHint}
-        </p>
+      {submitError ? (
+        <p className="contact-form__error">{submitError}</p>
       ) : null}
 
       <button
         type="submit"
-        className="contact-form__submit btn btn-primary"
+        className={`contact-form__submit btn btn-primary${
+          mobileSheet ? " contact-form__submit--in-form-hidden" : ""
+        }`}
         disabled={state === "submitting"}
       >
         {state === "submitting" ? "Envoi…" : submitLabel}

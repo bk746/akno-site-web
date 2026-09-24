@@ -22,7 +22,7 @@ export function ComparisonSection() {
   return (
     <section
       id="comparaison"
-      className="comparison-section akno-surface-light"
+      className="comparison-section akno-deferred-section akno-surface-light"
       aria-labelledby="comparison-heading"
     >
       <div className="comparison-section__inner">

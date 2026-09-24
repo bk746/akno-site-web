@@ -1,6 +1,6 @@
 import type { StaticImageData } from "next/image";
 
-import projetElegencia from "@/src/images/projet-1-elegencia.jpg";
+import projetElegencia from "@/src/images/projet-1-elegencia.webp";
 import projetKafe from "@/src/images/projet-1-kafe.jpg";
 import projetBkArchitecture from "@/src/images/projet-4-bkarchitecture.jpg";
 import projetAvero from "@/src/images/projet-5-avero.jpg";

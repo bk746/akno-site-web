@@ -17,7 +17,7 @@ export function RealisationsSection() {
   return (
     <section
       id="realisations"
-      className="realisations-section akno-surface-light relative"
+      className="realisations-section akno-deferred-section akno-surface-light relative"
       aria-labelledby="realisations-heading"
     >
       <div className="realisations-section__inner">

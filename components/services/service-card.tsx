@@ -419,7 +419,7 @@ export function ServiceCard({
               role="button"
               tabIndex={isFlipped ? -1 : 0}
               aria-expanded={isFlipped}
-              aria-label={`${service.title} — voir les livrables`}
+              aria-label={`${service.title} — En savoir plus`}
               className="service-card__face service-card__face--front"
               onClick={() => {
                 if (!isFlipped) onToggle();

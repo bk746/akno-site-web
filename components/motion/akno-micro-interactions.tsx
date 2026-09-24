@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
+import { isProgrammaticScroll } from "@/lib/programmatic-scroll";
 import { whenIntroReady } from "@/lib/when-intro-ready";
 
 /** Cartes qui reçoivent un halo suivant le curseur. */
@@ -38,7 +39,12 @@ export function AknoMicroInteractions() {
     };
 
     let scrollEndTimer = 0;
+    let userScrollGesture = false;
     const root = document.documentElement;
+
+    const markUserScroll = () => {
+      userScrollGesture = true;
+    };
 
     const update = () => {
       raf = 0;
@@ -52,11 +58,14 @@ export function AknoMicroInteractions() {
         else bar.removeAttribute("data-visible");
       }
 
-      root.classList.add("is-scrolling");
-      window.clearTimeout(scrollEndTimer);
-      scrollEndTimer = window.setTimeout(() => {
-        root.classList.remove("is-scrolling");
-      }, 150);
+      if (userScrollGesture && !isProgrammaticScroll()) {
+        root.classList.add("is-scrolling");
+        window.clearTimeout(scrollEndTimer);
+        scrollEndTimer = window.setTimeout(() => {
+          root.classList.remove("is-scrolling");
+          userScrollGesture = false;
+        }, 150);
+      }
     };
     const schedule = () => {
       if (raf) return;
@@ -70,12 +79,18 @@ export function AknoMicroInteractions() {
     const stopWaiting = whenIntroReady(onResize);
     const ro = new ResizeObserver(onResize);
     ro.observe(document.body);
+    window.addEventListener("wheel", markUserScroll, { passive: true });
+    window.addEventListener("touchstart", markUserScroll, { passive: true });
+    window.addEventListener("pointerdown", markUserScroll, { passive: true });
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
       stopWaiting();
       ro.disconnect();
+      window.removeEventListener("wheel", markUserScroll);
+      window.removeEventListener("touchstart", markUserScroll);
+      window.removeEventListener("pointerdown", markUserScroll);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", onResize);
       if (raf) window.cancelAnimationFrame(raf);

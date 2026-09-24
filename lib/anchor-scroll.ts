@@ -1,3 +1,5 @@
+import { withProgrammaticScroll } from "@/lib/programmatic-scroll";
+
 /** Offset sous le header fixe pour les ancres (px). */
 export const HEADER_ANCHOR_OFFSET = 96;
 
@@ -49,7 +51,9 @@ export function scrollToAnchorElement(
   behavior: ScrollBehavior = "instant",
 ) {
   const top = Math.max(0, anchorScrollTop(element));
-  window.scrollTo({ top, left: 0, behavior });
+  withProgrammaticScroll(() => {
+    window.scrollTo({ top, left: 0, behavior });
+  });
 }
 
 export function markRevealInView(root: Element) {
@@ -101,7 +105,13 @@ export function stabilizeHashAnchor(id: string): () => void {
       Math.abs(window.scrollY - nextY) > HASH_DRIFT_PX
     ) {
       targetY = nextY;
-      window.scrollTo({ top: Math.max(0, targetY), left: 0, behavior: "instant" });
+      withProgrammaticScroll(() => {
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          left: 0,
+          behavior: "instant",
+        });
+      });
       revealAnchorSection(id);
     }
   };
@@ -138,7 +148,7 @@ export function stabilizeHashAnchor(id: string): () => void {
   window.addEventListener("keydown", onKey, true);
 
   const ro = new ResizeObserver(sync);
-  ro.observe(document.body);
+  ro.observe(section);
   window.addEventListener("load", sync, { once: true });
   void document.fonts.ready.then(sync);
 
@@ -151,13 +161,17 @@ export function stabilizeHashAnchor(id: string): () => void {
 export function initHashOnLoad(): (() => void) | undefined {
   const hash = window.location.hash;
   if (!hash || hash.length < 2) {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    withProgrammaticScroll(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    });
     return undefined;
   }
 
   const id = decodeURIComponent(hash.slice(1));
   if (!document.getElementById(id)) {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    withProgrammaticScroll(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    });
     return undefined;
   }
 

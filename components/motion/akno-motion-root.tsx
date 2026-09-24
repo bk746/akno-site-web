@@ -16,17 +16,16 @@ const THRESHOLD = 0;
 const ROOT_MARGIN = "0px 0px 15% 0px";
 const MOTION_READY_CLASS = "akno-motion-ready";
 
-function isDisplayed(node: Element) {
-  if (!(node instanceof HTMLElement)) return false;
-  return window.getComputedStyle(node).display !== "none";
+function shouldObserve(node: HTMLElement) {
+  if (node.classList.contains("is-inview")) return false;
+  return node.offsetWidth > 0 || node.offsetHeight > 0;
 }
 
-function applyRevealSafetyNet() {
+/** Une seule passe : éléments déjà scrollés au-dessus du viewport. */
+function runRevealSafetyNetOnce() {
   document.querySelectorAll<HTMLElement>(REVEAL_LEAF_SELECTOR).forEach((node) => {
-    if (node.classList.contains("is-inview") || !isDisplayed(node)) return;
-    const rect = node.getBoundingClientRect();
-    const vh = window.innerHeight;
-    if (rect.bottom < 0 || (rect.top < vh * 1.02 && rect.bottom > -vh * 0.05)) {
+    if (node.classList.contains("is-inview")) return;
+    if (node.getBoundingClientRect().bottom < 0) {
       node.classList.add("is-inview");
     }
   });
@@ -34,9 +33,7 @@ function applyRevealSafetyNet() {
   document
     .querySelectorAll<HTMLElement>("[data-akno-reveal-stagger]:not(.is-inview)")
     .forEach((parent) => {
-      if (!isDisplayed(parent)) return;
-      const rect = parent.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top < window.innerHeight * 1.02) {
+      if (parent.getBoundingClientRect().bottom < 0) {
         markRevealInView(parent);
       }
     });
@@ -45,30 +42,20 @@ function applyRevealSafetyNet() {
 export function AknoMotionRoot() {
   useEffect(() => {
     let observer: IntersectionObserver | null = null;
-    let safetyRaf = 0;
+    let mutationObserver: MutationObserver | null = null;
     let hashStop: (() => void) | undefined;
-    let observed = new Set<Element>();
+    const observed = new Set<Element>();
+    const seen = new WeakSet<Element>();
 
     const observeNode = (node: HTMLElement) => {
-      if (!observer || node.classList.contains("is-inview")) return;
-      if (!isDisplayed(node)) return;
-      if (observed.has(node)) return;
+      if (!observer || !shouldObserve(node) || observed.has(node)) return;
       observed.add(node);
       observer.observe(node);
     };
 
-    const scanAndObserve = () => {
-      document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR).forEach((node) => {
-        observeNode(node);
-      });
-    };
-
-    const scheduleSafety = () => {
-      if (safetyRaf) return;
-      safetyRaf = window.requestAnimationFrame(() => {
-        safetyRaf = 0;
-        applyRevealSafetyNet();
-      });
+    const registerRevealTree = (root: HTMLElement) => {
+      if (root.matches(REVEAL_SELECTOR)) observeNode(root);
+      root.querySelectorAll<HTMLElement>(REVEAL_SELECTOR).forEach(observeNode);
     };
 
     const start = () => {
@@ -76,14 +63,7 @@ export function AknoMotionRoot() {
         history.scrollRestoration = "manual";
       }
 
-      const root = document.documentElement;
-      root.classList.add(MOTION_READY_CLASS);
-
-      hashStop = initHashOnLoad();
-
-      applyRevealSafetyNet();
-
-      const seen = new WeakSet<Element>();
+      document.documentElement.classList.add(MOTION_READY_CLASS);
 
       observer = new IntersectionObserver(
         (entries) => {
@@ -98,20 +78,27 @@ export function AknoMotionRoot() {
         { threshold: THRESHOLD, rootMargin: ROOT_MARGIN },
       );
 
-      scanAndObserve();
-      scheduleSafety();
+      registerRevealTree(document.body);
 
-      const ro = new ResizeObserver(() => {
-        scanAndObserve();
-        scheduleSafety();
+      requestAnimationFrame(() => {
+        runRevealSafetyNetOnce();
       });
-      ro.observe(document.body);
 
-      window.addEventListener("scroll", scheduleSafety, { passive: true });
+      hashStop = initHashOnLoad();
+
+      mutationObserver = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement) {
+              registerRevealTree(node);
+            }
+          });
+        }
+      });
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
 
       return () => {
-        ro.disconnect();
-        window.removeEventListener("scroll", scheduleSafety);
+        mutationObserver?.disconnect();
       };
     };
 
@@ -162,7 +149,6 @@ export function AknoMotionRoot() {
       stopWaiting();
       hashStop?.();
       teardownMotion?.();
-      if (safetyRaf) window.cancelAnimationFrame(safetyRaf);
       observer?.disconnect();
     };
   }, []);

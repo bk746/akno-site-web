@@ -70,38 +70,6 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: introBootScript }} />
-        <link
-          rel="preload"
-          as="image"
-          href="/videos/akno-hero-poster-mobile.webp"
-          fetchPriority="high"
-          media="(max-width: 639px)"
-          type="image/webp"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/videos/akno-hero-poster-mobile.avif"
-          fetchPriority="high"
-          media="(max-width: 639px)"
-          type="image/avif"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/videos/akno-hero-poster.webp"
-          fetchPriority="high"
-          media="(min-width: 640px)"
-          type="image/webp"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/videos/akno-hero-poster.avif"
-          fetchPriority="high"
-          media="(min-width: 640px)"
-          type="image/avif"
-        />
         <noscript>
           <style>{`html .site-shell{visibility:visible!important}html .site-intro-curtain{display:none!important}`}</style>
         </noscript>

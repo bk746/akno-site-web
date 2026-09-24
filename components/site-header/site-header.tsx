@@ -6,10 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
-import {
-  remeasureHeaderTone,
-  resolveHeaderOnLight,
-} from "@/lib/header-tone";
+import { attachHeaderSurfaceObserver } from "@/lib/header-surface-observer";
 import { whenIntroReady } from "@/lib/when-intro-ready";
 import logoAkno from "@/src/images/logo-akno-plus.png";
 
@@ -23,41 +20,39 @@ export function SiteHeader() {
 
   useEffect(() => {
     let raf = 0;
+    let detachSurface: (() => void) | undefined;
 
-    const update = () => {
+    const updateScroll = () => {
       raf = 0;
       if (!document.documentElement.classList.contains("intro-complete")) return;
-
-      const y = window.scrollY;
-      setScrolled(y > SCROLL_GLASS_THRESHOLD);
-
-      const next = resolveHeaderOnLight(y, onLightRef.current);
-      if (next !== onLightRef.current) {
-        onLightRef.current = next;
-        setOnLight(next);
-      }
-      setToneReady(true);
+      setScrolled(window.scrollY > SCROLL_GLASS_THRESHOLD);
     };
 
-    const schedule = () => {
+    const scheduleScroll = () => {
       if (raf) return;
-      raf = window.requestAnimationFrame(update);
+      raf = window.requestAnimationFrame(updateScroll);
     };
 
-    const measureAndUpdate = () => {
-      remeasureHeaderTone();
-      schedule();
+    const startSurface = () => {
+      detachSurface?.();
+      detachSurface = attachHeaderSurfaceObserver((next) => {
+        if (next !== onLightRef.current) {
+          onLightRef.current = next;
+          setOnLight(next);
+        }
+        setToneReady(true);
+      });
+      updateScroll();
     };
 
-    measureAndUpdate();
-    const stopIntroWatch = whenIntroReady(measureAndUpdate);
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", measureAndUpdate, { passive: true });
+    updateScroll();
+    const stopIntroWatch = whenIntroReady(startSurface);
+    window.addEventListener("scroll", scheduleScroll, { passive: true });
 
     return () => {
       stopIntroWatch();
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", measureAndUpdate);
+      detachSurface?.();
+      window.removeEventListener("scroll", scheduleScroll);
       if (raf) window.cancelAnimationFrame(raf);
     };
   }, []);

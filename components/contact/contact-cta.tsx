@@ -4,6 +4,10 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 import { useContactOverlay } from "@/components/contact/contact-overlay-context";
 
+function preloadContactOverlay() {
+  void import("@/components/contact/contact-overlay");
+}
+
 type ContactCtaProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
 };
@@ -20,6 +24,8 @@ export function ContactCta({
     <button
       type="button"
       className={className}
+      onPointerEnter={preloadContactOverlay}
+      onFocus={preloadContactOverlay}
       onClick={(event) => {
         onClick?.(event);
         if (!event.defaultPrevented) {

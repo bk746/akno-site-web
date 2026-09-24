@@ -51,16 +51,16 @@ export function SiteIntro() {
       setVisible(true);
     });
 
-    schedule(() => setPhase("hold"), 1000);
-    schedule(() => setPhase("exit"), 2200);
+    schedule(() => setPhase("hold"), 320);
+    schedule(() => setPhase("exit"), 720);
     schedule(() => {
       sessionStorage.setItem("akno-intro-seen", "1");
       completeIntro();
-    }, 2800);
+    }, 1000);
     schedule(() => {
       setPhase("done");
       setVisible(false);
-    }, 3400);
+    }, 1200);
 
     return () => {
       stopIntroWatch();

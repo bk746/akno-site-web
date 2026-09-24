@@ -2,22 +2,41 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import {
+  scheduleAfterFirstPaint,
+  shouldDeferHeroVideo,
+} from "@/lib/media-network";
 import { whenIntroReady } from "@/lib/when-intro-ready";
 
-const HERO_POSTER = "/videos/akno-hero-poster.webp";
+type VideoPhase = "idle" | "loading" | "playing" | "paused" | "ended" | "poster-only";
 
-type VideoPhase = "idle" | "playing" | "paused" | "ended";
-
-type HeroVideoProps = {
+type HeroVideoPlayerProps = {
   className?: string;
 };
 
-export function HeroVideo({ className }: HeroVideoProps) {
+export function HeroVideoPlayer({ className }: HeroVideoPlayerProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<VideoPhase>("idle");
+  const [sourcesReady, setSourcesReady] = useState(false);
 
   useEffect(() => {
+    if (shouldDeferHeroVideo()) {
+      setPhase("poster-only");
+      return;
+    }
+
+    const cancelSchedule = scheduleAfterFirstPaint(() => {
+      setSourcesReady(true);
+      setPhase("loading");
+    });
+
+    return cancelSchedule;
+  }, []);
+
+  useEffect(() => {
+    if (!sourcesReady || phase === "poster-only") return;
+
     const wrap = wrapRef.current;
     const video = videoRef.current;
     if (!wrap || !video) return;
@@ -26,7 +45,10 @@ export function HeroVideo({ className }: HeroVideoProps) {
     let started = false;
 
     const playIfAllowed = async () => {
-      if (cancelled || !document.documentElement.classList.contains("intro-complete")) {
+      if (
+        cancelled ||
+        !document.documentElement.classList.contains("intro-complete")
+      ) {
         return;
       }
       try {
@@ -77,41 +99,30 @@ export function HeroVideo({ className }: HeroVideoProps) {
     video.addEventListener("playing", onPlaying);
 
     const stopWaiting = whenIntroReady(() => void playIfAllowed());
-    const poll = window.setInterval(() => {
-      if (cancelled || started) {
-        window.clearInterval(poll);
-        return;
-      }
-      void playIfAllowed();
-    }, 400);
-
-    void playIfAllowed();
 
     return () => {
       cancelled = true;
       stopWaiting();
       io.disconnect();
-      window.clearInterval(poll);
       video.removeEventListener("canplay", onCanPlay);
       video.removeEventListener("loadeddata", onLoadedData);
       video.removeEventListener("playing", onPlaying);
       video.pause();
     };
-  }, []);
+  }, [sourcesReady, phase]);
 
-  const handlePlay = async () => {
+  const ensureSourcesAndPlay = async () => {
+    if (phase === "poster-only") {
+      setSourcesReady(true);
+      setPhase("loading");
+    }
     const video = videoRef.current;
     if (!video) return;
-
-    if (phase === "idle" || phase === "ended") {
-      video.currentTime = 0;
-    }
-
     try {
       await video.play();
       setPhase("playing");
     } catch {
-      /* autoplay policies / user gesture */
+      /* gesture / policy */
     }
   };
 
@@ -125,7 +136,6 @@ export function HeroVideo({ className }: HeroVideoProps) {
   const handleEnded = () => {
     const video = videoRef.current;
     if (!video) return;
-
     video.pause();
     if (Number.isFinite(video.duration) && video.duration > 0) {
       video.currentTime = Math.max(0, video.duration - 0.04);
@@ -133,15 +143,18 @@ export function HeroVideo({ className }: HeroVideoProps) {
     setPhase("ended");
   };
 
+  const showPlayOverlay =
+    phase !== "playing" && phase !== "poster-only" && sourcesReady;
+
   return (
     <div ref={wrapRef} className={className}>
-      <div className="hero-section__media-inner relative aspect-video w-full overflow-hidden rounded-[24px] bg-[#1a1a1e] sm:rounded-[28px]">
+      {sourcesReady ? (
         <video
           ref={videoRef}
-          className="h-full w-full cursor-pointer object-cover"
-          poster={HERO_POSTER}
-          preload="metadata"
-          autoPlay
+          className={`hero-video-player absolute inset-0 z-[1] h-full w-full cursor-pointer object-cover ${
+            phase === "playing" ? "opacity-100" : "opacity-0"
+          }`}
+          preload="none"
           muted
           loop
           playsInline
@@ -162,28 +175,23 @@ export function HeroVideo({ className }: HeroVideoProps) {
           />
           <source src="/videos/akno-hero-1080.webm" type="video/webm" />
           <source src="/videos/akno-hero-1080.mp4" type="video/mp4" />
-          Votre navigateur ne prend pas en charge la lecture vidéo.
         </video>
+      ) : null}
 
-        <div className="hero-video-bottom-blur" aria-hidden>
-          <span className="hero-video-bottom-blur__layer hero-video-bottom-blur__layer--strong" />
-        </div>
-
-        {phase !== "playing" ? (
-          <button
-            type="button"
-            className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-transparent transition-opacity hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
-            aria-label={
-              phase === "idle" || phase === "ended"
-                ? "Lire la vidéo"
-                : "Reprendre la vidéo"
-            }
-            onClick={handlePlay}
-          >
-            <span className="ml-1.5 block h-0 w-0 border-y-[26px] border-l-[44px] border-y-transparent border-l-white sm:border-y-[30px] sm:border-l-[50px]" />
-          </button>
-        ) : null}
-      </div>
+      {showPlayOverlay || phase === "poster-only" ? (
+        <button
+          type="button"
+          className="absolute inset-0 z-[2] flex cursor-pointer items-center justify-center bg-transparent transition-opacity hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+          aria-label={
+            phase === "idle" || phase === "ended" || phase === "poster-only"
+              ? "Lire la vidéo"
+              : "Reprendre la vidéo"
+          }
+          onClick={() => void ensureSourcesAndPlay()}
+        >
+          <span className="ml-1.5 block h-0 w-0 border-y-[26px] border-l-[44px] border-y-transparent border-l-white sm:border-y-[30px] sm:border-l-[50px]" />
+        </button>
+      ) : null}
     </div>
   );
 }

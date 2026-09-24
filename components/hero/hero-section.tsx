@@ -4,7 +4,7 @@ import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import { HeroFeatures } from "@/components/hero/hero-features";
 import { HeroOrbs } from "@/components/hero/hero-orbs";
-import { HeroVideo } from "@/components/hero/hero-video";
+import { HeroMedia } from "@/components/hero/hero-media";
 
 export function HeroSection() {
   return (
@@ -62,7 +62,7 @@ export function HeroSection() {
           </div>
 
           <div className="hero-section__visual akno-enter akno-enter--4">
-            <HeroVideo className="hero-section__media mx-auto w-full sm:mt-12 sm:w-[min(100%,860px)] lg:mt-14" />
+            <HeroMedia className="hero-section__media mx-auto w-full sm:mt-12 sm:w-[min(100%,860px)] lg:mt-14" />
           </div>
         </div>
       </section>

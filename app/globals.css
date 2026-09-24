@@ -536,8 +536,10 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   .hero-section__title {
     margin: 12px 0 0;
     max-width: 16.5rem;
+    font-family: var(--font-hero-display), var(--font-geist-sans), ui-sans-serif,
+      system-ui, sans-serif;
     font-size: clamp(28px, 8vw, 34px);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.12;
     letter-spacing: -0.035em;
     text-wrap: balance;
@@ -620,6 +622,26 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   overflow: visible;
 }
 
+.hero-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-video-player {
+  transition: opacity 450ms var(--akno-ease-out);
+}
+
+.realisations-carousel-lazy-placeholder {
+  min-height: 420px;
+}
+
+@media (min-width: 768px) {
+  .realisations-carousel-lazy-placeholder {
+    min-height: 520px;
+  }
+}
+
 .hero-section__actions {
   display: flex;
   flex-flow: row wrap;
@@ -682,6 +704,8 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   .hero-section__title {
     margin-top: 0.75rem;
     max-width: 940px;
+    font-family: var(--font-hero-display), var(--font-geist-sans), ui-sans-serif,
+      system-ui, sans-serif;
     font-size: clamp(1.875rem, 5vw, 3.25rem);
     font-weight: 700;
     line-height: 1.12;
@@ -4860,15 +4884,11 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   pointer-events: none;
 }
 
-html:not(.intro-complete) .site-intro-curtain {
+html.intro-pending .site-intro-curtain {
   display: block;
 }
 
 .site-shell {
-  visibility: hidden;
-}
-
-html.intro-complete .site-shell {
   visibility: visible;
 }
 
@@ -4906,6 +4926,13 @@ html.intro-pending .akno-enter {
   animation: none !important;
   opacity: 0 !important;
   transform: translate3d(0, 14px, 0);
+}
+
+html.intro-pending .hero-section .akno-enter,
+.hero-section .akno-enter {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
 }
 
 html.intro-complete .akno-enter {

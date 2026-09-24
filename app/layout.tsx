@@ -4,8 +4,7 @@ import { Inter } from "next/font/google";
 import { ContactOverlayProvider } from "@/components/contact/contact-overlay-context";
 import { introBootScript } from "@/components/intro/intro-boot";
 import { IntroProvider } from "@/components/intro/intro-provider";
-import { AknoMicroInteractions } from "@/components/motion/akno-micro-interactions";
-import { AknoMotionRoot } from "@/components/motion/akno-motion-root";
+import { AknoClientShell } from "@/components/motion/akno-client-shell";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -19,6 +18,16 @@ const inter = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600"],
+  preload: false,
+});
+
+const interDisplay = Inter({
+  variable: "--font-hero-display",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["700"],
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -56,18 +65,42 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${inter.variable} ${interDisplay.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: introBootScript }} />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-              html:not(.intro-complete) .site-shell { visibility: hidden; }
-              html:not(.intro-complete) .site-intro-curtain { display: block; }
-            `,
-          }}
+        <link
+          rel="preload"
+          as="image"
+          href="/videos/akno-hero-poster-mobile.webp"
+          fetchPriority="high"
+          media="(max-width: 639px)"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/videos/akno-hero-poster-mobile.avif"
+          fetchPriority="high"
+          media="(max-width: 639px)"
+          type="image/avif"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/videos/akno-hero-poster.webp"
+          fetchPriority="high"
+          media="(min-width: 640px)"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/videos/akno-hero-poster.avif"
+          fetchPriority="high"
+          media="(min-width: 640px)"
+          type="image/avif"
         />
         <noscript>
           <style>{`html .site-shell{visibility:visible!important}html .site-intro-curtain{display:none!important}`}</style>
@@ -76,8 +109,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
         <IntroProvider>
           <ContactOverlayProvider>
-            <AknoMotionRoot />
-            <AknoMicroInteractions />
+            <AknoClientShell />
             {children}
           </ContactOverlayProvider>
         </IntroProvider>

@@ -10,9 +10,12 @@ const securityHeaders = [
   },
 ];
 
+const immutableCache = "public, max-age=31536000, immutable";
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
+    formats: ["image/avif", "image/webp"],
     qualities: [75, 80, 100],
   },
   async headers() {
@@ -20,10 +23,21 @@ const nextConfig: NextConfig = {
       {
         source: "/videos/:path*",
         headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
+          { key: "Cache-Control", value: immutableCache },
+          ...securityHeaders,
+        ],
+      },
+      {
+        source: "/images/:path*",
+        headers: [
+          { key: "Cache-Control", value: immutableCache },
+          ...securityHeaders,
+        ],
+      },
+      {
+        source: "/_next/static/media/:path*",
+        headers: [
+          { key: "Cache-Control", value: immutableCache },
           ...securityHeaders,
         ],
       },

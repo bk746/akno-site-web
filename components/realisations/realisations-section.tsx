@@ -2,10 +2,8 @@
 
 import { useCallback, useState } from "react";
 
-import {
-  formatCounter,
-  RealisationsCarousel,
-} from "@/components/realisations/realisations-carousel";
+import { formatCounter } from "@/components/realisations/realisations-carousel";
+import { RealisationsCarouselLazy } from "@/components/realisations/realisations-carousel-lazy";
 
 export function RealisationsSection() {
   const [mobileIndex, setMobileIndex] = useState(0);
@@ -56,7 +54,9 @@ export function RealisationsSection() {
           className="realisations-carousel-bleed pb-10 sm:pb-12 lg:pb-14"
           data-akno-reveal
         >
-          <RealisationsCarousel onMobileActiveChange={onMobileActiveChange} />
+          <RealisationsCarouselLazy
+            onMobileActiveChange={onMobileActiveChange}
+          />
         </div>
       </div>
     </section>

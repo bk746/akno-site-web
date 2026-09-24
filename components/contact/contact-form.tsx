@@ -1,16 +1,9 @@
 "use client";
 
 import { FormEvent, useEffect, useId, useState } from "react";
+import Link from "next/link";
 
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
-
-const PROJECT_TYPES = [
-  "Site vitrine",
-  "Refonte",
-  "UI/UX",
-  "SEO / perf",
-  "Je ne sais pas encore",
-] as const;
 
 const BUDGET_OPTIONS = [
   { value: "", label: "Budget (optionnel)" },
@@ -43,7 +36,7 @@ function buildMailto(payload: {
     [
       `Nom : ${payload.name}`,
       `Email : ${payload.email}`,
-      `Type de projet : ${payload.projectType}`,
+      `Objet : ${payload.projectType}`,
       `Budget : ${payload.budget || "—"}`,
       "",
       payload.message,
@@ -78,6 +71,13 @@ export function ContactForm({
     const projectType = String(data.get("projectType") ?? "").trim();
     const budget = String(data.get("budget") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
+    const companyWebsite = String(data.get("companyWebsite") ?? "").trim();
+
+    if (companyWebsite.length > 0) {
+      setState("success");
+      form.reset();
+      return;
+    }
 
     if (name.length < 2) {
       setErrorHint("Indique ton nom.");
@@ -87,6 +87,12 @@ export function ContactForm({
 
     if (!EMAIL_RE.test(email)) {
       setErrorHint("Email invalide.");
+      setState("error");
+      return;
+    }
+
+    if (projectType.length < 2) {
+      setErrorHint("Indique l'objet de ton message.");
       setState("error");
       return;
     }
@@ -106,8 +112,14 @@ export function ContactForm({
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, companyWebsite: "" }),
       });
+
+      if (response.status === 429) {
+        setErrorHint("Trop de tentatives. Réessaie dans une minute.");
+        setState("error");
+        return;
+      }
 
       if (response.ok) {
         setState("success");
@@ -152,6 +164,17 @@ export function ContactForm({
       onSubmit={handleSubmit}
       noValidate
     >
+      <div className="contact-form__honeypot" aria-hidden="true">
+        <label htmlFor={`${fieldId}-website`}>Site web</label>
+        <input
+          id={`${fieldId}-website`}
+          name="companyWebsite"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div className="contact-form__field">
         <label className="contact-form__label" htmlFor={`${fieldId}-name`}>
           Nom
@@ -186,25 +209,20 @@ export function ContactForm({
       </div>
 
       <div className="contact-form__field">
-        <label className="contact-form__label" htmlFor={`${fieldId}-type`}>
-          Type de projet
+        <label className="contact-form__label" htmlFor={`${fieldId}-subject`}>
+          Objet
         </label>
-        <select
-          id={`${fieldId}-type`}
+        <input
+          id={`${fieldId}-subject`}
           name="projectType"
-          className="contact-form__input contact-form__select"
-          defaultValue=""
+          type="text"
+          required
+          minLength={2}
+          maxLength={120}
+          className="contact-form__input"
+          placeholder="Ex. Refonte de mon site vitrine"
           disabled={state === "submitting"}
-        >
-          <option value="" disabled>
-            Choisir…
-          </option>
-          {PROJECT_TYPES.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        />
       </div>
 
       {!isOverlay ? (
@@ -262,6 +280,15 @@ export function ContactForm({
       {!isOverlay ? (
         <p className="contact-form__micro">Je te réponds sous 24h</p>
       ) : null}
+
+      <p className="contact-form__legal">
+        En envoyant ce formulaire, vous acceptez que vos données soient
+        utilisées pour répondre à votre demande.{" "}
+        <Link href="/confidentialite" className="contact-form__legal-link">
+          Politique de confidentialité
+        </Link>
+        .
+      </p>
     </form>
   );
 }

@@ -27,49 +27,72 @@ export function HeroVideo({ className }: HeroVideoProps) {
     const video = videoRef.current;
     if (!wrap || !video) return;
 
-    let ready = false;
-    let visible = false;
     let cancelled = false;
+    let started = false;
 
     const syncPlayback = async () => {
-      if (cancelled || !ready || !visible) {
-        if (!video.paused) video.pause();
-        return;
-      }
+      if (cancelled || started) return;
+      if (!document.documentElement.classList.contains("intro-complete")) return;
 
-      attachHeroSource(video);
+      const rect = wrap.getBoundingClientRect();
+      const inView = rect.height > 0 && rect.bottom > 48 && rect.top < window.innerHeight * 0.95;
+
+      if (!inView) return;
+
       video.muted = true;
+      video.defaultMuted = true;
 
       try {
         await video.play();
-        if (!cancelled) setPhase("playing");
+        if (cancelled) return;
+        started = true;
+        setPhase("playing");
       } catch {
         if (!cancelled) setPhase("idle");
       }
     };
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting && entry.intersectionRatio >= 0.2;
-        if (!visible && !video.paused) {
-          video.pause();
-          setPhase((current) => (current === "playing" ? "paused" : current));
-        }
-        void syncPlayback();
-      },
-      { threshold: [0, 0.2, 0.5] },
-    );
-
-    io.observe(wrap);
-    const stopWaiting = whenIntroReady(() => {
-      ready = true;
+    const kick = () => {
       void syncPlayback();
+    };
+
+    const io = new IntersectionObserver(kick, { threshold: [0, 0.15] });
+    io.observe(wrap);
+    video.addEventListener("canplay", kick);
+    video.addEventListener("loadeddata", kick);
+    video.addEventListener("playing", () => {
+      if (!cancelled) setPhase("playing");
     });
+    const onScroll = () => {
+      if (!started || cancelled || video.ended) return;
+      const rect = wrap.getBoundingClientRect();
+      const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+      if (!inView && !video.paused) {
+        video.pause();
+        setPhase("paused");
+      }
+    };
+
+    const stopWaiting = whenIntroReady(kick);
+    const poll = window.setInterval(() => {
+      if (cancelled || started) {
+        window.clearInterval(poll);
+        return;
+      }
+      kick();
+    }, 400);
+
+    kick();
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       cancelled = true;
       stopWaiting();
       io.disconnect();
+      window.clearInterval(poll);
+      window.removeEventListener("scroll", onScroll);
+      video.removeEventListener("canplay", kick);
+      video.removeEventListener("loadeddata", kick);
       video.pause();
     };
   }, []);
@@ -116,7 +139,8 @@ export function HeroVideo({ className }: HeroVideoProps) {
         <video
           ref={videoRef}
           className="h-full w-full cursor-pointer object-cover"
-          preload="none"
+          src={HERO_VIDEO_SRC}
+          preload="auto"
           muted
           playsInline
           controls={false}

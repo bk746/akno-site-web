@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { AboutSection } from "@/components/about/about-section";
 import { ComparisonSection } from "@/components/comparison/comparison-section";
 import { FaqSection } from "@/components/faq/faq-section";
@@ -11,10 +13,21 @@ import { RealisationsSection } from "@/components/realisations/realisations-sect
 import { ServicesSection } from "@/components/services/services-section";
 import { SiteHeader } from "@/components/site-header/site-header";
 import { WantsSection } from "@/components/wants/wants-section";
+import { HomeJsonLd } from "@/components/seo/home-json-ld";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/lib/site-config";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (
     <>
+      <HomeJsonLd />
       <div className="site-intro-curtain" aria-hidden="true" />
       <SiteIntro />
       <main className="site-shell relative isolate overflow-x-clip bg-white">

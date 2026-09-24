@@ -12,11 +12,44 @@ import { ServicesOrbs } from "@/components/services/services-orbs";
 
 export function ServicesSection() {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [motionLive, setMotionLive] = useState(false);
+  const [motionPlayed, setMotionPlayed] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const handleToggle = (id: string) => {
     setActiveId((current) => (current === id ? null : id));
   };
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const cards = list.querySelectorAll(".service-card-scene");
+    const visible = new Set<Element>();
+    /* `live` pilote la pause/reprise des boucles (perf hors écran).
+       `played` est définitif : une fois lancées, les animations d'entrée
+       (compteurs, jauge, anneau) ne se réinitialisent plus au scroll. */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target);
+          else visible.delete(entry.target);
+        }
+        const onCards = visible.size > 0 || reduceMotion;
+        setMotionLive(onCards);
+        if (onCards) setMotionPlayed(true);
+      },
+      { threshold: 0.12 },
+    );
+
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!activeId) return;
@@ -33,9 +66,12 @@ export function ServicesSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="services-section relative bg-akno-noir text-white"
       data-akno-surface="dark"
+      data-live={motionLive ? "" : undefined}
+      data-played={motionPlayed ? "" : undefined}
       aria-labelledby="services-heading"
     >
       <div className="services-ellipse-top" aria-hidden>
@@ -55,21 +91,21 @@ export function ServicesSection() {
 
       <ServicesOrbs />
 
-      <div className="services-inner relative z-10 mx-auto max-w-[1100px] px-6 pb-2 pt-6 sm:pb-3 sm:pt-8 lg:pb-4 lg:pt-10">
+      <div className="services-inner relative z-10 mx-auto max-w-[1100px] px-6 pb-4 pt-10 sm:pb-6 sm:pt-14 lg:pb-8 lg:pt-16">
         <h2
           id="services-heading"
-          className="text-center text-[clamp(1.35rem,3.2vw,1.75rem)] font-bold uppercase leading-tight tracking-[0.12em]"
+          className="text-balance text-center text-[clamp(2rem,4.2vw,3rem)] font-bold leading-[1.12] tracking-[-0.03em] text-white"
           data-akno-reveal
         >
-          <span className="text-white">3 </span>
-          <span className="text-[#8BA4FF]">SERVICES</span>
-          <span className="text-white"> COMPLÉMENTAIRES</span>
+          <span>3 </span>
+          <span className="akno-word italic text-akno-cta">services</span>
+          <span> complémentaires</span>
         </h2>
 
         <ul
           ref={listRef}
           data-akno-reveal-stagger
-          className="mt-12 flex flex-col items-center gap-8 lg:mt-14 lg:flex-row lg:items-stretch lg:justify-center lg:gap-6 xl:gap-8"
+          className="mt-16 flex flex-col items-center gap-[22px] sm:mt-20 lg:mt-24 lg:flex-row lg:items-stretch lg:justify-center"
         >
           {SERVICES.map((service) => (
             <li
@@ -80,20 +116,22 @@ export function ServicesSection() {
               <ServiceCard
                 service={service}
                 isFlipped={activeId === service.id}
+                motionPlayed={motionPlayed}
+                motionLive={motionLive}
                 onToggle={() => handleToggle(service.id)}
               />
             </li>
           ))}
         </ul>
 
-        <p className="mx-auto mt-12 max-w-[640px] text-center text-[15px] leading-relaxed text-white/65 sm:mt-14 sm:text-base">
-          Site, design et SEO ne marchent pas séparément. Ensemble, ils te
-          placent clairement au-dessus de la plupart des concurrents.
+        <p className="services-footnote mx-auto mt-16 max-w-[520px] text-center sm:mt-20 lg:mt-24">
+          Site, design et SEO. Séparés, c’est moyen. Ensemble, c’est un
+          système.
         </p>
 
         <div className="mt-10 flex justify-center sm:mt-12">
           <ContactCta className="btn btn-primary inline-flex w-full max-w-md items-center justify-center gap-2 rounded-full bg-akno-cta px-7 py-3.5 text-[15px] font-medium tracking-[-0.01em] text-white sm:w-auto sm:min-w-[280px]">
-            Je choisis mon pack
+            Prendre rendez-vous
             <ArrowUpRight className="size-4 shrink-0" />
           </ContactCta>
         </div>

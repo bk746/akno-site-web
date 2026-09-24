@@ -104,6 +104,8 @@ export function SiteIntro() {
               alt=""
               width={206}
               height={78}
+              style={{ width: "auto" }}
+              priority
               draggable={false}
               className="site-intro__brand-logo"
             />

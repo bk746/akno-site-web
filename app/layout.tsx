@@ -4,7 +4,14 @@ import { Inter } from "next/font/google";
 import { ContactOverlayProvider } from "@/components/contact/contact-overlay-context";
 import { introBootScript } from "@/components/intro/intro-boot";
 import { IntroProvider } from "@/components/intro/intro-provider";
+import { AknoMicroInteractions } from "@/components/motion/akno-micro-interactions";
 import { AknoMotionRoot } from "@/components/motion/akno-motion-root";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+  SITE_URL,
+} from "@/lib/site-config";
 
 import "./globals.css";
 
@@ -15,19 +22,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://akno.fr"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "AKNO — Sites qui convertissent",
-    template: "%s | AKNO",
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "On conçoit ton site, on analyse tes données, et on pousse ton trafic au maximum.",
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "AKNO — Sites qui convertissent",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description:
       "Stratégie, design et développement pour des sites qui ramènent des demandes.",
     locale: "fr_FR",
     type: "website",
+    siteName: SITE_NAME,
+    url: SITE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description:
+      "Stratégie, design et développement pour des sites qui ramènent des demandes.",
   },
 };
 
@@ -56,10 +73,11 @@ export default function RootLayout({
           <style>{`html .site-shell{visibility:visible!important}html .site-intro-curtain{display:none!important}`}</style>
         </noscript>
       </head>
-      <body className="flex min-h-full flex-col scroll-smooth" suppressHydrationWarning>
+      <body className="flex min-h-full flex-col" suppressHydrationWarning>
         <IntroProvider>
           <ContactOverlayProvider>
             <AknoMotionRoot />
+            <AknoMicroInteractions />
             {children}
           </ContactOverlayProvider>
         </IntroProvider>

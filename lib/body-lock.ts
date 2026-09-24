@@ -26,5 +26,6 @@ export function unlockBodyScroll() {
   body.style.width = "";
   delete body.dataset.aknoScrollLock;
   delete body.dataset.aknoScrollY;
-  window.scrollTo(0, scrollY);
+  // Restauration instantanée, sans animation.
+  window.scrollTo({ top: scrollY, left: 0, behavior: "instant" });
 }

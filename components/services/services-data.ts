@@ -1,9 +1,3 @@
-import type { StaticImageData } from "next/image";
-
-import cardDesign from "@/src/images/card1.webp";
-import cardSite from "@/src/images/card2.webp";
-import cardSeo from "@/src/images/card4.webp";
-
 export const SERVICE_BACK_TRUST =
   "Réponse sous 24h · Devis après cadrage";
 
@@ -15,7 +9,6 @@ export type ServiceItem = {
   ctaLabel: string;
   variant: "site" | "design" | "seo";
   tilt: "left" | "center" | "right";
-  cover: StaticImageData;
   deliverables: string[];
 };
 
@@ -28,7 +21,6 @@ export const SERVICES: ServiceItem[] = [
     ctaLabel: "Je veux un site qui convertit",
     variant: "site",
     tilt: "left",
-    cover: cardSite,
     deliverables: [
       "Structure & copy orientées conversion",
       "Design sur-mesure, responsive",
@@ -44,7 +36,6 @@ export const SERVICES: ServiceItem[] = [
     ctaLabel: "Je veux une UX qui convertit",
     variant: "design",
     tilt: "center",
-    cover: cardDesign,
     deliverables: [
       "Audit UX & parcours client",
       "Wireframes → UI haute fidélité",
@@ -60,7 +51,6 @@ export const SERVICES: ServiceItem[] = [
     ctaLabel: "Je veux plus de trafic qualifié",
     variant: "seo",
     tilt: "right",
-    cover: cardSeo,
     deliverables: [
       "SEO technique + structure",
       "Optimisation Core Web Vitals",

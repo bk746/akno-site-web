@@ -28,7 +28,7 @@ export function ComparisonSection() {
       <div className="comparison-section__inner">
         <header className="comparison-section__header" data-akno-reveal>
           <h2 id="comparison-heading" className="comparison-section__title">
-            Pourquoi <span className="text-akno-cta">AKNO</span> plutôt
+            Pourquoi <span className="akno-word text-akno-cta">AKNO</span> plutôt
             qu&apos;une approche classique ?
           </h2>
           <p className="comparison-section__subtitle">

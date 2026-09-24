@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import logoAkno from "@/src/images/logo-akno-plus.png";
+import { SOCIAL_PROFILES } from "@/lib/site-config";
 
 const MENU_LINKS = [
   { label: "Accueil", href: "/" },
@@ -22,8 +23,8 @@ const SERVICE_LINKS = [
 ] as const;
 
 const LEGAL_LINKS = [
-  { label: "Mentions légales", href: "#" },
-  { label: "Confidentialité", href: "#" },
+  { label: "Mentions légales", href: "/mentions-legales" },
+  { label: "Confidentialité", href: "/confidentialite" },
 ] as const;
 
 function SocialIconLinkedIn() {
@@ -70,6 +71,7 @@ export function FooterSection() {
                 alt="AKNO"
                 width={108}
                 height={28}
+                style={{ width: "auto" }}
                 className="h-7 w-auto brightness-0 invert"
               />
             </Link>
@@ -120,26 +122,26 @@ export function FooterSection() {
                 </ContactCta>
               </li>
             </ul>
-            <div className="site-footer__social">
-              <a
-                href="https://linkedin.com"
-                className="site-footer__social-link"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn AKNO"
-              >
-                <SocialIconLinkedIn />
-              </a>
-              <a
-                href="https://instagram.com"
-                className="site-footer__social-link"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram AKNO"
-              >
-                <SocialIconInstagram />
-              </a>
-            </div>
+            {SOCIAL_PROFILES.length > 0 ? (
+              <div className="site-footer__social">
+                {SOCIAL_PROFILES.map((profile) => (
+                  <a
+                    key={profile.id}
+                    href={profile.href}
+                    className="site-footer__social-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={profile.label}
+                  >
+                    {profile.id === "linkedin" ? (
+                      <SocialIconLinkedIn />
+                    ) : (
+                      <SocialIconInstagram />
+                    )}
+                  </a>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
 

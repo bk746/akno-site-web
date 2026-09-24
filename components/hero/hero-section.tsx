@@ -18,7 +18,7 @@ export function HeroSection() {
       </svg>
 
       <section
-        className="hero-section relative isolate min-h-0 overflow-x-clip overflow-y-visible bg-akno-noir text-white sm:min-h-dvh"
+        className="hero-section relative isolate min-h-0 overflow-visible bg-akno-noir text-white sm:min-h-dvh"
         data-akno-surface="dark"
       >
         <HeroOrbs />
@@ -45,14 +45,14 @@ export function HeroSection() {
               Stratégie · Data · Conversion
             </p>
 
-            <div className="akno-enter akno-enter--3 mt-8 hidden w-full max-w-none flex-row justify-center gap-4 sm:mt-10 sm:flex lg:mt-11">
-              <ContactCta className="btn btn-primary inline-flex w-auto min-w-[220px] items-center justify-center gap-2 rounded-full bg-akno-cta px-6 py-3.5 text-[15px] font-medium text-white">
+            <div className="hero-section__actions akno-enter akno-enter--3 mt-8 hidden w-full max-w-none sm:mt-10 sm:flex lg:mt-11">
+              <ContactCta className="hero-section__action hero-section__action--primary btn btn-primary inline-flex w-auto min-w-[220px] items-center justify-center gap-2 rounded-full bg-akno-cta px-6 py-3.5 text-[15px] font-medium text-white">
                 Je réserve mon appel
                 <ArrowUpRight className="size-4 shrink-0" />
               </ContactCta>
               <Link
                 href="#processus"
-                className="inline-flex w-auto min-w-[200px] items-center justify-center rounded-full border border-white/90 px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-white/5"
+                className="hero-section__action hero-section__action--secondary btn btn-outline inline-flex w-auto min-w-[200px] items-center justify-center rounded-full px-6 py-3.5 text-[15px] font-medium"
               >
                 Voir la méthode
               </Link>

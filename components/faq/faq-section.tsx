@@ -18,7 +18,7 @@ export function FaqSection() {
           <p className="faq-section__eyebrow">FAQ</p>
           <h2 id="faq-heading" className="faq-section__title">
             Tu te poses sûrement{" "}
-            <span className="text-akno-cta">ces questions</span>
+            <span className="akno-word text-akno-cta">ces questions</span>
           </h2>
           <p className="faq-section__subtitle">
             Des réponses claires. Si la tienne n&apos;y est pas, on en parle en

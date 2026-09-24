@@ -8,7 +8,10 @@ export function WantCard({ item }: WantCardProps) {
   const { Icon, segments } = item;
 
   return (
-    <article className="want-card flex h-full flex-col items-center rounded-[24px] p-7 text-center">
+    <article
+      className="want-card flex h-full flex-col items-center rounded-[24px] p-7 text-center"
+      data-akno-spotlight
+    >
       <Icon className="want-card__icon size-11 shrink-0 text-akno-cta sm:size-12" />
       <p className="mt-5 text-[16px] font-normal leading-snug tracking-[-0.02em] text-[#1D326B] sm:text-[17px]">
         {segments.map((segment, index) =>

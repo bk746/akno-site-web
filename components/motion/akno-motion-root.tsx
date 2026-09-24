@@ -30,16 +30,16 @@ function initScrollPosition() {
 
   const hash = window.location.hash;
   if (!hash) {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     return;
   }
 
   const id = decodeURIComponent(hash.slice(1));
   const target = document.getElementById(id);
   if (target) {
-    target.scrollIntoView({ block: "start", behavior: "auto" });
+    target.scrollIntoView({ block: "start", behavior: "instant" });
   } else {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }
 }
 
@@ -85,9 +85,53 @@ export function AknoMotionRoot() {
       raf = window.requestAnimationFrame(syncVisibleReveals);
     };
 
+    const onAnchorClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const link = target.closest<HTMLAnchorElement>("a[href]");
+      if (!link || link.target === "_blank" || link.hasAttribute("download")) {
+        return;
+      }
+
+      const href = link.getAttribute("href");
+      if (!href || !href.startsWith("#") || href.length < 2) return;
+
+      const id = decodeURIComponent(href.slice(1));
+      const section = document.getElementById(id);
+      if (!section) return;
+
+      event.preventDefault();
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      section.scrollIntoView({
+        behavior: reduceMotion ? "instant" : "smooth",
+        block: "start",
+      });
+
+      history.pushState(null, "", `#${id}`);
+    };
+
+    document.addEventListener("click", onAnchorClick);
+
     const stopWaiting = whenIntroReady(start);
 
     return () => {
+      document.removeEventListener("click", onAnchorClick);
       stopWaiting();
       if (raf) window.cancelAnimationFrame(raf);
       observer?.disconnect();

@@ -1,3 +1,5 @@
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type ContactPayload = {
@@ -6,6 +8,8 @@ type ContactPayload = {
   projectType?: string;
   budget?: string;
   message?: string;
+  /** Honeypot — doit rester vide */
+  companyWebsite?: string;
 };
 
 function sanitize(value: unknown, maxLen: number): string {
@@ -14,6 +18,21 @@ function sanitize(value: unknown, maxLen: number): string {
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const rate = checkRateLimit(`contact:${ip}`, { windowMs: 60_000, max: 5 });
+
+  if (!rate.ok) {
+    return Response.json(
+      { ok: false, error: "rate_limited" },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rate.retryAfterSeconds),
+        },
+      },
+    );
+  }
+
   let body: ContactPayload;
 
   try {
@@ -22,9 +41,14 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
 
+  const honeypot = sanitize(body.companyWebsite, 200);
+  if (honeypot.length > 0) {
+    return Response.json({ ok: true });
+  }
+
   const name = sanitize(body.name, 120);
   const email = sanitize(body.email, 254);
-  const projectType = sanitize(body.projectType, 80);
+  const projectType = sanitize(body.projectType, 120);
   const budget = sanitize(body.budget, 80);
   const message = sanitize(body.message, 2000);
 
@@ -34,6 +58,13 @@ export async function POST(request: Request) {
 
   if (!EMAIL_RE.test(email)) {
     return Response.json({ ok: false, error: "invalid_email" }, { status: 400 });
+  }
+
+  if (projectType.length < 2) {
+    return Response.json(
+      { ok: false, error: "invalid_subject" },
+      { status: 400 },
+    );
   }
 
   if (message.length < 8) {
@@ -58,7 +89,7 @@ export async function POST(request: Request) {
   const text = [
     `Nom : ${name}`,
     `Email : ${email}`,
-    `Type de projet : ${projectType || "—"}`,
+    `Objet : ${projectType || "—"}`,
     `Budget : ${budget || "—"}`,
     "",
     message,

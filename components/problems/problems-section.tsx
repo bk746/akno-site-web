@@ -2,7 +2,17 @@ import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import { ProblemsCardsList } from "@/components/problems/problems-cards-list";
 
+const problemsCtaClassName =
+  "btn btn-primary w-full items-center justify-center gap-2 rounded-full bg-akno-cta px-6 py-3.5 text-[15px] font-medium tracking-[-0.01em] text-white lg:w-max";
+
 export function ProblemsSection() {
+  const problemsCta = (
+    <>
+      Je veux débloquer mon site
+      <ArrowUpRight className="size-4 shrink-0" />
+    </>
+  );
+
   return (
     <section
       id="diagnostic"
@@ -25,7 +35,7 @@ export function ProblemsSection() {
               data-akno-reveal
             >
               Les{" "}
-              <span className="text-akno-cta">6 problèmes</span> récurrents des
+              <span className="akno-word text-akno-cta">6 problèmes</span> récurrents des
               entreprises
             </h2>
 
@@ -39,15 +49,21 @@ export function ProblemsSection() {
             </p>
 
             <ContactCta
-              className="btn btn-primary mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full bg-akno-cta px-6 py-3.5 text-[15px] font-medium tracking-[-0.01em] text-white lg:mt-8 lg:w-max"
+              className={`${problemsCtaClassName} mt-7 hidden lg:mt-8 lg:inline-flex`}
               data-akno-reveal
             >
-              Je veux débloquer mon site
-              <ArrowUpRight className="size-4 shrink-0" />
+              {problemsCta}
             </ContactCta>
           </div>
 
           <ProblemsCardsList />
+
+          <ContactCta
+            className={`${problemsCtaClassName} inline-flex lg:hidden`}
+            data-akno-reveal
+          >
+            {problemsCta}
+          </ContactCta>
         </div>
       </div>
     </section>

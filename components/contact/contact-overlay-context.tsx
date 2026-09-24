@@ -34,16 +34,18 @@ const ContactOverlayContext = createContext<ContactOverlayContextValue | null>(
 export function ContactOverlayProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const open = useCallback(() => setIsOpen(true), []);
-  const close = useCallback(() => setIsOpen(false), []);
+  const open = useCallback(() => {
+    lockBodyScroll();
+    setIsOpen(true);
+  }, []);
+  const close = useCallback(() => {
+    setIsOpen(false);
+    unlockBodyScroll();
+  }, []);
 
   useEffect(() => {
-    if (!isOpen) return;
-    lockBodyScroll();
-    return () => {
-      unlockBodyScroll();
-    };
-  }, [isOpen]);
+    return () => unlockBodyScroll();
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;

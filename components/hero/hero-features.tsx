@@ -25,12 +25,14 @@ export function HeroFeatures({ className = "" }: HeroFeaturesProps) {
       {FEATURES.map((feature, index) => (
         <li
           key={feature.title}
-          className={`flex flex-col items-center px-2 sm:px-6 ${
+          className={`hero-feature flex flex-col items-center px-2 sm:px-6 ${
             index > 0 ? "sm:border-l sm:border-white/20" : ""
           }`}
         >
-          <p className="text-base font-semibold text-white">{feature.title}</p>
-          <p className="mt-1.5 max-w-[240px] text-sm leading-snug text-white/65">
+          <p className="hero-feature__title text-base font-semibold text-white">
+            {feature.title}
+          </p>
+          <p className="hero-feature__desc mt-1.5 max-w-[240px] text-sm leading-snug text-white/65">
             {feature.description}
           </p>
         </li>

@@ -7,7 +7,7 @@ type FaqCardProps = {
 
 export function FaqCard({ item }: FaqCardProps) {
   return (
-    <article className="faq-card">
+    <article className="faq-card" data-akno-spotlight>
       <FaqIcon name={item.icon} />
       <h3 className="faq-card__question">{item.question}</h3>
       <p className="faq-card__answer">{item.answer}</p>

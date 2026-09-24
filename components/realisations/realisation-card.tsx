@@ -1,12 +1,8 @@
+import Image from "next/image";
+
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import type { RealisationProject } from "@/components/realisations/realisations-data";
-
-const THUMB_ACCENT: Record<RealisationProject["thumbAccent"], string> = {
-  cta: "from-akno-cta/30 via-akno-rose/15 to-[#FFE8B0]/50",
-  rose: "from-akno-rose/35 via-[#FFD4E8]/45 to-akno-cta/15",
-  mint: "from-[#9AE6C5]/40 via-akno-cta/10 to-[#C4B5FD]/35",
-};
 
 type RealisationCardProps = {
   project: RealisationProject;
@@ -17,11 +13,15 @@ export function RealisationCard({ project, isActive }: RealisationCardProps) {
   return (
     <article className="realisation-case-card">
       <div className="realisation-case-card__grid">
-        <div
-          className={`realisation-case-card__visual bg-gradient-to-br ${THUMB_ACCENT[project.thumbAccent]}`}
-        >
-          <span className="realisation-case-card__visual-tag">{project.tag}</span>
-          <p className="realisation-case-card__visual-title">{project.thumbLabel}</p>
+        <div className="realisation-case-card__visual">
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            quality={80}
+            sizes="(min-width: 1024px) 960px, 100vw"
+            className="realisation-case-card__image"
+          />
         </div>
 
         <div className="realisation-case-card__body">
@@ -46,11 +46,10 @@ export function RealisationCard({ project, isActive }: RealisationCardProps) {
           )}
 
           <dl className="realisation-case-card__metrics">
-            {project.stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="sr-only">{stat.label}</dt>
-                <dd className="realisation-case-card__metric-value">{stat.value}</dd>
-                <dd className="realisation-case-card__metric-label">{stat.label}</dd>
+            {project.metrics.map((metric) => (
+              <div key={metric.label}>
+                <dt className="realisation-case-card__metric-value">{metric.value}</dt>
+                <dd className="realisation-case-card__metric-label">{metric.label}</dd>
               </div>
             ))}
           </dl>

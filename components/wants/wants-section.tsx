@@ -21,13 +21,12 @@ export function WantsSection() {
             data-akno-reveal
           >
             Ce que vous voulez{" "}
-            <span className="italic text-akno-cta">vraiment</span>
+            <span className="akno-word italic text-akno-cta">vraiment</span>
           </h2>
 
           <span
-            className="wants-section__accent mt-5 block h-2 w-12 rounded-full bg-akno-rose"
+            className="wants-section__accent akno-accent-bar mt-5 block h-2 w-12 rounded-full bg-akno-rose"
             aria-hidden
-            data-akno-reveal
           />
 
           <p

@@ -64,11 +64,6 @@ export function HeroSection() {
           <div className="hero-section__visual akno-enter akno-enter--4">
             <HeroVideo className="hero-section__media mx-auto w-full sm:mt-12 sm:w-[min(100%,860px)] lg:mt-14" />
           </div>
-
-          <ContactCta className="hero-section__cta-mobile akno-enter akno-enter--5 btn btn-primary sm:hidden">
-            Je réserve mon appel
-            <ArrowUpRight className="size-4 shrink-0" aria-hidden />
-          </ContactCta>
         </div>
       </section>
     </>

@@ -137,8 +137,17 @@ export async function POST(request: Request) {
   if (!resendResponse.ok) {
     const detail = await resendResponse.text().catch(() => "");
     console.error("[contact] Resend error:", resendResponse.status, detail);
+
+    let resendMessage = "";
+    try {
+      const parsed = JSON.parse(detail) as { message?: string };
+      resendMessage = sanitize(parsed.message ?? "", 280);
+    } catch {
+      resendMessage = sanitize(detail, 280);
+    }
+
     return Response.json(
-      { ok: false, error: "resend_rejected" },
+      { ok: false, error: "resend_rejected", resendMessage },
       { status: 502 },
     );
   }

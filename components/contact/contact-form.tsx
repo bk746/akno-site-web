@@ -153,6 +153,7 @@ export function ContactForm({
       const json = (await response.json().catch(() => null)) as {
         useMailto?: boolean;
         error?: string;
+        resendMessage?: string;
       } | null;
 
       if (response.status === 422 && json?.useMailto) {
@@ -164,8 +165,11 @@ export function ContactForm({
       }
 
       if (json?.error === "resend_rejected") {
+        const detail = json.resendMessage?.trim();
         setSubmitError(
-          `Envoi refusé. Sur Vercel, CONTACT_TO_EMAIL doit être exactement l'email de ton compte Resend (Réglages Resend). Sinon écris à ${CONTACT_EMAIL}.`,
+          detail
+            ? `Resend : ${detail}`
+            : `Envoi refusé. Vérifie CONTACT_TO_EMAIL sur Vercel (email du compte Resend) ou écris à ${CONTACT_EMAIL}.`,
         );
         setState("error");
         return;

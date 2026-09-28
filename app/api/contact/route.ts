@@ -18,6 +18,11 @@ function sanitize(value: unknown, maxLen: number): string {
   return value.trim().slice(0, maxLen);
 }
 
+function envValue(raw: string | undefined): string {
+  if (!raw) return "";
+  return raw.trim().replace(/^["']|["']$/g, "");
+}
+
 export async function POST(request: Request) {
   const ip = getClientIp(request);
   const rate = checkRateLimit(`contact:${ip}`, { windowMs: 60_000, max: 5 });
@@ -75,10 +80,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? CONTACT_EMAIL;
+  const apiKey = envValue(process.env.RESEND_API_KEY);
+  const to = envValue(process.env.CONTACT_TO_EMAIL) || CONTACT_EMAIL;
   const from =
-    process.env.CONTACT_FROM_EMAIL ?? "AKNO Contact <onboarding@resend.dev>";
+    envValue(process.env.CONTACT_FROM_EMAIL) ||
+    "AKNO Contact <onboarding@resend.dev>";
 
   if (!apiKey) {
     return Response.json(
@@ -114,12 +120,17 @@ export async function POST(request: Request) {
       }),
     });
   } catch {
-    return Response.json({ ok: false, useMailto: true }, { status: 502 });
+    return Response.json(
+      { ok: false, error: "network_error" },
+      { status: 502 },
+    );
   }
 
   if (!resendResponse.ok) {
+    const detail = await resendResponse.text().catch(() => "");
+    console.error("[contact] Resend error:", resendResponse.status, detail);
     return Response.json(
-      { ok: false, useMailto: true },
+      { ok: false, error: "resend_rejected" },
       { status: 502 },
     );
   }

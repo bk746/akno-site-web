@@ -38,27 +38,6 @@ type ContactFormProps = {
   onFormStateChange?: (state: FormState) => void;
 };
 
-function buildMailto(payload: {
-  name: string;
-  email: string;
-  projectType: string;
-  budget: string;
-  message: string;
-}) {
-  const subject = encodeURIComponent(`Contact AKNO — ${payload.name}`);
-  const body = encodeURIComponent(
-    [
-      `Nom : ${payload.name}`,
-      `Email : ${payload.email}`,
-      `Objet : ${payload.projectType}`,
-      `Budget : ${payload.budget || "—"}`,
-      "",
-      payload.message,
-    ].join("\n"),
-  );
-  return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-}
-
 export function ContactForm({
   variant = "default",
   onSuccess,
@@ -173,21 +152,32 @@ export function ContactForm({
 
       const json = (await response.json().catch(() => null)) as {
         useMailto?: boolean;
+        error?: string;
       } | null;
 
-      if (json?.useMailto) {
-        window.location.href = buildMailto(payload);
-        setState("success");
-        form.reset();
+      if (response.status === 422 && json?.useMailto) {
+        setSubmitError(
+          `Envoi serveur indisponible. Écris-nous à ${CONTACT_EMAIL}.`,
+        );
+        setState("error");
+        return;
+      }
+
+      if (json?.error === "resend_rejected") {
+        setSubmitError(
+          `Envoi refusé par le serveur mail. Vérifie Resend (expéditeur onboarding@resend.dev et destinataire = email du compte Resend), ou écris à ${CONTACT_EMAIL}.`,
+        );
+        setState("error");
         return;
       }
 
       setSubmitError(`Envoi impossible. Réessaie ou écris à ${CONTACT_EMAIL}.`);
       setState("error");
     } catch {
-      window.location.href = buildMailto(payload);
-      setState("success");
-      form.reset();
+      setSubmitError(
+        `Connexion impossible. Réessaie ou écris à ${CONTACT_EMAIL}.`,
+      );
+      setState("error");
     }
   }
 

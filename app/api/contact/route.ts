@@ -23,6 +23,16 @@ function envValue(raw: string | undefined): string {
   return raw.trim().replace(/^["']|["']$/g, "");
 }
 
+const SANDBOX_FROM = "AKNO Contact <onboarding@resend.dev>";
+
+function resolveFromAddress(): string {
+  if (process.env.RESEND_DOMAIN_VERIFIED === "true") {
+    return envValue(process.env.CONTACT_FROM_EMAIL) || SANDBOX_FROM;
+  }
+  /* Sans domaine akno.fr vérifié chez Resend, tout autre expéditeur est refusé. */
+  return SANDBOX_FROM;
+}
+
 export async function POST(request: Request) {
   const ip = getClientIp(request);
   const rate = checkRateLimit(`contact:${ip}`, { windowMs: 60_000, max: 5 });
@@ -82,9 +92,7 @@ export async function POST(request: Request) {
 
   const apiKey = envValue(process.env.RESEND_API_KEY);
   const to = envValue(process.env.CONTACT_TO_EMAIL) || CONTACT_EMAIL;
-  const from =
-    envValue(process.env.CONTACT_FROM_EMAIL) ||
-    "AKNO Contact <onboarding@resend.dev>";
+  const from = resolveFromAddress();
 
   if (!apiKey) {
     return Response.json(

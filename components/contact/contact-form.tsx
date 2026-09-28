@@ -165,7 +165,7 @@ export function ContactForm({
 
       if (json?.error === "resend_rejected") {
         setSubmitError(
-          `Envoi refusé par le serveur mail. Vérifie Resend (expéditeur onboarding@resend.dev et destinataire = email du compte Resend), ou écris à ${CONTACT_EMAIL}.`,
+          `Envoi refusé. Sur Vercel, CONTACT_TO_EMAIL doit être exactement l'email de ton compte Resend (Réglages Resend). Sinon écris à ${CONTACT_EMAIL}.`,
         );
         setState("error");
         return;

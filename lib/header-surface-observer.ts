@@ -30,6 +30,7 @@ export function attachHeaderSurfaceObserver(
   const services = document.getElementById("services");
   const intersecting = new Set<Element>();
   let prevLight = false;
+  let bootstrapped = false;
   let servicesTop = Number.POSITIVE_INFINITY;
   let io: IntersectionObserver | null = null;
 
@@ -60,9 +61,10 @@ export function attachHeaderSurfaceObserver(
     return sectionIsLight(active);
   };
 
-  const emit = () => {
+  const emit = (force = false) => {
     const next = resolveOnLight();
-    if (next !== prevLight) {
+    if (force || !bootstrapped || next !== prevLight) {
+      bootstrapped = true;
       prevLight = next;
       onLightChange(next);
     }
@@ -87,7 +89,7 @@ export function attachHeaderSurfaceObserver(
     );
 
     sections.forEach((section) => io?.observe(section));
-    emit();
+    emit(true);
   };
 
   connect();

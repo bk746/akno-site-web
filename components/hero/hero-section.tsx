@@ -1,71 +1,93 @@
+// Hero neumorphique blanc (maquette McFly : hero-neumorphique/hero.html).
+// La nav de la maquette n'est PAS rendue ici : c'est le SiteHeader fixe du site qui l'affiche
+// (logo + « Prendre rendez-vous »), stylé comme la maquette tant qu'il est au-dessus du hero.
 import Link from "next/link";
 
 import { ContactCta } from "@/components/contact/contact-cta";
-import { ArrowUpRight } from "@/components/icons/arrow-up-right";
-import { HeroFeatures } from "@/components/hero/hero-features";
-import { HeroOrbs } from "@/components/hero/hero-orbs";
-import { HeroMedia } from "@/components/hero/hero-media";
+import { HeroDashboard } from "@/components/hero/hero-dashboard";
+import { heroKickerFont } from "@/components/hero/hero-font";
+import {
+  ArrowIcon,
+  ChartIcon,
+  LayersIcon,
+  PlayIcon,
+  TargetIcon,
+} from "@/components/hero/hero-icons";
+import { HeroSeasonalDecor } from "@/components/seasonal/hero-seasonal-decor";
+import styles from "@/components/hero/hero-section.module.css";
+
+const cx = (...names: string[]) => names.map((n) => styles[n]).join(" ");
 
 export function HeroSection() {
   return (
-    <>
-      <svg className="hero-clip-svg" aria-hidden="true">
-        <defs>
-          <clipPath id="hero-arc-clip" clipPathUnits="objectBoundingBox">
-            <path d="M 0 0 H 1 V 0.952 C 1 0.972 0.62 1 0.5 1 C 0.38 1 0 0.972 0 0.952 Z" />
-          </clipPath>
-        </defs>
-      </svg>
-
-      <section
-        className="hero-section relative isolate min-h-0 overflow-visible bg-akno-noir text-white sm:min-h-dvh"
-        data-akno-surface="dark"
-      >
-        <HeroOrbs />
-
-        <div className="hero-section__shell relative z-10 mx-auto flex w-full max-w-[1200px] flex-col px-5 sm:px-10 sm:pb-12 sm:pt-8 lg:px-12 lg:pb-12">
-          <div className="hero-section__intro mx-auto flex w-full max-w-[920px] flex-col items-center text-center sm:mt-6 lg:mt-8">
-            <p className="hero-section__eyebrow akno-enter akno-enter--1">
-              Pour les dirigeants qui veulent un site qui convertit.
-            </p>
-
-            <h1 className="hero-section__title akno-enter akno-enter--2">
-              <span className="hero-section__title-line block text-white">
-                On conçoit ton site,
+    <section
+      id="accueil"
+      className={cx("hero")}
+      data-akno-surface="light"
+      aria-labelledby="hero-title"
+    >
+      <span className={cx("hero__halo", "hero__halo--l")} aria-hidden="true" />
+      <span className={cx("hero__halo", "hero__halo--r")} aria-hidden="true" />
+      <div className={cx("hero__inner")}>
+        <HeroSeasonalDecor />
+        <div className={cx("nav")} aria-hidden="true" />
+        <div className={cx("head")}>
+          <p className={`${cx("kicker")} ${heroKickerFont.className}`}>
+            <span className={cx("kicker__dot")} aria-hidden="true" />
+            Pour les dirigeants qui veulent un site qui convertit.
+          </p>
+          <h1 className={cx("h1")} id="hero-title">
+            <span>On conçoit ton site,</span>
+            <span>on lit tes data,</span>
+            <span className={cx("h1__accent")}>et on pousse ton trafic.</span>
+          </h1>
+          <div className={cx("ctas")}>
+            <ContactCta
+              className={cx("btn", "btn--accent", "btn--lg")}
+              aria-haspopup="dialog"
+            >
+              Je réserve mon appel
+              <ArrowIcon />
+            </ContactCta>
+            <Link className={cx("btn", "btn--ghost", "btn--lg")} href="#processus">
+              <span className={cx("btn__ic")} aria-hidden="true">
+                <PlayIcon />
               </span>
-              <span className="hero-section__title-line block text-white">
-                on lit tes data,
-              </span>
-              <span className="hero-section__title-line hero-section__title-accent block">
-                et on pousse ton trafic.
-              </span>
-            </h1>
-
-            <p className="hero-section__meta akno-enter akno-enter--3 sm:hidden">
-              Stratégie · Data · Conversion
-            </p>
-
-            <div className="hero-section__actions akno-enter akno-enter--3 mt-8 hidden w-full max-w-none sm:mt-10 sm:flex lg:mt-11">
-              <ContactCta className="hero-section__action hero-section__action--primary btn btn-primary inline-flex w-auto min-w-[220px] items-center justify-center gap-2 rounded-full bg-akno-cta px-6 py-3.5 text-[15px] font-medium text-white">
-                Je réserve mon appel
-                <ArrowUpRight className="size-4 shrink-0" />
-              </ContactCta>
-              <Link
-                href="#processus"
-                className="hero-section__action hero-section__action--secondary btn btn-outline inline-flex w-auto min-w-[200px] items-center justify-center rounded-full px-6 py-3.5 text-[15px] font-medium"
-              >
-                Voir la méthode
-              </Link>
-            </div>
-
-            <HeroFeatures className="akno-enter akno-enter--4 hidden w-full sm:block" />
+              Voir la méthode
+            </Link>
           </div>
-
-          <div className="hero-section__visual akno-enter akno-enter--4">
-            <HeroMedia className="hero-section__media mx-auto w-full sm:mt-12 sm:w-[min(100%,860px)] lg:mt-14" />
-          </div>
+          <ul className={cx("proofs")}>
+            <li className={cx("proof")}>
+              <span className={cx("proof__ic")} aria-hidden="true">
+                <LayersIcon />
+              </span>
+              <div>
+                <p className={cx("proof__t")}>Bout en bout</p>
+                <p className={cx("proof__d")}>Stratégie, design, dev, mise en ligne</p>
+              </div>
+            </li>
+            <li className={cx("proof")}>
+              <span className={cx("proof__ic")} aria-hidden="true">
+                <ChartIcon />
+              </span>
+              <div>
+                <p className={cx("proof__t")}>Piloté par la data</p>
+                <p className={cx("proof__d")}>Trafic, conversion, parcours</p>
+              </div>
+            </li>
+            <li className={cx("proof")}>
+              <span className={cx("proof__ic")} aria-hidden="true">
+                <TargetIcon />
+              </span>
+              <div>
+                <p className={cx("proof__t")}>Fait pour convertir</p>
+                <p className={cx("proof__d")}>Plus de demandes, pas juste plus de pages</p>
+              </div>
+            </li>
+          </ul>
         </div>
-      </section>
-    </>
+        <HeroDashboard />
+      </div>
+    </section>
   );
 }

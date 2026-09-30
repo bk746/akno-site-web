@@ -17,6 +17,8 @@ import { TechnologiesSection } from "@/components/technologies/technologies-sect
 import { SiteHeader } from "@/components/site-header/site-header";
 import { WantsSection } from "@/components/wants/wants-section";
 import { HomeJsonLd } from "@/components/seo/home-json-ld";
+import { FallingLeaves } from "@/components/seasonal/falling-leaves";
+import { isSeasonalThemeActive } from "@/lib/seasonal-theme";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -33,8 +35,11 @@ export default function Home() {
       <HomeJsonLd />
       <div className="site-intro-curtain" aria-hidden="true" />
       <SiteIntro />
-      <main className="site-shell relative isolate overflow-x-clip bg-white">
-        <SiteHeader />
+      <main
+        className={`site-shell relative isolate overflow-x-clip bg-white${isSeasonalThemeActive() ? " site-shell--halloween" : ""}`}
+      >
+        {isSeasonalThemeActive() ? <FallingLeaves /> : null}
+        <SiteHeader heroTone />
         <HeroSection />
         <ProblemsSection />
         <WantsSection />

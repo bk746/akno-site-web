@@ -208,10 +208,18 @@ html.akno-motion-ready
 
 /* Appear doux (footer) — fade only */
 html.akno-motion-ready [data-akno-reveal="fade"]:not(.is-inview) {
+  opacity: 0;
   transform: none;
 }
 
 html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
+  opacity: 1;
+  transform: none;
+}
+
+/* Footer : toujours lisible (évite bloc vide si IO en retard) */
+.site-footer .site-footer__inner[data-akno-reveal="fade"] {
+  opacity: 1;
   transform: none;
 }
 
@@ -383,6 +391,16 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
   text-decoration: none;
 }
 
+.site-header__cta-wrap {
+  position: relative;
+  display: inline-flex;
+  pointer-events: auto;
+}
+
+.site-header__cta-wrap--halloween .site-header__cta {
+  overflow: visible;
+}
+
 .site-header__logo-shell {
   display: inline-flex;
   align-items: center;
@@ -396,22 +414,45 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
     padding 300ms var(--akno-ease-out);
 }
 
+/* Logo = masque CSS du PNG (site-header__logo-mark) : la couleur vient de background-color. */
 .site-header__logo-img {
-  filter: brightness(0) invert(1);
+  display: block;
+  height: 32px;
+  aspect-ratio: 206 / 78;
+  background-color: #ffffff;
+  -webkit-mask-position: left center;
+  mask-position: left center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@media (min-width: 640px) {
+  .site-header__logo-img {
+    height: 36px;
+  }
 }
 
 .site-header--tone-ready .site-header__logo-img {
-  transition: filter 200ms var(--akno-ease-out);
+  transition:
+    background-color 200ms var(--akno-ease-out),
+    height 200ms var(--akno-ease-out);
 }
 
-/* Hero / fond sombre — top */
+/* Fond sombre — logo blanc */
 .site-header:not(.site-header--light) .site-header__logo-img {
-  filter: brightness(0) invert(1);
+  background-color: #ffffff;
 }
 
 /* Fond clair — logo noir */
 .site-header--light .site-header__logo-img {
-  filter: brightness(0);
+  background-color: #000000;
+}
+
+.site-header__logo-mark {
+  -webkit-mask-image: url("../src/images/logo-akno-plus.png");
+  mask-image: url("../src/images/logo-akno-plus.png");
 }
 
 /* Liquid glass logo au scroll */
@@ -484,6 +525,105 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   }
 }
 
+/* ——— Header au-dessus du hero neumorphique (maquette McFly hero.html, nav) ——— */
+/* Même grille que .hero__inner (1240 px + 48 px de marge) : logo et CTA alignés sur le contenu du hero. */
+.site-header__inner {
+  max-width: 1336px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .site-header__inner {
+    padding: 26px 48px 0;
+    min-height: 90px;
+  }
+}
+
+.site-header__cta .site-header__cta-arrow--hero {
+  display: none;
+  width: 17px;
+  height: 17px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Logo de la maquette : 84 × 32, #1A1F36 */
+.site-header.site-header--hero .site-header__logo-img {
+  width: 84px;
+  height: 32px;
+  background-color: #1a1f36;
+}
+
+/* CTA de la maquette : .btn.btn--accent.btn--nav */
+.site-header.site-header--hero .site-header__cta {
+  height: 46px;
+  min-height: 46px;
+  padding: 0 22px;
+  gap: 10px;
+  border: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  background: linear-gradient(145deg, #6366f1 0%, #5558e6 50%, #4f46e5 100%);
+  box-shadow:
+    7px 7px 16px rgba(99, 102, 241, 0.32),
+    -7px -7px 16px rgba(255, 255, 255, 0.92),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.28),
+    inset -1px -1px 0 rgba(40, 40, 140, 0.12);
+  overflow: visible;
+  transition:
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-header.site-header--hero .site-header__cta::after {
+  display: none;
+}
+
+.site-header.site-header--hero .site-header__cta-arrow--site {
+  display: none;
+}
+
+.site-header.site-header--hero .site-header__cta-arrow--hero {
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-header.site-header--hero .site-header__cta:hover {
+    box-shadow:
+      9px 9px 22px rgba(99, 102, 241, 0.42),
+      -7px -7px 16px rgba(255, 255, 255, 0.92),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.28);
+  }
+
+  .site-header.site-header--hero .site-header__cta:hover svg {
+    transform: none;
+  }
+
+  .site-header.site-header--hero .site-header__cta:active {
+    box-shadow:
+      inset 3px 3px 7px rgba(163, 177, 198, 0.5),
+      inset -3px -3px 7px rgba(255, 255, 255, 0.92);
+  }
+}
+
+.site-header.site-header--hero .site-header__cta:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header.site-header--hero .site-header__cta {
+    transition: none;
+  }
+}
+
 /* ——— Hero → Problèmes (découpe hero, fond clair dessous) ——— */
 
 .hero-clip-svg {
@@ -496,128 +636,7 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
 .hero-section {
   position: relative;
   z-index: 2;
-  margin-bottom: -28px;
-  clip-path: url(#hero-arc-clip);
-  -webkit-clip-path: url(#hero-arc-clip);
-  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.18));
-}
-
-@media (min-width: 640px) {
-  .hero-section {
-    margin-bottom: -36px;
-  }
-}
-
-@media (max-width: 767px) {
-  .hero-section {
-    filter: none;
-  }
-}
-
-/* Hero mobile (~390px) */
-
-@media (max-width: 639px) {
-  .hero-section__shell {
-    padding-top: clamp(88px, 22vw, 100px);
-    padding-bottom: 28px;
-  }
-
-  .hero-section__intro {
-    width: 100%;
-  }
-
-  .hero-section__eyebrow {
-    max-width: 20rem;
-    margin: 0;
-    font-size: 12px;
-    font-style: italic;
-    line-height: 1.35;
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  .hero-section__title {
-    margin: 12px 0 0;
-    max-width: 16.5rem;
-    font-family: var(--font-hero-display), var(--font-geist-sans), ui-sans-serif,
-      system-ui, sans-serif;
-    font-size: clamp(28px, 8vw, 34px);
-    font-weight: 700;
-    line-height: 1.12;
-    letter-spacing: -0.035em;
-    text-wrap: balance;
-  }
-
-  .hero-section__title-line + .hero-section__title-line {
-    margin-top: 0.15rem;
-  }
-
-  .hero-section__title-accent {
-    color: var(--akno-cta);
-  }
-
-  .hero-section__meta {
-    margin: 14px 0 0;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: 0.01em;
-    color: rgba(255, 255, 255, 0.58);
-    white-space: nowrap;
-  }
-
-  .hero-section__visual {
-    position: relative;
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .hero-section__visual::before {
-    content: "";
-    position: absolute;
-    inset: 8% 4% -6%;
-    z-index: 0;
-    border-radius: 28px;
-    background: radial-gradient(
-      ellipse 80% 70% at 50% 45%,
-      rgba(107, 124, 255, 0.22) 0%,
-      rgba(107, 124, 255, 0.06) 45%,
-      transparent 72%
-    );
-    filter: blur(18px);
-    pointer-events: none;
-  }
-
-  .hero-section__media {
-    position: relative;
-    z-index: 1;
-    margin-top: 0;
-  }
-
-  .hero-section__media-inner {
-    aspect-ratio: auto;
-    height: clamp(220px, 56vw, 260px);
-    max-height: 260px;
-  }
-
-  .hero-section__media-inner video {
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero-section__cta-mobile {
-    display: inline-flex;
-    width: 100%;
-    height: 52px;
-    margin-top: 20px;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    border-radius: 999px;
-    background: var(--akno-cta);
-    font-size: 15px;
-    font-weight: 600;
-    color: #ffffff;
-  }
+  margin-bottom: 0;
 }
 
 .hero-section__intro {
@@ -694,38 +713,8 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   }
 }
 
-@media (min-width: 640px) {
-  .hero-section__eyebrow {
-    max-width: 480px;
-    font-size: 12px;
-    font-style: italic;
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .hero-section__title {
-    margin-top: 0.75rem;
-    max-width: 940px;
-    font-family: var(--font-hero-display), var(--font-geist-sans), ui-sans-serif,
-      system-ui, sans-serif;
-    font-size: clamp(1.875rem, 5vw, 3.25rem);
-    font-weight: 700;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-section__title-line + .hero-section__title-line {
-    margin-top: 0.25rem;
-  }
-
-  .hero-section__title-accent {
-    margin-top: 0.35rem;
-    color: #8b93ff;
-  }
-
-  .hero-section__visual.akno-enter--4 {
-    animation-delay: 350ms;
-  }
+.hero-section .akno-enter--4 {
+  animation-delay: 350ms;
 }
 
 /* ——— Hero orbs (CSS + grain, pas d’images lourdes) ——— */
@@ -3517,10 +3506,14 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .site-footer {
+  position: relative;
+  z-index: 3;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: #050505;
   color: #f5f5f7;
-  padding: 4.5rem 1.5rem 2rem;
+  scroll-margin-top: 96px;
+  /* Header fixe : éviter le chevauchement logo / 1re colonne */
+  padding: calc(4.5rem + 64px) 1.5rem 2rem;
 }
 
 .site-footer__inner {
@@ -3765,6 +3758,18 @@ html.intro-pending .site-intro-curtain {
 
 .site-shell {
   visibility: visible;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Curseur Halloween (home) — hotspot = pointe de la flèche */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .site-shell--halloween,
+  .site-shell--halloween * {
+    cursor:
+      url("/stickers/halloween/curseur-fantome-boo.png") 14 12,
+      auto !important;
+  }
 }
 
 html.intro-pending .site-header,
@@ -4398,27 +4403,6 @@ html.akno-motion-ready
   }
 }
 
-/* ——— Hero : features qui s'éclairent ——— */
-
-.hero-feature {
-  border-radius: 14px;
-  transition: transform 380ms var(--akno-ease-out);
-}
-
-.hero-feature__title,
-.hero-feature__desc {
-  transition: color var(--akno-hover-duration) var(--akno-ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .hero-feature:hover {
-    transform: translate3d(0, -2px, 0);
-  }
-
-  .hero-feature:hover .hero-feature__desc {
-    color: rgba(255, 255, 255, 0.9);
-  }
-}
 
 /* ——— Header : logo qui réagit ——— */
 

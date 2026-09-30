@@ -1,0 +1,130 @@
+/* Calqué sur ~/Downloads/hero-halloween.html (positions dans .hero__inner, 1240px) */
+
+.plane {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.stk {
+  position: absolute;
+  display: block;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 1px 1px rgba(46, 35, 82, 0.16))
+    drop-shadow(0 6px 10px rgba(46, 35, 82, 0.14));
+}
+
+.stkPlain {
+  filter: none;
+}
+
+.stkPumpkinNav {
+  left: 1216px;
+  top: -24px;
+  transform: rotate(14deg);
+}
+
+.stkBat {
+  left: 176px;
+  top: 180px;
+  transform: rotate(-12deg);
+}
+
+.stkGhost {
+  left: 998px;
+  top: 342px;
+  transform: rotate(9deg);
+}
+
+.stkLeafCard {
+  left: 1090px;
+  top: 566px;
+  transform: rotate(18deg);
+}
+
+.stkBadge {
+  left: 2px;
+  top: 688px;
+  transform: rotate(-10deg);
+}
+
+.stkWeb {
+  left: 204px;
+  top: 777px;
+}
+
+.stkThread {
+  left: 270.5px;
+  top: 834px;
+  width: 1px;
+  height: 218px;
+  background: linear-gradient(rgba(142, 151, 179, 0.9), rgba(142, 151, 179, 0.6));
+}
+
+.stkSpider {
+  left: 260px;
+  top: 1048px;
+}
+
+.stkFall1 {
+  left: 18px;
+  top: 520px;
+  transform: rotate(-28deg);
+  opacity: 0.92;
+  filter: drop-shadow(0 8px 10px rgba(120, 80, 30, 0.14));
+}
+
+.stkFall2 {
+  left: 1180px;
+  top: 430px;
+  transform: rotate(32deg);
+  opacity: 0.9;
+  filter: drop-shadow(0 8px 10px rgba(120, 80, 30, 0.14));
+}
+
+.tagPk {
+  width: 13px;
+  height: 13px;
+  display: block;
+  margin-left: -2px;
+  flex: none;
+}
+
+@media (max-width: 1279px) {
+  .plane {
+    transform: scale(0.92);
+    transform-origin: top center;
+  }
+}
+
+@media (max-width: 1100px) {
+  .stkPumpkinNav,
+  .stkBat,
+  .stkLeafCard,
+  .stkBadge,
+  .stkWeb,
+  .stkThread,
+  .stkSpider,
+  .stkFall1,
+  .stkFall2 {
+    display: none;
+  }
+
+  .stkGhost {
+    left: auto;
+    right: 12px;
+    top: 320px;
+  }
+}
+
+@media (max-width: 767px) {
+  .stkGhost {
+    right: 8px;
+    top: 300px;
+    transform: rotate(9deg) scale(0.85);
+  }
+}

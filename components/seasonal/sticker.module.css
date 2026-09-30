@@ -1,0 +1,126 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+  --seasonal-scale: 1;
+}
+
+.layerHeader {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: visible;
+  pointer-events: none;
+  --seasonal-scale: 1;
+}
+
+.anchor {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sticker {
+  position: absolute;
+  display: block;
+  width: calc(var(--sticker-size, 64px) * var(--seasonal-scale, 1));
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  transform: rotate(var(--sticker-rotate, 0deg));
+  animation: seasonal-float var(--float-duration, 5s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+.stickerNoFloat {
+  animation: none;
+}
+
+.stickerSoft {
+  opacity: 0.9;
+  filter: none;
+}
+
+@keyframes seasonal-float {
+  0%,
+  100% {
+    transform: rotate(var(--sticker-rotate, 0deg)) translateY(0);
+  }
+  50% {
+    transform: rotate(var(--sticker-rotate, 0deg)) translateY(-4px);
+  }
+}
+
+/* Marges latérales — feuilles qui tombent (site shell) */
+.fallingRoot {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fallingLeaf {
+  position: absolute;
+  top: -8%;
+  opacity: 0.9;
+  animation: seasonal-fall var(--fall-duration, 28s) linear infinite;
+  animation-delay: var(--fall-delay, 0s);
+}
+
+@keyframes seasonal-fall {
+  0% {
+    transform: translateY(0) rotate(var(--sticker-rotate, 0deg));
+  }
+  100% {
+    transform: translateY(110vh) rotate(calc(var(--sticker-rotate, 0deg) + 180deg));
+  }
+}
+
+@media (max-width: 1279px) {
+  .layer,
+  .layerHeader,
+  .fallingRoot {
+    --seasonal-scale: 0.8;
+  }
+
+  .hideTablet {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .layer,
+  .layerHeader,
+  .fallingRoot {
+    --seasonal-scale: 0.6;
+  }
+
+  .hideMobile {
+    display: none !important;
+  }
+
+  .fallingRoot {
+    display: none;
+  }
+
+  .layer .sticker:not(.keepMobile) {
+    display: none !important;
+  }
+
+  .layerHeader .sticker:not(.keepMobile) {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker {
+    animation: none;
+  }
+
+  .fallingRoot {
+    display: none;
+  }
+}

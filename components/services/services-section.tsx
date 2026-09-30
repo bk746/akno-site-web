@@ -1,92 +1,213 @@
+import Link from "next/link";
+
 import { ContactCta } from "@/components/contact/contact-cta";
-import { ServiceCardShell } from "@/components/services/service-card-shell";
-import {
-  SERVICES,
-  SERVICES_OPTIONS,
-  type ServiceId,
-} from "@/components/services/services-data";
-import styles from "@/components/services/services-section.module.css";
 import {
   DesignVisual,
   SeoVisual,
   SiteVisual,
-} from "@/components/services/services-visuals";
-function ServiceVisual({ id }: { id: ServiceId }) {
-  if (id === "site") return <SiteVisual />;
-  if (id === "design") return <DesignVisual />;
-  return <SeoVisual showRankBadge={SERVICES_OPTIONS.showSeoRankBadge} />;
-}
+} from "@/components/services/services-visuals-neo";
+import { SeasonalAnchor } from "@/components/seasonal/seasonal-anchor";
+import pos from "@/components/seasonal/seasonal-positions.module.css";
+import { Sticker } from "@/components/seasonal/sticker";
+import styles from "@/components/services/services-section.module.css";
+import { technologiesAccentFont } from "@/components/technologies/technologies-font";
+
+const cx = (...names: string[]) => names.map((n) => styles[n]).join(" ");
+const i = styles.i;
+
+const CHECK = (
+  <svg className={i} viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M20 6 9 17l-5-5" />
+  </svg>
+);
+
+const LINK_ARROW = (
+  <svg className={i} viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M5 12h14" />
+    <path d="m12 5 7 7-7 7" />
+  </svg>
+);
+
+const CTA_ARROW = (
+  <svg className={i} viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M7 7h10v10" />
+    <path d="M7 17 17 7" />
+  </svg>
+);
+
 export function ServicesSection() {
-  const { showEyebrow, showSubtitle, showTrust } = SERVICES_OPTIONS;
   return (
     <section
       id="services"
-      className={`${styles.section} akno-deferred-section`}
-      data-akno-surface="dark"
+      className={`${cx("svc")} akno-deferred-section`}
+      data-akno-surface="light"
       aria-labelledby="services-heading"
     >
-      <svg className={`${styles.arch} ${styles.archTop}`} viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1440V150Q720 -50 0 150Z" fill="#fff" /></svg>
-      <span className={`${styles.glow} ${styles.glowA}`} aria-hidden="true"></span>
-      <span className={`${styles.glow} ${styles.glowB}`} aria-hidden="true"></span>
-      <span className={`${styles.glow} ${styles.glowC}`} aria-hidden="true"></span>
-      <div className={styles.inner}>
-        <header className={styles.head} data-akno-reveal>
-          {showEyebrow ? (
-            <span className={styles.eyebrow}>
-              <span className={styles.eyebrowDot} aria-hidden="true"></span>
-              Expertises
-            </span>
-          ) : null}
-          <h2 className={styles.title} id="services-heading">
-            3 <span className={`${styles.accent} akno-word`}>services</span> complémentaires
+      <span className={cx("svc__fade", "svc__fade--top")} aria-hidden="true" />
+      <span className={cx("svc__fade", "svc__fade--bot")} aria-hidden="true" />
+
+      <div className={cx("svc__inner")}>
+        <header className={cx("svc__head")}>
+          <span className={cx("svc__eyebrow")}>
+            <span className={cx("svc__eyebrow-dot")} aria-hidden="true" />
+            Expertises
+          </span>
+          <h2 className={cx("svc__title")} id="services-heading">
+            3{" "}
+            <span className={`${cx("svc__accent")} ${technologiesAccentFont.className}`}>
+              services
+            </span>{" "}
+            complémentaires
           </h2>
-          {showSubtitle ? (
-            <p className={styles.sub}>Un seul studio pour concevoir, dessiner et faire connaître votre site.</p>
-          ) : null}
+          <p className={cx("svc__sub")}>
+            Un seul studio pour concevoir, dessiner et faire connaître votre site.
+          </p>
         </header>
-        <ul className={styles.grid} data-akno-reveal-stagger>
-          {SERVICES.map((service) => (
-            <li key={service.id} className={styles.item} data-akno-reveal>
-              <ServiceCardShell className={styles.card} service={service.id}>
-                <span className={styles.cardRing} aria-hidden="true"></span>
-                <ServiceVisual id={service.id} />
-                <div className={styles.cardBody}>
-                  <span className={styles.cardNum}>{service.num}</span>
-                  <h3 className={styles.cardTitle}>{service.title}</h3>
-                  <p className={styles.cardDesc}>{service.description}</p>
-                  <ul className={styles.cardPts}>
-                    {service.points.map((point) => (
-                      <li key={point}>
-                        <svg className={styles.icon} viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                  <ContactCta
-                    className={styles.cardLink}
-                    aria-haspopup="dialog"
-                    aria-label={`En savoir plus sur l'offre ${service.title}`}
-                  >
-                    {service.linkLabel}
-                    <svg className={styles.icon} viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                  </ContactCta>
-                </div>
-              </ServiceCardShell>
-            </li>
-          ))}
+        <ul className={cx("svc__grid")}>
+          <li className={cx("svc__item")}>
+            <article className={cx("card")} data-service="site">
+              <span className={cx("card__ring")} aria-hidden="true" />
+              <SeasonalAnchor className={`${pos.anchorCard} ${pos.anchorTopRight}`}>
+                <Sticker
+                  src="chapeau-sorciere"
+                  size={68}
+                  rotate={-8}
+                  className={pos.svcHat}
+                  hideMobile
+                />
+              </SeasonalAnchor>
+              <SiteVisual />
+              <div className={cx("card__body")}>
+                <span className={cx("card__num")}>01</span>
+                <h3 className={cx("card__title")}>Site web</h3>
+                <p className={cx("card__desc")}>
+                  Création ou refonte : un site sur mesure, rapide et pensé pour transformer les
+                  visites en demandes.
+                </p>
+                <ul className={cx("card__pts")}>
+                  <li>
+                    {CHECK}
+                    Structure et textes orientés conversion
+                  </li>
+                  <li>
+                    {CHECK}
+                    Design sur mesure, responsive
+                  </li>
+                  <li>
+                    {CHECK}
+                    Développement propre, mise en ligne incluse
+                  </li>
+                </ul>
+                <Link
+                  className={cx("card__link")}
+                  href="#contact"
+                  aria-label="En savoir plus sur l'offre Site web"
+                >
+                  En savoir plus
+                  {LINK_ARROW}
+                </Link>
+              </div>
+            </article>
+          </li>
+          <li className={cx("svc__item")}>
+            <article className={cx("card")} data-service="design">
+              <span className={cx("card__ring")} aria-hidden="true" />
+              <SeasonalAnchor className={`${pos.anchorCard} ${pos.anchorTopRight}`}>
+                <Sticker
+                  src="curseur-fantome-boo"
+                  size={56}
+                  rotate={6}
+                  className={pos.svcCursor}
+                  hideMobile
+                />
+              </SeasonalAnchor>
+              <DesignVisual />
+              <div className={cx("card__body")}>
+                <span className={cx("card__num")}>02</span>
+                <h3 className={cx("card__title")}>UI UX Design</h3>
+                <p className={cx("card__desc")}>
+                  Des parcours clairs où chaque écran a un rôle : clarifier, rassurer, convertir.
+                </p>
+                <ul className={cx("card__pts")}>
+                  <li>
+                    {CHECK}
+                    Audit UX et parcours client
+                  </li>
+                  <li>
+                    {CHECK}
+                    Wireframes puis maquettes haute fidélité
+                  </li>
+                  <li>
+                    {CHECK}
+                    Design system léger et réutilisable
+                  </li>
+                </ul>
+                <Link
+                  className={cx("card__link")}
+                  href="#contact"
+                  aria-label="En savoir plus sur l'offre UI UX Design"
+                >
+                  En savoir plus
+                  {LINK_ARROW}
+                </Link>
+              </div>
+            </article>
+          </li>
+          <li className={cx("svc__item")}>
+            <article className={cx("card")} data-service="seo">
+              <span className={cx("card__ring")} aria-hidden="true" />
+              <SeasonalAnchor className={`${pos.anchorCard} ${pos.anchorBottomRight}`}>
+                <Sticker
+                  src="trick-or-trafic"
+                  size={120}
+                  rotate={5}
+                  className={pos.svcTrick}
+                  keepMobile
+                />
+              </SeasonalAnchor>
+              <SeoVisual />
+              <div className={cx("card__body")}>
+                <span className={cx("card__num")}>03</span>
+                <h3 className={cx("card__title")}>SEO Performance</h3>
+                <p className={cx("card__desc")}>
+                  Être trouvé sur les bonnes recherches, avec un site qui charge vite.
+                </p>
+                <ul className={cx("card__pts")}>
+                  <li>
+                    {CHECK}
+                    SEO technique et structure des pages
+                  </li>
+                  <li>
+                    {CHECK}
+                    Optimisation des Core Web Vitals
+                  </li>
+                  <li>
+                    {CHECK}
+                    Suivi clair et priorités concrètes
+                  </li>
+                </ul>
+                <Link
+                  className={cx("card__link")}
+                  href="#contact"
+                  aria-label="En savoir plus sur l'offre SEO Performance"
+                >
+                  En savoir plus
+                  {LINK_ARROW}
+                </Link>
+              </div>
+            </article>
+          </li>
         </ul>
-        <p className={styles.foot}>Site, design et SEO. Séparés, c’est moyen. Ensemble, c’est un système.</p>
-        <div className={styles.ctas}>
-          <ContactCta className={styles.cta}>
-            Prendre rendez-vous
-            <svg className={styles.icon} viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10" /><path d="M7 17 17 7" /></svg>
+        <p className={cx("svc__foot")}>
+          Site, design et SEO. Séparés, c’est moyen. Ensemble, c’est un système.
+        </p>
+        <div className={cx("svc__ctas")}>
+          <ContactCta className={cx("svc__cta")} aria-haspopup="dialog">
+            Je réserve mon appel
+            {CTA_ARROW}
           </ContactCta>
-          {showTrust ? (
-            <span className={styles.trust}>Réponse sous 24 h · Devis après cadrage</span>
-          ) : null}
         </div>
       </div>
-      <svg className={`${styles.arch} ${styles.archBottom}`} viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true"><path d="M0 150V0Q720 200 1440 0V150Z" fill="#fff" /></svg>
     </section>
   );
 }

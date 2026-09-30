@@ -1,26 +1,35 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { ContactCta } from "@/components/contact/contact-cta";
+import pos from "@/components/seasonal/seasonal-positions.module.css";
+import { SeasonalLayer } from "@/components/seasonal/seasonal-layer";
+import { Sticker } from "@/components/seasonal/sticker";
+import { isSeasonalThemeActive } from "@/lib/seasonal-theme";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
-import { attachHeaderSurfaceObserver } from "@/lib/header-surface-observer";
+import { HEADER_PROBE_Y, attachHeaderSurfaceObserver } from "@/lib/header-surface-observer";
 import { whenIntroReady } from "@/lib/when-intro-ready";
-import logoAkno from "@/src/images/logo-akno-plus.png";
 
 const SCROLL_GLASS_THRESHOLD = 56;
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  /** Home uniquement : style nav McFly tant que la sonde est dans #accueil. */
+  heroTone?: boolean;
+};
+
+export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [onLight, setOnLight] = useState(false);
   const [toneReady, setToneReady] = useState(false);
+  const [onHero, setOnHero] = useState(heroTone);
   const onLightRef = useRef(false);
 
   useEffect(() => {
     let raf = 0;
     let detachSurface: (() => void) | undefined;
+    let detachHero: (() => void) | undefined;
 
     const updateScroll = () => {
       raf = 0;
@@ -33,6 +42,16 @@ export function SiteHeader() {
       raf = window.requestAnimationFrame(updateScroll);
     };
 
+    const updateHeroTone = () => {
+      const accueil = document.getElementById("accueil");
+      if (!accueil) {
+        setOnHero(false);
+        return;
+      }
+      const { top, bottom } = accueil.getBoundingClientRect();
+      setOnHero(top <= HEADER_PROBE_Y && bottom > HEADER_PROBE_Y);
+    };
+
     const startSurface = () => {
       detachSurface?.();
       detachSurface = attachHeaderSurfaceObserver((next) => {
@@ -43,6 +62,15 @@ export function SiteHeader() {
         setToneReady(true);
       });
       updateScroll();
+      if (heroTone) {
+        updateHeroTone();
+        window.addEventListener("scroll", updateHeroTone, { passive: true });
+        window.addEventListener("resize", updateHeroTone, { passive: true });
+        detachHero = () => {
+          window.removeEventListener("scroll", updateHeroTone);
+          window.removeEventListener("resize", updateHeroTone);
+        };
+      }
     };
 
     updateScroll();
@@ -52,39 +80,64 @@ export function SiteHeader() {
     return () => {
       stopIntroWatch();
       detachSurface?.();
+      detachHero?.();
       window.removeEventListener("scroll", scheduleScroll);
       if (raf) window.cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [heroTone]);
+
+  const heroClass = heroTone && onHero ? " site-header--hero" : "";
 
   return (
     <header
-      className={`site-header${scrolled ? " site-header--scrolled" : ""}${onLight ? " site-header--light" : ""}${toneReady ? " site-header--tone-ready" : ""}`}
+      className={`site-header${scrolled ? " site-header--scrolled" : ""}${onLight ? " site-header--light" : ""}${toneReady ? " site-header--tone-ready" : ""}${heroClass}`}
     >
       <div className="site-header__inner">
         <Link href="/" className="site-header__logo-link" aria-label="AKNO — accueil">
           <span className="site-header__logo-shell">
-            <Image
-              src={logoAkno}
-              alt=""
-              width={128}
-              height={34}
-              style={{ width: "auto" }}
-              priority
-              className="site-header__logo-img h-8 w-auto sm:h-9"
+            <span
+              className="site-header__logo-img site-header__logo-mark"
+              role="img"
+              aria-label="AKNO"
             />
           </span>
         </Link>
 
-        <ContactCta className="site-header__cta btn btn-primary">
-          <span className="site-header__cta-label site-header__cta-label--long">
-            Prendre rendez-vous
-          </span>
-          <span className="site-header__cta-label site-header__cta-label--short">
-            Réserver
-          </span>
-          <ArrowUpRight className="size-3.5 shrink-0 sm:size-4" aria-hidden />
-        </ContactCta>
+        <span
+          className={`site-header__cta-wrap${heroTone && isSeasonalThemeActive() ? " site-header__cta-wrap--halloween" : ""}`}
+        >
+          <ContactCta className="site-header__cta btn btn-primary" aria-haspopup="dialog">
+            <span className="site-header__cta-label site-header__cta-label--long">
+              Prendre rendez-vous
+            </span>
+            <span className="site-header__cta-label site-header__cta-label--short">Réserver</span>
+            <ArrowUpRight
+              className="site-header__cta-arrow site-header__cta-arrow--site size-3.5 shrink-0 sm:size-4"
+              aria-hidden
+            />
+            <svg
+              className="site-header__cta-arrow site-header__cta-arrow--hero"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </ContactCta>
+          {heroTone ? (
+            <SeasonalLayer variant="header">
+              <Sticker
+                src="citrouille"
+                size={52}
+                rotate={14}
+                className={pos.headerPumpkin}
+                eager
+                keepMobile
+                float={false}
+              />
+            </SeasonalLayer>
+          ) : null}
+        </span>
       </div>
     </header>
   );

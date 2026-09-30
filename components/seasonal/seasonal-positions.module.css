@@ -1,0 +1,161 @@
+.anchorCard {
+  inset: 0;
+  z-index: 1;
+}
+
+.anchorTopRight {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  width: 0;
+  height: 0;
+}
+
+.anchorBottomRight {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: 0;
+  height: 0;
+}
+
+.anchorTopLeft {
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.heroBat {
+  top: 20%;
+  left: clamp(8px, 2.5vw, 40px);
+}
+
+.heroGhost {
+  top: 26%;
+  right: clamp(12%, 22vw, 28%);
+}
+
+.heroDashboardSpooky {
+  top: 52%;
+  left: clamp(48%, 52vw, 54%);
+}
+
+.heroDashboardWeb {
+  top: 50%;
+  left: clamp(52%, 56vw, 58%);
+}
+
+@media (max-width: 1100px) {
+  .heroDashboardSpooky,
+  .heroDashboardWeb {
+    left: auto;
+    right: clamp(4%, 8vw, 12%);
+  }
+
+  .heroDashboardSpooky {
+    top: 48%;
+  }
+
+  .heroDashboardWeb {
+    top: 42%;
+  }
+}
+
+.svcHat {
+  top: -18px;
+  right: -14px;
+}
+
+.svcCursor {
+  top: 38%;
+  right: -20px;
+}
+
+.svcTrick {
+  bottom: -24px;
+  right: -16px;
+}
+
+.copilotMoon {
+  top: 8%;
+  left: clamp(12px, 4vw, 48px);
+}
+
+.copilotLatte {
+  bottom: 12%;
+  right: clamp(8%, 12vw, 18%);
+}
+
+.realCat {
+  top: -20px;
+  right: -8px;
+}
+
+.realBonbon {
+  top: 18%;
+  left: clamp(8px, 3vw, 24px);
+}
+
+.techCauldron {
+  top: 14%;
+  right: clamp(8px, 4vw, 40px);
+}
+
+.cmpMushroom {
+  bottom: -12px;
+  left: -10px;
+}
+
+.cmpGland {
+  bottom: -8px;
+  right: -6px;
+}
+
+.refBonbon {
+  top: 12%;
+  left: clamp(8px, 5vw, 32px);
+}
+
+.refPumpkin {
+  top: 8%;
+  right: clamp(8px, 5vw, 36px);
+}
+
+.faqSkull {
+  top: 10%;
+  left: clamp(8px, 4vw, 32px);
+}
+
+.faqCandle {
+  top: 12%;
+  right: clamp(8px, 4vw, 40px);
+}
+
+.finalTrick {
+  top: 50%;
+  right: clamp(12px, 6vw, 48px);
+  transform: translateY(-50%);
+}
+
+.finalGhost {
+  top: 22%;
+  left: clamp(8px, 4vw, 28px);
+}
+
+.footerLeaf {
+  top: 24px;
+  left: clamp(12px, 6vw, 64px);
+}
+
+.footerBat {
+  bottom: 32px;
+  right: clamp(12px, 6vw, 72px);
+}
+
+.headerPumpkin {
+  top: -12px;
+  right: -8px;
+}

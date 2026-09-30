@@ -27,18 +27,30 @@ export function attachHeaderSurfaceObserver(
       "main section[data-akno-surface], main section.akno-surface-light",
     ),
   );
-  const services = document.getElementById("services");
+  const servicesEl = document.getElementById("services");
+  const services =
+    servicesEl?.getAttribute("data-akno-surface") === "dark" ? servicesEl : null;
   const intersecting = new Set<Element>();
   let prevLight = false;
   let bootstrapped = false;
   let servicesTop = Number.POSITIVE_INFINITY;
   let io: IntersectionObserver | null = null;
 
+  /** Section dont le fond est réellement sous le logo (pas la dernière du DOM dans la bande IO). */
   const pickActiveSection = (): HTMLElement | null => {
     let active: HTMLElement | null = null;
+    let bestTop = -Infinity;
+
     for (const section of sections) {
-      if (intersecting.has(section)) active = section;
+      if (!intersecting.has(section)) continue;
+      const { top, bottom } = section.getBoundingClientRect();
+      if (top > HEADER_PROBE_Y || bottom <= HEADER_PROBE_Y) continue;
+      if (top > bestTop) {
+        bestTop = top;
+        active = section;
+      }
     }
+
     return active;
   };
 

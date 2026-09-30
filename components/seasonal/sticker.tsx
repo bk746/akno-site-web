@@ -35,7 +35,7 @@ export type StickerProps = {
   voidMobile?: boolean;
   /** Masqué sous 1024 px (stickers non-L) */
   hideBelowLg?: boolean;
-  /** Conservé sous 1024 px (navbar uniquement) */
+  /** Affiché uniquement dans la navbar (hero = décor séparé) */
   keepOnMobile?: boolean;
 };
 
@@ -65,6 +65,7 @@ export function Sticker({
   keepOnMobile = false,
 }: StickerProps) {
   if (!shouldShowStickerPack(pack)) return null;
+  if (!keepOnMobile) return null;
 
   const px = SIZE_PX[size];
   const imageSrc = stickerSrc(name, pack);
@@ -101,7 +102,6 @@ export function Sticker({
       aria-hidden
       width={px}
       height={px}
-      data-akno-section-sticker={keepOnMobile ? undefined : true}
       className={classNames}
       style={mergedStyle}
       sizes={`${px}px`}

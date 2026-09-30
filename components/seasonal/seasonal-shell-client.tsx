@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { FallingLeaves } from "@/components/seasonal/falling-leaves";
 import { SeasonalAnimationController } from "@/components/seasonal/seasonal-animation-controller";
 
 /** Feuilles et contrôleur d’animation : montés après le premier rendu (idle). */
@@ -21,10 +20,5 @@ export function SeasonalShellClient() {
 
   if (!ready) return null;
 
-  return (
-    <>
-      <SeasonalAnimationController />
-      <FallingLeaves />
-    </>
-  );
+  return <SeasonalAnimationController />;
 }

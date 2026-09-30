@@ -163,5 +163,6 @@
 .headerPumpkin {
   top: 0;
   right: 0;
-  transform: translate(20px, calc(-64% - 3px)) rotate(var(--sticker-rotate, 14deg));
+  --sticker-scale: 0.78;
+  transform: translate(18px, calc(-64% - 3px)) rotate(var(--sticker-rotate, 14deg));
 }

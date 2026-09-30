@@ -7,6 +7,8 @@ import { COPILOT_TABS, type CopilotChip } from "@/components/copilot/copilot-dat
 import { copilotAccentFont } from "@/components/copilot/copilot-font";
 import { ICON_PATHS, type IconKey } from "@/components/copilot/copilot-icons";
 
+import { Glow, SectionGlowLayer } from "@/components/glow/glow";
+import glowStyles from "@/components/glow/glow.module.css";
 import styles from "@/components/copilot/copilot-showcase.module.css";
 import pos from "@/components/seasonal/section-stickers.module.css";
 import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
@@ -101,6 +103,17 @@ export function CopilotShowcase() {
       data-akno-surface="light"
       aria-labelledby="cps-title"
     >
+      <SectionGlowLayer>
+        <Glow
+          color="indigo"
+          size={800}
+          opacity={0.3}
+          blur={100}
+          top="52%"
+          drift
+          className={glowStyles.glowAt55}
+        />
+      </SectionGlowLayer>
       <div className={styles.inner}>
         <header className={styles.head} data-akno-reveal>
           <span className={styles.eyebrow}>

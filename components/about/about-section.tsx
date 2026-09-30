@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { AboutProfileCard } from "@/components/about/about-profile-card";
+import { Glow, SectionGlowLayer } from "@/components/glow/glow";
+import glowStyles from "@/components/glow/glow.module.css";
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import pos from "@/components/seasonal/section-stickers.module.css";
@@ -20,7 +22,16 @@ export function AboutSection() {
       className="about-section akno-deferred-section akno-surface-light"
       aria-labelledby="about-heading"
     >
-      <div className="about-section__inner">
+      <SectionGlowLayer>
+        <Glow
+          color="peach"
+          size={600}
+          opacity={0.3}
+          blur={100}
+          className={glowStyles.glowAboutPhoto}
+        />
+      </SectionGlowLayer>
+      <div className="about-section__inner relative z-[1]">
         <div className="about-section__grid">
           <div className="about-section__copy order-2 md:order-1" data-akno-reveal>
             <p className="about-eyebrow">À propos</p>

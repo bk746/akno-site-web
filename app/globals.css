@@ -1885,6 +1885,8 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 /* ——— À propos ——— */
 
 .about-section {
+  position: relative;
+  overflow: hidden;
   background: transparent;
   padding: clamp(3.5rem, 6vw, 5rem) 1.5rem clamp(5.5rem, 9vw, 7rem);
 }
@@ -2605,83 +2607,14 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 .final-cta-section {
   position: relative;
   z-index: 2;
-  overflow-x: clip;
-  overflow-y: visible;
-  background: #050505;
-  color: #ffffff;
-  margin-top: calc(-1 * clamp(24px, 2.8vw, 48px));
-  padding: 0 0 clamp(5.5rem, 10vw, 8.5rem);
-  isolation: isolate;
-}
-
-.final-cta-section__ellipse {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
-}
-
-/* Transition FAQ (blanc) → CTA : pas le translateY des Services */
-.final-cta-section__ellipse.services-ellipse-top {
-  transform: translateY(clamp(14px, 2vw, 28px));
-  z-index: 4;
-}
-
-.final-cta-section__ellipse .services-ellipse-white {
-  transform: scaleY(1.48);
-  transform-origin: center bottom;
-}
-
-@media (min-width: 640px) {
-  .final-cta-section__ellipse .services-ellipse-white {
-    transform: scaleY(1.58);
-  }
-}
-
-@media (min-width: 1024px) {
-  .final-cta-section__ellipse .services-ellipse-white {
-    transform: scaleY(1.68);
-  }
-}
-
-.faq-final-cta-spacer {
-  height: clamp(100px, 11vw, 148px);
-  width: 100%;
-  background: #ffffff;
-  margin-bottom: calc(-1 * clamp(24px, 2.8vw, 48px));
+  overflow: hidden;
+  color: var(--akno-texte);
 }
 
 .final-cta-section__content {
   position: relative;
   z-index: 1;
   overflow: visible;
-  margin-top: clamp(-12px, -1.5vw, -4px);
-  padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 4vw, 2rem) 0;
-}
-
-.final-cta-orbs {
-  overflow: visible;
-}
-
-.final-cta-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.final-cta-orb--center {
-  top: 42%;
-  left: 50%;
-  width: min(640px, 92vw);
-  height: min(640px, 92vw);
-  transform: translate(-50%, -50%);
-  filter: blur(110px);
-  opacity: 0.22;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(107, 124, 255, 0.14) 0%,
-    rgba(107, 124, 255, 0.05) 38%,
-    transparent 68%
-  );
 }
 
 .final-cta-panel {
@@ -2689,26 +2622,32 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   z-index: 1;
   display: flex;
   width: 100%;
-  max-width: 720px;
   flex-direction: column;
   align-items: center;
   margin-inline: auto;
   text-align: center;
-  border-radius: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  padding: 56px 24px;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.42);
-  /* Pas de backdrop-filter : le fond derrière est déjà un orbe flouté,
-     et un backdrop blur de cette taille coûte cher à chaque frame de scroll. */
+  border-radius: 32px;
+  border: 1px solid rgba(21, 32, 58, 0.06);
+  background: #ffffff;
+  padding: 3rem 1.5rem;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 12px 32px rgba(0, 0, 0, 0.06);
   transition:
     opacity var(--akno-reveal-duration) var(--akno-ease-out),
-    transform var(--akno-reveal-duration) var(--akno-ease-out);
+    transform var(--akno-reveal-duration) var(--akno-ease-out),
+    box-shadow var(--akno-hover-duration) var(--akno-ease-out);
 }
 
 @media (min-width: 768px) {
   .final-cta-panel {
-    padding: 80px 56px;
+    padding: 4rem 3rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .final-cta-panel:hover {
+    box-shadow: var(--akno-shadow-soft);
   }
 }
 
@@ -2726,67 +2665,60 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   margin: 0;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #8e8e93;
+  color: var(--akno-cta);
 }
 
 .final-cta-section__title {
-  margin: 20px 0 0;
-  max-width: 14ch;
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.045em;
-  color: #f5f5f7;
+  margin: 0.75rem 0 0;
+  max-width: 16ch;
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--akno-texte);
   text-wrap: balance;
 }
 
 @media (max-width: 767px) {
   .final-cta-section__title {
-    font-size: clamp(2rem, 8.5vw, 2.25rem);
     max-width: none;
   }
 }
 
+.final-cta-section__accent {
+  margin-inline: auto;
+}
+
 .final-cta-section__subtitle {
-  margin: 18px 0 0;
-  max-width: 460px;
-  font-size: 17px;
+  margin: 1.25rem 0 0;
+  max-width: 28rem;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 1.5;
-  color: #a1a1a6;
+  line-height: 1.55;
+  color: #6e6e73;
 }
 
 .final-cta-section__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   width: 100%;
-  max-width: none;
-  height: 52px;
-  margin-top: 40px;
-  padding: 0 1.75rem;
-  border: none;
-  border-radius: 999px;
+  min-height: 46px;
+  margin-top: 2rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: 9999px;
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
-  text-decoration: none;
-  color: #050505;
-  background: #ffffff;
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.12),
-    0 8px 28px rgba(255, 255, 255, 0.1);
-  cursor: pointer;
 }
 
 @media (min-width: 768px) {
   .final-cta-section__button {
     width: auto;
     min-width: 15.5rem;
-    max-width: none;
   }
 }
 
@@ -2810,8 +2742,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .final-cta-section__trust-dot {
-  color: #6e6e73;
-  opacity: 0.55;
+  color: rgba(21, 32, 58, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3507,19 +3438,14 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 
 /* ——— Footer ——— */
 
-.final-cta-section + .site-footer {
-  border-top: none;
-}
-
 .site-footer {
   position: relative;
   z-index: 3;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: #050505;
-  color: #f5f5f7;
+  border-top: 1px solid rgba(21, 32, 58, 0.08);
+  background: var(--akno-gris);
+  color: var(--akno-texte);
   scroll-margin-top: 96px;
-  /* Header fixe : éviter le chevauchement logo / 1re colonne */
-  padding: calc(4.5rem + 64px) 1.5rem 2rem;
+  padding: 3.5rem 1.5rem 2rem;
 }
 
 .site-footer__inner {
@@ -3555,12 +3481,8 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   display: block;
   height: 28px;
   width: auto;
-  max-width: 120px;
+  max-width: 128px;
   object-fit: contain;
-  border-radius: 10px;
-  background: var(--akno-gris);
-  padding: 6px 10px;
-  box-sizing: content-box;
 }
 
 .site-footer__tagline {
@@ -3568,7 +3490,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   max-width: 16rem;
   font-size: 14px;
   line-height: 1.5;
-  color: #a1a1a6;
+  color: rgba(21, 32, 58, 0.72);
 }
 
 .site-footer__founder {
@@ -3580,11 +3502,11 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 
 .site-footer__col-title {
   margin: 0;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #8e8e93;
+  color: var(--akno-cta);
 }
 
 .site-footer__links {
@@ -3604,7 +3526,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   width: fit-content;
   font-size: 14px;
   line-height: 1.4;
-  color: #f5f5f7;
+  color: var(--akno-texte);
   transition: opacity var(--akno-hover-duration) ease;
 }
 
@@ -3646,8 +3568,9 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(245, 245, 247, 0.75);
+  border: 1px solid rgba(21, 32, 58, 0.12);
+  background: #ffffff;
+  color: rgba(21, 32, 58, 0.72);
   transition:
     border-color 200ms ease,
     color 200ms ease,
@@ -3655,15 +3578,15 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .site-footer__social-link:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #f5f5f7;
-  opacity: 0.85;
+  border-color: rgba(107, 124, 255, 0.35);
+  color: var(--akno-texte);
+  opacity: 0.92;
 }
 
 .site-footer__bottom {
   margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(21, 32, 58, 0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4216,8 +4139,9 @@ html.akno-motion-ready
 @media (hover: hover) and (pointer: fine) {
   .site-footer__social-link:hover {
     opacity: 1;
-    background-color: rgba(255, 255, 255, 0.06);
+    background-color: #ffffff;
     transform: translate3d(0, -2px, 0);
+    box-shadow: 0 8px 20px rgba(21, 32, 58, 0.08);
   }
 }
 

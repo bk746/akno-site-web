@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { ContactCta } from "@/components/contact/contact-cta";
+import { Glow, SectionGlowLayer } from "@/components/glow/glow";
 import {
   DesignVisual,
   SeoVisual,
@@ -43,6 +44,25 @@ export function ServicesSection() {
       data-akno-surface="light"
       aria-labelledby="services-heading"
     >
+      <SectionGlowLayer>
+        <Glow
+          color="lavender"
+          size={700}
+          opacity={0.35}
+          blur={100}
+          top={180}
+          left={-140}
+        />
+        <Glow
+          color="rose"
+          size={600}
+          opacity={0.3}
+          blur={100}
+          bottom={180}
+          right={-120}
+          hideBelowMd
+        />
+      </SectionGlowLayer>
       <span className={cx("svc__fade", "svc__fade--top")} aria-hidden="true" />
       <span className={cx("svc__fade", "svc__fade--bot")} aria-hidden="true" />
 

@@ -25,6 +25,8 @@
   --grad-cta: linear-gradient(145deg, #7e8dff 0%, var(--cta) 55%, #5a6af0 100%);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
+  position: relative;
+  overflow: hidden;
   background: var(--bg);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   font-weight: 400;
@@ -48,6 +50,8 @@
 }
 
 .inner {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;

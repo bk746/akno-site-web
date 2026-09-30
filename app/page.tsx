@@ -64,7 +64,6 @@ export default function Home() {
         <AboutSection />
         <ComparisonSection />
         <FaqSection />
-        <div className="faq-final-cta-spacer" aria-hidden />
         <FinalCtaSection />
         <FooterSection />
       </main>

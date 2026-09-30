@@ -1,8 +1,7 @@
 svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .svc {
   position: relative;
-  overflow-x: clip;
-  overflow-y: visible;
+  overflow: hidden;
   isolation: isolate;
   font-family: var(--font-geist-sans), Inter, ui-sans-serif, system-ui, sans-serif;
   line-height: normal;

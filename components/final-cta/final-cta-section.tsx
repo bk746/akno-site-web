@@ -1,40 +1,28 @@
-import Image from "next/image";
-
 import { ContactCta } from "@/components/contact/contact-cta";
-import { FinalCtaOrbs } from "@/components/final-cta/final-cta-orbs";
+import { Glow, SectionGlowLayer } from "@/components/glow/glow";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import pos from "@/components/seasonal/section-stickers.module.css";
 import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
 import { Sticker } from "@/components/seasonal/sticker";
-import ellipseTopWhite from "@/src/images/Ellipse 2.png";
-import ellipsePillBlack from "@/src/images/Ellipse 3 black.png";
 
 export function FinalCtaSection() {
   return (
     <section
       id="contact"
-      className="final-cta-section akno-deferred-section"
-      data-akno-surface="dark"
+      className="final-cta-section akno-deferred-section akno-surface-light px-6 pb-20 pt-16 sm:pb-24 sm:pt-20 lg:pb-28 lg:pt-24"
       aria-labelledby="final-cta-heading"
     >
-      <div className="final-cta-section__ellipse services-ellipse-top" aria-hidden>
-        <Image
-          src={ellipseTopWhite}
-          alt=""
-          className="services-ellipse-white block h-auto w-full min-w-full max-w-none"
-          sizes="100vw"
+      <SectionGlowLayer>
+        <Glow
+          color="ctaIndigo"
+          size={700}
+          opacity={0.35}
+          blur={120}
+          top="58%"
+          anchorCenter
         />
-        <Image
-          src={ellipsePillBlack}
-          alt=""
-          className="services-ellipse-pill"
-          sizes="80px"
-        />
-      </div>
-
-      <FinalCtaOrbs />
-
-      <div className="final-cta-section__content relative">
+      </SectionGlowLayer>
+      <div className="final-cta-section__content relative z-[1] mx-auto max-w-[720px]">
         <StickerAnchor corner="edge-l" className={pos.finalCatWrap}>
           <Sticker
             name="chat-noir"
@@ -72,16 +60,24 @@ export function FinalCtaSection() {
           </StickerAnchor>
           <p className="final-cta-section__eyebrow">Prochaine étape</p>
           <h2 id="final-cta-heading" className="final-cta-section__title">
-            Ton site peut enfin ramener des clients.
+            Ton site peut enfin{" "}
+            <span className="akno-word text-akno-cta">ramener des clients</span>.
           </h2>
+          <span
+            className="akno-accent-bar final-cta-section__accent mt-5 block h-2 w-12 rounded-full bg-akno-rose"
+            aria-hidden
+          />
           <p className="final-cta-section__subtitle">
             Cadrage en 20 minutes. On regarde ton existant, tes objectifs, et si
             AKNO est le bon fit.
           </p>
 
-          <ContactCta className="final-cta-section__button btn btn-light">
+          <ContactCta className="final-cta-section__button btn btn-primary group">
             Je réserve mon appel
-            <ArrowUpRight className="final-cta-section__button-icon" aria-hidden />
+            <ArrowUpRight
+              className="final-cta-section__button-icon size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
           </ContactCta>
 
           <p className="final-cta-section__trust">

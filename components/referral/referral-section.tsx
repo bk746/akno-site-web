@@ -8,6 +8,7 @@ import {
   type ReferralIcon,
 } from "@/components/referral/referral-icons";
 
+import { Glow, SectionGlowLayer } from "@/components/glow/glow";
 import pos from "@/components/seasonal/section-stickers.module.css";
 import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
 import { Sticker } from "@/components/seasonal/sticker";
@@ -123,6 +124,25 @@ export function ReferralSection() {
       data-akno-surface="light"
       aria-labelledby="rfs-title"
     >
+      <SectionGlowLayer>
+        <Glow
+          color="peach"
+          size={650}
+          opacity={0.35}
+          blur={100}
+          top={160}
+          right={-100}
+        />
+        <Glow
+          color="rose"
+          size={550}
+          opacity={0.3}
+          blur={100}
+          bottom={160}
+          left={-90}
+          hideBelowMd
+        />
+      </SectionGlowLayer>
       <div className={styles.inner}>
         <header className={`${styles.head} relative`} data-akno-reveal>
           <StickerAnchor corner="tr" className={pos.refCandyWrap}>

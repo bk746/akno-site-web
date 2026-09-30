@@ -56,6 +56,17 @@ export function HeroSection() {
               Voir la méthode
             </Link>
           </div>
+          <p className={cx("keywords")}>
+            <span>Stratégie</span>
+            <span className={cx("keywords__dot")} aria-hidden="true">
+              ·
+            </span>
+            <span>Conversion</span>
+            <span className={cx("keywords__dot")} aria-hidden="true">
+              ·
+            </span>
+            <span>Design</span>
+          </p>
           <ul className={cx("proofs")}>
             <li className={cx("proof")}>
               <span className={cx("proof__ic")} aria-hidden="true">

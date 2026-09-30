@@ -110,6 +110,11 @@
   .proof__t { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
   .proof__d { white-space: nowrap; margin: 3px 0 0; font-size: 13px; line-height: 1.4; color: var(--ink-3); }
 
+  /* Mots-clés hero — mobile uniquement (remplace les cartes preuves) */
+  .keywords {
+    display: none;
+  }
+
   /* grand cadre visuel */
   .stage { position: relative; margin: 72px auto 0; max-width: 1120px; padding: 18px; border-radius: 38px; background: var(--bg); box-shadow: var(--raised-xl); }
   .screen { border-radius: 24px; padding: 14px; box-shadow: var(--inset); background: #E8ECF0; }
@@ -308,12 +313,44 @@
   }
   .hero::after { height: 72px; }
   .head { margin-top: 36px; }
-  .kicker { height: auto; min-height: 38px; padding: 9px 16px; font-size: 13px; line-height: 1.35; text-align: left; }
+  .kicker {
+    height: 38px;
+    max-width: 100%;
+    padding: 0 12px;
+    font-size: clamp(9.5px, 2.85vw, 12px);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .kicker__dot {
+    flex-shrink: 0;
+  }
   .h1 { margin-top: 24px; font-size: clamp(32px, 9.4vw, 40px); line-height: 1.08; letter-spacing: -0.035em; }
   .ctas { margin-top: 28px; flex-direction: column; align-items: stretch; gap: 14px; }
   .btn--lg { height: 54px; padding: 0 24px; }
-  .proofs { margin-top: 32px; gap: 14px; }
-  .proof { padding: 14px 16px; }
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem 0.5rem;
+    margin: 28px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .keywords__dot {
+    color: var(--accent-ink);
+    font-weight: 700;
+    user-select: none;
+  }
+
+  .proofs {
+    display: none;
+  }
   .stage { margin-top: 44px; padding: 10px; border-radius: 26px; }
   .screen { padding: 10px; border-radius: 18px; }
   .main { gap: 10px; }
@@ -327,8 +364,13 @@
   .card__h { flex-wrap: wrap; }
   .chart svg { height: 150px; }
   .fn__row { grid-template-columns: 78px 1fr; }
-  .reco__it { display: grid; grid-template-columns: 16px 1fr; align-items: start; gap: 6px 10px; }
-  .reco__it em { grid-column: 2; justify-self: start; margin-left: 0; }
+  .reco {
+    display: none;
+  }
+
+  .card--parcours {
+    display: none;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero * {

@@ -186,7 +186,7 @@ export function HeroDashboard() {
                   </div>
                 </div>
               </div>
-              <div className={cx("card")}>
+              <div className={cx("card", "card--parcours")}>
                 <div className={cx("card__h")}>
                   <h3>Parcours vers la demande</h3>
                 </div>

@@ -690,8 +690,20 @@
   }
 
   .panel {
+    display: flex;
+    flex-direction: column;
     padding: 28px 20px 32px;
     border-radius: 24px;
+    gap: 28px;
+  }
+
+  .visual {
+    order: -1;
+    width: 100%;
+  }
+
+  .texts {
+    order: 0;
   }
 
   .h3 {

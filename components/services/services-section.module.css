@@ -134,7 +134,6 @@ svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor;
     .svc__grid { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; gap: 20px; }
   }
   @media (max-width: 767px) {
-    .svc__title { font-size: 34px; }
     .svc__sub { font-size: 16px; }
     .svc__grid { margin-top: 44px; gap: 18px; }
     .card { border-radius: 22px; padding: 8px; }
@@ -174,7 +173,14 @@ svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor;
   }
   .svc__eyebrow { color: var(--accent-ink); background: var(--bg); box-shadow: var(--raised-sm); height: 36px; padding: 0 18px; }
   .svc__eyebrow-dot { width: 7px; height: 7px; background: var(--accent); box-shadow: 0 0 0 4px rgba(99,102,241,.16); }
-  .svc__title { color: var(--ink); font-size: 56px; letter-spacing: -0.04em; line-height: 1.06; }
+  .svc__title {
+    color: var(--ink);
+    font-size: clamp(1.375rem, 2.8vw + 0.75rem, 3.5rem);
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+    max-width: 100%;
+    text-wrap: balance;
+  }
   .svc__accent { color: var(--accent-ink); background: linear-gradient(90deg, rgba(79,70,229,.55), rgba(99,102,241,.35)) 0 94% / 100% 4px no-repeat; padding: 0 .04em; }
   .svc__sub { color: var(--ink-2); }
 
@@ -221,4 +227,14 @@ svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor;
 }
 @media (max-width: 767px) {
   .svc { padding: 64px 22px 88px; }
+
+  .svc__head {
+    padding-inline: 4px;
+  }
+
+  .svc__title {
+    font-size: clamp(1.25rem, 6.4vw, 1.875rem);
+    line-height: 1.18;
+    letter-spacing: -0.032em;
+  }
 }

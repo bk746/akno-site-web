@@ -12,7 +12,7 @@ import {
   AKNO_PHONE_DISPLAY,
   AKNO_PHONE_HREF,
 } from "@/lib/contact";
-import logoAkno from "@/src/images/logo-akno-plus.png";
+import logoAkno from "@/src/images/logo-akno-interrupteur.png";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';

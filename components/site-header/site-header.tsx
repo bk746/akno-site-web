@@ -1,7 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+
+import logoAkno from "@/src/images/logo-akno-interrupteur.png";
 
 import { ContactCta } from "@/components/contact/contact-cta";
 import pos from "@/components/seasonal/seasonal-positions.module.css";
@@ -102,10 +105,14 @@ export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
       <div className="site-header__inner">
         <Link href="/" className="site-header__logo-link" aria-label="AKNO — accueil">
           <span className="site-header__logo-shell">
-            <span
-              className="site-header__logo-img site-header__logo-mark"
-              role="img"
-              aria-label="AKNO"
+            <Image
+              src={logoAkno}
+              alt="AKNO"
+              width={1024}
+              height={305}
+              className="site-header__logo-img"
+              priority
+              sizes="(max-width: 639px) 107px, 120px"
             />
           </span>
         </Link>

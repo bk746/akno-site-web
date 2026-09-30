@@ -10,7 +10,10 @@ import {
   TargetIcon,
   TrendIcon,
 } from "@/components/hero/hero-icons";
+import Image from "next/image";
+
 import { HeroTagPumpkin } from "@/components/seasonal/hero-seasonal-decor";
+import logoAkno from "@/src/images/logo-akno-interrupteur.png";
 import styles from "@/components/hero/hero-section.module.css";
 
 const cx = (...names: string[]) => names.map((n) => styles[n]).join(" ");
@@ -21,7 +24,15 @@ export function HeroDashboard() {
       <div className={cx("screen")}>
         <div className={cx("app")}>
           <aside className={cx("side")}>
-            <span className={cx("side__logo")} />
+            <Image
+              src={logoAkno}
+              alt=""
+              aria-hidden
+              width={1024}
+              height={305}
+              className={cx("side__logo")}
+              sizes="58px"
+            />
             <span className={cx("side__it", "side__it--on")}>
               <HomeIcon />
               Vue d’ensemble

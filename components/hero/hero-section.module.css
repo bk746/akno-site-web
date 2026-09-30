@@ -122,12 +122,12 @@
   .app { display: grid; grid-template-columns: 196px 1fr; gap: 14px; min-height: 520px; }
   .side { position: relative; overflow: visible; border-radius: 18px; background: var(--bg); box-shadow: var(--raised-sm); padding: 18px 12px; display: flex; flex-direction: column; gap: 4px; }
   .side__logo {
-  width: 58px;
+  width: auto;
   height: 22px;
+  max-width: 72px;
   margin: 2px 8px 18px;
-  background: var(--ink);
-  -webkit-mask: url("../../src/images/logo-akno-plus.png") left center / contain no-repeat;
-  mask: url("../../src/images/logo-akno-plus.png") left center / contain no-repeat;
+  object-fit: contain;
+  object-position: left center;
 }
   .side__it {
     display: flex;

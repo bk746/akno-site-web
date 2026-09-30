@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
-import logoAkno from "@/src/images/logo-akno-plus.png";
+import logoAkno from "@/src/images/logo-akno-interrupteur.png";
 import { CONTACT_EMAIL, SOCIAL_PROFILES } from "@/lib/site-config";
 
 const MENU_LINKS = [
@@ -73,10 +73,10 @@ export function FooterSection() {
               <Image
                 src={logoAkno}
                 alt="AKNO"
-                width={108}
-                height={28}
+                width={1024}
+                height={305}
                 style={{ width: "auto" }}
-                className="h-7 w-auto brightness-0 invert"
+                className="site-footer__logo-img"
               />
             </Link>
             <p className="site-footer__tagline">

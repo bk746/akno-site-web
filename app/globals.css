@@ -415,18 +415,12 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
     backdrop-filter 300ms var(--akno-ease-out);
 }
 
-/* Logo = masque CSS du PNG (site-header__logo-mark) : la couleur vient de background-color. */
 .site-header__logo-img {
   display: block;
+  width: auto;
   height: 32px;
-  aspect-ratio: 206 / 78;
-  background-color: #ffffff;
-  -webkit-mask-position: left center;
-  mask-position: left center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+  max-height: 32px;
+  object-fit: contain;
 }
 
 @media (min-width: 640px) {
@@ -436,22 +430,7 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
 }
 
 .site-header--tone-ready .site-header__logo-img {
-  transition: background-color 200ms var(--akno-ease-out);
-}
-
-/* Fond sombre — logo blanc */
-.site-header:not(.site-header--light) .site-header__logo-img {
-  background-color: #ffffff;
-}
-
-/* Fond clair — logo noir */
-.site-header--light .site-header__logo-img {
-  background-color: #000000;
-}
-
-.site-header__logo-mark {
-  -webkit-mask-image: url("../src/images/logo-akno-plus.png");
-  mask-image: url("../src/images/logo-akno-plus.png");
+  transition: opacity 200ms var(--akno-ease-out);
 }
 
 /* Liquid glass logo au scroll — padding généreux pour aérer le flou */
@@ -561,16 +540,11 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   stroke-linejoin: round;
 }
 
-/* Home : logo 84 × 32 et CTA nav McFly — taille fixe sur tout le scroll */
+/* Home : logo ~107 × 32 et CTA nav McFly — taille fixe sur tout le scroll */
 .site-header.site-header--home .site-header__logo-img {
-  width: 84px;
   height: 32px;
   max-height: 32px;
   flex: none;
-}
-
-.site-header.site-header--home:not(.site-header--light) .site-header__logo-img {
-  background-color: #1a1f36;
 }
 
 .site-header.site-header--home .site-header__cta {
@@ -637,11 +611,6 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   .site-header.site-header--home .site-header__cta {
     transition: none;
   }
-}
-
-/* Couleur logo hero uniquement tant qu’on est dans #accueil */
-.site-header.site-header--hero:not(.site-header--light) .site-header__logo-img {
-  background-color: #1a1f36;
 }
 
 /* ——— Hero → Problèmes (découpe hero, fond clair dessous) ——— */
@@ -2920,8 +2889,12 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   align-self: flex-start;
   width: auto;
   height: 28px;
+  max-width: 120px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
+  border-radius: 10px;
+  background: var(--akno-gris);
+  padding: 6px 10px;
+  box-sizing: content-box;
 }
 
 .contact-overlay__brand-line {
@@ -3576,6 +3549,18 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 
 .site-footer__logo {
   display: inline-block;
+}
+
+.site-footer__logo-img {
+  display: block;
+  height: 28px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: var(--akno-gris);
+  padding: 6px 10px;
+  box-sizing: content-box;
 }
 
 .site-footer__tagline {

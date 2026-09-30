@@ -12,7 +12,7 @@ export const ogImageSize = {
 export const ogImageContentType = "image/png";
 
 export async function renderOgImage() {
-  const logoPath = join(process.cwd(), "src/images/logo-akno-plus.png");
+  const logoPath = join(process.cwd(), "src/images/logo-akno-interrupteur.png");
   const logoBuffer = await readFile(logoPath);
   const logoSrc = `data:image/png;base64,${logoBuffer.toString("base64")}`;
 

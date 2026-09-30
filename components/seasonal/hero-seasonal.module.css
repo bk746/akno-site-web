@@ -8,14 +8,16 @@
   overflow: visible;
 }
 
+.plane[data-seasonal-paused] .stk {
+  animation-play-state: paused;
+}
+
 .stk {
   position: absolute;
   display: block;
   height: auto;
   pointer-events: none;
   user-select: none;
-  filter: drop-shadow(0 1px 1px rgba(46, 35, 82, 0.16))
-    drop-shadow(0 6px 10px rgba(46, 35, 82, 0.14));
 }
 
 .stkPlain {
@@ -75,7 +77,6 @@
   top: 520px;
   transform: rotate(-28deg);
   opacity: 0.92;
-  filter: drop-shadow(0 8px 10px rgba(120, 80, 30, 0.14));
 }
 
 .stkFall2 {
@@ -83,7 +84,6 @@
   top: 430px;
   transform: rotate(32deg);
   opacity: 0.9;
-  filter: drop-shadow(0 8px 10px rgba(120, 80, 30, 0.14));
 }
 
 .tagPk {

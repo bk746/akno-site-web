@@ -45,10 +45,7 @@ export function HeroVideoPlayer({ className }: HeroVideoPlayerProps) {
     let started = false;
 
     const playIfAllowed = async () => {
-      if (
-        cancelled ||
-        !document.documentElement.classList.contains("intro-complete")
-      ) {
+      if (cancelled) {
         return;
       }
       try {

@@ -94,7 +94,7 @@ export function CopilotShowcase() {
   return (
     <section
       id="copilot"
-      className={styles.section}
+      className={`${styles.section} akno-deferred-section`}
       data-akno-surface="light"
       aria-labelledby="cps-title"
     >

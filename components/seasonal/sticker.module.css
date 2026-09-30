@@ -62,6 +62,10 @@
   pointer-events: none;
 }
 
+.fallingRoot[data-seasonal-paused] .fallingLeaf {
+  animation-play-state: paused;
+}
+
 .fallingLeaf {
   position: absolute;
   top: -8%;

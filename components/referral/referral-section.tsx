@@ -116,7 +116,7 @@ export function ReferralSection() {
   return (
     <section
       id="parrainage"
-      className={`${styles.section} ${referralHeavyFont.variable}`}
+      className={`${styles.section} akno-deferred-section ${referralHeavyFont.variable}`}
       data-akno-surface="light"
       aria-labelledby="rfs-title"
     >

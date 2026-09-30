@@ -13,7 +13,6 @@ import {
   attachHeaderSurfaceObserver,
   headerProbeRootMargin,
 } from "@/lib/header-surface-observer";
-import { whenIntroReady } from "@/lib/when-intro-ready";
 
 const SCROLL_GLASS_THRESHOLD = 56;
 
@@ -36,7 +35,6 @@ export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
 
     const updateScroll = () => {
       raf = 0;
-      if (!document.documentElement.classList.contains("intro-complete")) return;
       setScrolled(window.scrollY > SCROLL_GLASS_THRESHOLD);
     };
 
@@ -83,12 +81,10 @@ export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
       }
     };
 
-    updateScroll();
-    const stopIntroWatch = whenIntroReady(startSurface);
+    startSurface();
     window.addEventListener("scroll", scheduleScroll, { passive: true });
 
     return () => {
-      stopIntroWatch();
       detachSurface?.();
       detachHero?.();
       window.removeEventListener("scroll", scheduleScroll);

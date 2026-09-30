@@ -16,7 +16,7 @@ export function FallingLeaves() {
   if (!isSeasonalThemeActive()) return null;
 
   return (
-    <div className={styles.fallingRoot} aria-hidden="true">
+    <div className={styles.fallingRoot} data-seasonal-animate aria-hidden="true">
       {LEAVES.map((leaf) => (
         <span
           key={leaf.id}

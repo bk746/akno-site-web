@@ -37,7 +37,7 @@ export function HeroSeasonalDecor() {
   if (!isSeasonalThemeActive()) return null;
 
   return (
-    <div className={styles.plane} aria-hidden="true">
+    <div className={styles.plane} data-seasonal-animate aria-hidden="true">
       <HeroSticker file="chauve-souris" width={100} className={`${styles.stk} ${styles.stkBat}`} />
       <HeroSticker file="fantome" width={68} className={`${styles.stk} ${styles.stkGhost}`} />
       <HeroSticker

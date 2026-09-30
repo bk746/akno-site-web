@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import { ContactOverlayProvider } from "@/components/contact/contact-overlay-context";
-import { introBootScript } from "@/components/intro/intro-boot";
-import { IntroProvider } from "@/components/intro/intro-provider";
 import { AknoClientShell } from "@/components/motion/akno-client-shell";
+import { scrollBootScript } from "@/lib/scroll-boot";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -65,22 +64,17 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${inter.variable} ${interDisplay.variable} h-full antialiased`}
+      className={`${inter.variable} ${interDisplay.variable} intro-complete h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: introBootScript }} />
-        <noscript>
-          <style>{`html .site-shell{visibility:visible!important}html .site-intro-curtain{display:none!important}`}</style>
-        </noscript>
+        <script dangerouslySetInnerHTML={{ __html: scrollBootScript }} />
       </head>
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
-        <IntroProvider>
-          <ContactOverlayProvider>
-            <AknoClientShell />
-            {children}
-          </ContactOverlayProvider>
-        </IntroProvider>
+        <ContactOverlayProvider>
+          <AknoClientShell />
+          {children}
+        </ContactOverlayProvider>
       </body>
     </html>
   );

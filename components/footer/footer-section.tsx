@@ -61,7 +61,11 @@ function SocialIconInstagram() {
 
 export function FooterSection() {
   return (
-    <footer className="site-footer" data-akno-surface="dark" aria-labelledby="footer-brand">
+    <footer
+      className="site-footer akno-deferred-section"
+      data-akno-surface="dark"
+      aria-labelledby="footer-brand"
+    >
       <div className="site-footer__inner" data-akno-reveal="fade">
         <div className="site-footer__grid">
           <div className="site-footer__brand">

@@ -88,7 +88,7 @@ export function TechnologiesSection() {
   return (
     <section
       id="technologies"
-      className={styles.section}
+      className={`${styles.section} akno-deferred-section`}
       data-akno-surface="light"
       aria-labelledby="tks-title"
     >

@@ -17,9 +17,24 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [75, 80, 100],
+    minimumCacheTTL: 2678400,
   },
   async headers() {
     return [
+      {
+        source: "/stickers/:path*",
+        headers: [
+          { key: "Cache-Control", value: immutableCache },
+          ...securityHeaders,
+        ],
+      },
+      {
+        source: "/halloween/:path*",
+        headers: [
+          { key: "Cache-Control", value: immutableCache },
+          ...securityHeaders,
+        ],
+      },
       {
         source: "/videos/:path*",
         headers: [

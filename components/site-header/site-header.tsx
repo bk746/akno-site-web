@@ -9,7 +9,10 @@ import { SeasonalLayer } from "@/components/seasonal/seasonal-layer";
 import { Sticker } from "@/components/seasonal/sticker";
 import { isSeasonalThemeActive } from "@/lib/seasonal-theme";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
-import { HEADER_PROBE_Y, attachHeaderSurfaceObserver } from "@/lib/header-surface-observer";
+import {
+  attachHeaderSurfaceObserver,
+  headerProbeRootMargin,
+} from "@/lib/header-surface-observer";
 import { whenIntroReady } from "@/lib/when-intro-ready";
 
 const SCROLL_GLASS_THRESHOLD = 56;
@@ -42,15 +45,7 @@ export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
       raf = window.requestAnimationFrame(updateScroll);
     };
 
-    const updateHeroTone = () => {
-      const accueil = document.getElementById("accueil");
-      if (!accueil) {
-        setOnHero(false);
-        return;
-      }
-      const { top, bottom } = accueil.getBoundingClientRect();
-      setOnHero(top <= HEADER_PROBE_Y && bottom > HEADER_PROBE_Y);
-    };
+    let heroIo: IntersectionObserver | null = null;
 
     const startSurface = () => {
       detachSurface?.();
@@ -63,13 +58,28 @@ export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
       });
       updateScroll();
       if (heroTone) {
-        updateHeroTone();
-        window.addEventListener("scroll", updateHeroTone, { passive: true });
-        window.addEventListener("resize", updateHeroTone, { passive: true });
-        detachHero = () => {
-          window.removeEventListener("scroll", updateHeroTone);
-          window.removeEventListener("resize", updateHeroTone);
-        };
+        const accueil = document.getElementById("accueil");
+        if (accueil) {
+          const connectHeroIo = () => {
+            heroIo?.disconnect();
+            heroIo = new IntersectionObserver(
+              ([entry]) => {
+                setOnHero(entry.isIntersecting);
+              },
+              { rootMargin: headerProbeRootMargin(), threshold: 0 },
+            );
+            heroIo.observe(accueil);
+          };
+          connectHeroIo();
+          window.addEventListener("resize", connectHeroIo, { passive: true });
+          detachHero = () => {
+            window.removeEventListener("resize", connectHeroIo);
+            heroIo?.disconnect();
+            heroIo = null;
+          };
+        } else {
+          setOnHero(false);
+        }
       }
     };
 

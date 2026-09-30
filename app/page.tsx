@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 
 import { AboutSection } from "@/components/about/about-section";
-import { CopilotShowcase } from "@/components/copilot/copilot-showcase";
 import { ComparisonSection } from "@/components/comparison/comparison-section";
 import { FaqSection } from "@/components/faq/faq-section";
-import { ReferralSection } from "@/components/referral/referral-section";
+
+const CopilotShowcase = dynamic(
+  () =>
+    import("@/components/copilot/copilot-showcase").then(
+      (module) => module.CopilotShowcase,
+    ),
+  { ssr: true },
+);
+
+const ReferralSection = dynamic(
+  () =>
+    import("@/components/referral/referral-section").then(
+      (module) => module.ReferralSection,
+    ),
+  { ssr: true },
+);
 import { FinalCtaSection } from "@/components/final-cta/final-cta-section";
 import { FooterSection } from "@/components/footer/footer-section";
 import { HeroSection } from "@/components/hero/hero-section";

@@ -133,7 +133,7 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: normal;
-  color: var(--ink-2);
+  color: #5e6475;
   cursor: pointer;
   transition:
     box-shadow 0.25s var(--ease),
@@ -141,7 +141,7 @@
 }
 
 .tab .icon {
-  color: var(--ink-2);
+  color: #5e6475;
   transition: color 0.25s var(--ease);
 }
 

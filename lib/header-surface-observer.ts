@@ -11,10 +11,14 @@ function sectionIsLight(el: HTMLElement): boolean {
   return false;
 }
 
-function probeRootMargin() {
+export function headerProbeRootMargin() {
   const vh = window.innerHeight;
   const bottom = Math.max(0, vh - HEADER_PROBE_Y - 1);
   return `-${HEADER_PROBE_Y}px 0px -${bottom}px 0px`;
+}
+
+function probeRootMargin() {
+  return headerProbeRootMargin();
 }
 
 export function attachHeaderSurfaceObserver(

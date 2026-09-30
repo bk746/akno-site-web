@@ -10,5 +10,5 @@ export const heroKickerFont = Inter({
   weight: "500",
   style: "italic",
   display: "swap",
-  preload: false,
+  preload: true,
 });

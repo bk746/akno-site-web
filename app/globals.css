@@ -4310,20 +4310,32 @@ html:not(.intro-complete) .akno-scroll-progress {
 /* ——— Mot accent dans les titres : soulignement qui se dessine ——— */
 
 .akno-word {
-  background-image: linear-gradient(
+  position: relative;
+  z-index: 0;
+}
+
+.akno-word::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0.06em;
+  height: 0.09em;
+  border-radius: 1px;
+  background: linear-gradient(
     90deg,
     rgba(107, 124, 255, 0.5) 0%,
     rgba(255, 122, 162, 0.55) 100%
   );
-  background-repeat: no-repeat;
-  background-size: 0% 0.09em;
-  background-position: 0 94%;
-  transition: background-size 720ms var(--akno-ease-out) 420ms;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 720ms var(--akno-ease-out) 420ms;
 }
 
-html.akno-motion-ready .is-inview .akno-word,
-html:not(.akno-motion-ready) .akno-word {
-  background-size: 100% 0.09em;
+html.akno-motion-ready .is-inview .akno-word::after,
+html:not(.akno-motion-ready) .akno-word::after {
+  transform: scaleX(1);
 }
 
 /* Barre rose sous les titres : se déploie depuis la gauche */

@@ -24,6 +24,11 @@ export function AknoMicroInteractions() {
 
   /* ——— Barre de progression de lecture ——— */
   useEffect(() => {
+    let cancelled = false;
+    let innerStop: (() => void) | undefined;
+
+    const mount = () => {
+      if (cancelled) return;
     const bar = progressRef.current;
     if (!bar) return;
 
@@ -85,7 +90,7 @@ export function AknoMicroInteractions() {
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", onResize, { passive: true });
 
-    return () => {
+    innerStop = () => {
       stopWaiting();
       ro.disconnect();
       window.removeEventListener("wheel", markUserScroll);
@@ -96,6 +101,22 @@ export function AknoMicroInteractions() {
       if (raf) window.cancelAnimationFrame(raf);
       window.clearTimeout(scrollEndTimer);
       root.classList.remove("is-scrolling");
+    };
+    };
+
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(mount, { timeout: 2000 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(id);
+        innerStop?.();
+      };
+    }
+    const t = window.setTimeout(mount, 1);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+      innerStop?.();
     };
   }, []);
 
@@ -108,11 +129,25 @@ export function AknoMicroInteractions() {
     let lastY = 0;
     let lastTarget: Element | null = null;
     let activeSpot: HTMLElement | null = null;
+    let spotRect: DOMRect | null = null;
+    let spotRo: ResizeObserver | null = null;
 
     const releaseSpot = () => {
+      spotRo?.disconnect();
+      spotRo = null;
+      spotRect = null;
       if (!activeSpot) return;
       activeSpot.removeAttribute("data-akno-spot-live");
       activeSpot = null;
+    };
+
+    const cacheSpotRect = (spot: HTMLElement) => {
+      spotRect = spot.getBoundingClientRect();
+      spotRo?.disconnect();
+      spotRo = new ResizeObserver(() => {
+        spotRect = spot.getBoundingClientRect();
+      });
+      spotRo.observe(spot);
     };
 
     const apply = () => {
@@ -124,12 +159,14 @@ export function AknoMicroInteractions() {
       if (spot !== activeSpot) {
         releaseSpot();
         activeSpot = spot;
-        spot?.setAttribute("data-akno-spot-live", "");
+        if (spot) {
+          spot.setAttribute("data-akno-spot-live", "");
+          cacheSpotRect(spot);
+        }
       }
-      if (spot) {
-        const rect = spot.getBoundingClientRect();
-        spot.style.setProperty("--akno-mx", `${lastX - rect.left}px`);
-        spot.style.setProperty("--akno-my", `${lastY - rect.top}px`);
+      if (spot && spotRect) {
+        spot.style.setProperty("--akno-mx", `${lastX - spotRect.left}px`);
+        spot.style.setProperty("--akno-my", `${lastY - spotRect.top}px`);
       }
     };
 

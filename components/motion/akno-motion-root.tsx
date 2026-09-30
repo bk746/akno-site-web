@@ -105,7 +105,14 @@ export function AknoMotionRoot() {
     let teardownMotion: (() => void) | undefined;
 
     const stopWaiting = whenIntroReady(() => {
-      teardownMotion = start();
+      const run = () => {
+        teardownMotion = start();
+      };
+      if (typeof window.requestIdleCallback === "function") {
+        window.requestIdleCallback(run, { timeout: 2000 });
+      } else {
+        window.setTimeout(run, 1);
+      }
     });
 
     const onAnchorClick = (event: MouseEvent) => {

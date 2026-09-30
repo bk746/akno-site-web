@@ -93,10 +93,11 @@ export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
   }, [heroTone]);
 
   const heroClass = heroTone && onHero ? " site-header--hero" : "";
+  const homeClass = heroTone ? " site-header--home" : "";
 
   return (
     <header
-      className={`site-header${scrolled ? " site-header--scrolled" : ""}${onLight ? " site-header--light" : ""}${toneReady ? " site-header--tone-ready" : ""}${heroClass}`}
+      className={`site-header${homeClass}${scrolled ? " site-header--scrolled" : ""}${onLight ? " site-header--light" : ""}${toneReady ? " site-header--tone-ready" : ""}${heroClass}`}
     >
       <div className="site-header__inner">
         <Link href="/" className="site-header__logo-link" aria-label="AKNO — accueil">

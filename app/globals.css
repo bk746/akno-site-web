@@ -410,8 +410,7 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
     background 300ms var(--akno-ease-out),
     border-color 300ms var(--akno-ease-out),
     box-shadow 300ms var(--akno-ease-out),
-    backdrop-filter 300ms var(--akno-ease-out),
-    padding 300ms var(--akno-ease-out);
+    backdrop-filter 300ms var(--akno-ease-out);
 }
 
 /* Logo = masque CSS du PNG (site-header__logo-mark) : la couleur vient de background-color. */
@@ -429,15 +428,13 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
 }
 
 @media (min-width: 640px) {
-  .site-header__logo-img {
+  .site-header:not(.site-header--home) .site-header__logo-img {
     height: 36px;
   }
 }
 
 .site-header--tone-ready .site-header__logo-img {
-  transition:
-    background-color 200ms var(--akno-ease-out),
-    height 200ms var(--akno-ease-out);
+  transition: background-color 200ms var(--akno-ease-out);
 }
 
 /* Fond sombre — logo blanc */
@@ -455,12 +452,20 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
   mask-image: url("../src/images/logo-akno-plus.png");
 }
 
-/* Liquid glass logo au scroll */
+/* Liquid glass logo au scroll (sans padding : la taille du logo ne change pas) */
 .site-header--scrolled .site-header__logo-shell {
-  padding: 8px 12px;
+  padding: 0;
   border-radius: 16px;
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.site-header--home.site-header--scrolled .site-header__logo-shell {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 html.is-scrolling .site-header--scrolled .site-header__logo-shell {
@@ -551,17 +556,22 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   stroke-linejoin: round;
 }
 
-/* Logo de la maquette : 84 × 32, #1A1F36 */
-.site-header.site-header--hero .site-header__logo-img {
+/* Home : logo 84 × 32 et CTA nav McFly — taille fixe sur tout le scroll */
+.site-header.site-header--home .site-header__logo-img {
   width: 84px;
   height: 32px;
+  max-height: 32px;
+  flex: none;
+}
+
+.site-header.site-header--home:not(.site-header--light) .site-header__logo-img {
   background-color: #1a1f36;
 }
 
-/* CTA de la maquette : .btn.btn--accent.btn--nav */
-.site-header.site-header--hero .site-header__cta {
+.site-header.site-header--home .site-header__cta {
   height: 46px;
   min-height: 46px;
+  max-height: 46px;
   padding: 0 22px;
   gap: 10px;
   border: 0;
@@ -582,46 +592,51 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
     color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.site-header.site-header--hero .site-header__cta::after {
+.site-header.site-header--home .site-header__cta::after {
   display: none;
 }
 
-.site-header.site-header--hero .site-header__cta-arrow--site {
+.site-header.site-header--home .site-header__cta-arrow--site {
   display: none;
 }
 
-.site-header.site-header--hero .site-header__cta-arrow--hero {
+.site-header.site-header--home .site-header__cta-arrow--hero {
   display: block;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .site-header.site-header--hero .site-header__cta:hover {
+  .site-header.site-header--home .site-header__cta:hover {
     box-shadow:
       9px 9px 22px rgba(99, 102, 241, 0.42),
       -7px -7px 16px rgba(255, 255, 255, 0.92),
       inset 1px 1px 0 rgba(255, 255, 255, 0.28);
   }
 
-  .site-header.site-header--hero .site-header__cta:hover svg {
+  .site-header.site-header--home .site-header__cta:hover svg {
     transform: none;
   }
 
-  .site-header.site-header--hero .site-header__cta:active {
+  .site-header.site-header--home .site-header__cta:active {
     box-shadow:
       inset 3px 3px 7px rgba(163, 177, 198, 0.5),
       inset -3px -3px 7px rgba(255, 255, 255, 0.92);
   }
 }
 
-.site-header.site-header--hero .site-header__cta:focus-visible {
+.site-header.site-header--home .site-header__cta:focus-visible {
   outline: 2px solid #4f46e5;
   outline-offset: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-header.site-header--hero .site-header__cta {
+  .site-header.site-header--home .site-header__cta {
     transition: none;
   }
+}
+
+/* Couleur logo hero uniquement tant qu’on est dans #accueil */
+.site-header.site-header--hero:not(.site-header--light) .site-header__logo-img {
+  background-color: #1a1f36;
 }
 
 /* ——— Hero → Problèmes (découpe hero, fond clair dessous) ——— */
@@ -4067,17 +4082,15 @@ html.akno-motion-ready
     background 300ms var(--akno-ease-out),
     border-color 300ms var(--akno-ease-out),
     box-shadow 300ms var(--akno-ease-out),
-    backdrop-filter 300ms var(--akno-ease-out),
-    padding 300ms var(--akno-ease-out),
-    transform 380ms var(--akno-ease-out);
+    backdrop-filter 300ms var(--akno-ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .site-header__logo-link:hover .site-header__logo-shell {
+  .site-header:not(.site-header--home) .site-header__logo-link:hover .site-header__logo-shell {
     transform: translate3d(0, 0, 0) scale(1.035);
   }
 
-  .site-header__logo-link:active .site-header__logo-shell {
+  .site-header:not(.site-header--home) .site-header__logo-link:active .site-header__logo-shell {
     transform: translate3d(0, 0, 0) scale(0.98);
   }
 }

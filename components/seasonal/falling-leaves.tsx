@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 
-import { isSeasonalThemeActive, seasonalStickerSrc } from "@/lib/seasonal-theme";
+import { isHalloweenPackEnabled, seasonalStickerSrc } from "@/lib/seasonal-theme";
 
 import styles from "@/components/seasonal/sticker.module.css";
 
@@ -13,7 +13,7 @@ const LEAVES = [
 ] as const;
 
 export function FallingLeaves() {
-  if (!isSeasonalThemeActive()) return null;
+  if (!isHalloweenPackEnabled()) return null;
 
   return (
     <div className={styles.fallingRoot} data-seasonal-animate aria-hidden="true">

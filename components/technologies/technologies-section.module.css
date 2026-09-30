@@ -34,7 +34,8 @@
     #ffffff 100%
   );
   padding: 160px 64px 160px;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .section *,
@@ -110,9 +111,15 @@
   text-wrap: pretty;
 }
 
+.gridShell {
+  position: relative;
+  margin: 56px 0 0;
+  overflow: visible;
+}
+
 .grid {
   list-style: none;
-  margin: 56px 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -278,8 +285,11 @@
     margin-top: 16px;
   }
 
-  .grid {
+  .gridShell {
     margin-top: 40px;
+  }
+
+  .grid {
     gap: 18px;
   }
 

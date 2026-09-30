@@ -6,8 +6,8 @@ import {
   SeoVisual,
   SiteVisual,
 } from "@/components/services/services-visuals-neo";
-import { SeasonalAnchor } from "@/components/seasonal/seasonal-anchor";
-import pos from "@/components/seasonal/seasonal-positions.module.css";
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
 import { Sticker } from "@/components/seasonal/sticker";
 import styles from "@/components/services/services-section.module.css";
 import { technologiesAccentFont } from "@/components/technologies/technologies-font";
@@ -63,19 +63,44 @@ export function ServicesSection() {
             Un seul studio pour concevoir, dessiner et faire connaître votre site.
           </p>
         </header>
-        <ul className={cx("svc__grid")}>
+        <div className={cx("svc__gridShell")}>
+          <StickerAnchor corner="tl" className={pos.svcHatWrap}>
+            <Sticker
+              name="chapeau-sorciere"
+              pack="halloween"
+              size="M"
+              rotate={-10}
+              className={pos.svcHat}
+              hideBelowLg
+              floatDelay={0.2}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="bl" className={pos.svcPaletteWrap}>
+            <Sticker
+              name="palette"
+              pack="akno"
+              size="S"
+              rotate={-4}
+              className={pos.svcPalette}
+              hideBelowLg
+              floatDelay={0.5}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="tr" className={pos.svcLoupeWrap}>
+            <Sticker
+              name="loupe-seo"
+              pack="akno"
+              size="L"
+              rotate={12}
+              className={pos.svcLoupe}
+              sectionLarge
+              floatDelay={0.35}
+            />
+          </StickerAnchor>
+          <ul className={cx("svc__grid")}>
           <li className={cx("svc__item")}>
             <article className={cx("card")} data-service="site">
               <span className={cx("card__ring")} aria-hidden="true" />
-              <SeasonalAnchor className={`${pos.anchorCard} ${pos.anchorTopRight}`}>
-                <Sticker
-                  src="chapeau-sorciere"
-                  size={68}
-                  rotate={-8}
-                  className={pos.svcHat}
-                  hideMobile
-                />
-              </SeasonalAnchor>
               <SiteVisual />
               <div className={cx("card__body")}>
                 <span className={cx("card__num")}>01</span>
@@ -112,15 +137,6 @@ export function ServicesSection() {
           <li className={cx("svc__item")}>
             <article className={cx("card")} data-service="design">
               <span className={cx("card__ring")} aria-hidden="true" />
-              <SeasonalAnchor className={`${pos.anchorCard} ${pos.anchorTopRight}`}>
-                <Sticker
-                  src="curseur-fantome-boo"
-                  size={56}
-                  rotate={6}
-                  className={pos.svcCursor}
-                  hideMobile
-                />
-              </SeasonalAnchor>
               <DesignVisual />
               <div className={cx("card__body")}>
                 <span className={cx("card__num")}>02</span>
@@ -156,15 +172,6 @@ export function ServicesSection() {
           <li className={cx("svc__item")}>
             <article className={cx("card")} data-service="seo">
               <span className={cx("card__ring")} aria-hidden="true" />
-              <SeasonalAnchor className={`${pos.anchorCard} ${pos.anchorBottomRight}`}>
-                <Sticker
-                  src="trick-or-trafic"
-                  size={120}
-                  rotate={5}
-                  className={pos.svcTrick}
-                  keepMobile
-                />
-              </SeasonalAnchor>
               <SeoVisual />
               <div className={cx("card__body")}>
                 <span className={cx("card__num")}>03</span>
@@ -197,15 +204,28 @@ export function ServicesSection() {
               </div>
             </article>
           </li>
-        </ul>
+          </ul>
+        </div>
         <p className={cx("svc__foot")}>
           Site, design et SEO. Séparés, c’est moyen. Ensemble, c’est un système.
         </p>
-        <div className={cx("svc__ctas")}>
+        <div className={`${cx("svc__ctas")} relative`}>
           <ContactCta className={cx("svc__cta")} aria-haspopup="dialog">
             Je réserve mon appel
             {CTA_ARROW}
           </ContactCta>
+          <StickerAnchor corner="edge-r" className={pos.svcCauldronWrap}>
+            <Sticker
+              name="chaudron"
+              pack="halloween"
+              size="M"
+              rotate={4}
+              className={pos.svcCauldron}
+              hideBelowLg
+              voidMobile
+              floatDelay={0.65}
+            />
+          </StickerAnchor>
         </div>
       </div>
     </section>

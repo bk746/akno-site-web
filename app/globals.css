@@ -394,6 +394,7 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
 .site-header__cta-wrap {
   position: relative;
   display: inline-flex;
+  overflow: visible;
   pointer-events: auto;
 }
 
@@ -404,8 +405,9 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
 .site-header__logo-shell {
   display: inline-flex;
   align-items: center;
-  border-radius: 16px;
-  padding: 0;
+  justify-content: center;
+  border-radius: 18px;
+  padding: 8px 14px;
   transition:
     background 300ms var(--akno-ease-out),
     border-color 300ms var(--akno-ease-out),
@@ -452,20 +454,21 @@ html.akno-motion-ready [data-akno-reveal="fade"].is-inview {
   mask-image: url("../src/images/logo-akno-plus.png");
 }
 
-/* Liquid glass logo au scroll (sans padding : la taille du logo ne change pas) */
+/* Liquid glass logo au scroll — padding généreux pour aérer le flou */
 .site-header--scrolled .site-header__logo-shell {
-  padding: 0;
-  border-radius: 16px;
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  padding: 10px 18px;
+  border-radius: 20px;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
 }
 
-.site-header--home.site-header--scrolled .site-header__logo-shell {
+.site-header--home.site-header--scrolled:not(.site-header--light) .site-header__logo-shell {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   background: transparent;
   border: none;
   box-shadow: none;
+  padding: 8px 14px;
 }
 
 html.is-scrolling .site-header--scrolled .site-header__logo-shell {
@@ -477,16 +480,18 @@ html.is-scrolling .site-header--scrolled .site-header__logo-shell {
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 12px 40px rgba(0, 0, 0, 0.14),
+    0 4px 14px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .site-header--scrolled.site-header--light .site-header__logo-shell {
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow:
-    0 8px 28px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    0 12px 36px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .site-header__cta {
@@ -973,6 +978,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .want-card {
+  position: relative;
   background: #ffffff;
   border: none;
   cursor: default;
@@ -1027,6 +1033,12 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   max-width: 440px;
 }
 
+.problems-right-shell {
+  position: relative;
+  min-width: 0;
+  overflow: visible;
+}
+
 .problems-right {
   display: flex;
   min-width: 0;
@@ -1063,6 +1075,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .problem-card {
+  position: relative;
   --problem-card-shadow-rest:
     inset -5px 5px 10px 0 rgba(191, 191, 191, 0.2),
     inset 5px -5px 10px 0 rgba(191, 191, 191, 0.2),
@@ -1201,6 +1214,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .realisation-case-card {
+  position: relative;
   border-radius: 28px;
   background: #ffffff;
   box-shadow:
@@ -1764,6 +1778,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .process-section__panel {
+  position: relative;
   max-width: 980px;
   margin-inline: auto;
   border-radius: 36px;
@@ -1771,6 +1786,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   background: #ffffff;
   padding: clamp(3rem, 5.5vw, 4.5rem) clamp(1.5rem, 4vw, 2.75rem);
   box-shadow: var(--akno-neumo-card-rest);
+  overflow: visible;
 }
 
 .process-section__header {
@@ -1811,6 +1827,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
   padding: 0;
   list-style: none;
   align-items: stretch;
+  overflow: visible;
 }
 
 @media (min-width: 768px) {
@@ -2519,6 +2536,7 @@ html.is-scrolling .hero-video-bottom-blur__layer--strong {
 }
 
 .faq-card {
+  position: relative;
   display: flex;
   height: 100%;
   min-height: 220px;
@@ -3800,6 +3818,9 @@ html.intro-complete .akno-enter--6 {
 .akno-deferred-section {
   content-visibility: auto;
   contain-intrinsic-size: auto 720px;
+  /* Permet aux stickers de dépasser (sinon paint containment les coupe) */
+  contain: layout style !important;
+  overflow: visible;
 }
 
 @media (min-width: 768px) {
@@ -4678,4 +4699,13 @@ html.akno-motion-ready
     white-space: normal;
   }
 
+}
+
+/* ≤1023 px : aucun sticker de section (hero + citrouille navbar conservés) */
+@media (max-width: 1023px) {
+  [data-akno-section-sticker] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
 }

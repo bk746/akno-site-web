@@ -4,6 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ProblemCard } from "@/components/problems/problem-card";
 import { PROBLEMS } from "@/components/problems/problems-data";
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
+import { Sticker } from "@/components/seasonal/sticker";
 
 function getFocusY() {
   return window.innerHeight * 0.42;
@@ -84,26 +87,53 @@ export function ProblemsCardsList() {
   }, [scheduleUpdate]);
 
   return (
-    <ul
-      ref={listRef}
-      className="problems-right"
-      data-scroll-active
-      data-akno-reveal-stagger
-    >
-      {PROBLEMS.map((problem, index) => (
-        <li
-          key={problem.segments.map((s) => s.text).join("")}
-          data-akno-reveal
-          ref={(node) => {
-            itemRefs.current[index] = node;
-          }}
-        >
-          <ProblemCard
-            problem={problem}
-            isScrollActive={activeIndex === index}
-          />
-        </li>
-      ))}
-    </ul>
+    <div className="problems-right-shell">
+      <StickerAnchor corner="tr" className={pos.diagMoonWrap}>
+        <Sticker
+          name="lune-etoiles"
+          pack="akno"
+          size="S"
+          rotate={-8}
+          className={pos.diagMoon}
+          hideBelowLg
+          floatDelay={0.1}
+        />
+      </StickerAnchor>
+      <ul
+        ref={listRef}
+        className="problems-right"
+        data-scroll-active
+        data-akno-reveal-stagger
+      >
+        {PROBLEMS.map((problem, index) => (
+          <li
+            key={problem.segments.map((s) => s.text).join("")}
+            className="relative"
+            data-akno-reveal
+            ref={(node) => {
+              itemRefs.current[index] = node;
+            }}
+          >
+            <ProblemCard
+              problem={problem}
+              isScrollActive={activeIndex === index}
+            />
+            {index === 2 ? (
+              <StickerAnchor corner="edge-l">
+                <Sticker
+                  name="eclair"
+                  pack="akno"
+                  size="S"
+                  rotate={6}
+                  className={pos.diagBolt}
+                  hideBelowLg
+                  floatDelay={0.55}
+                />
+              </StickerAnchor>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

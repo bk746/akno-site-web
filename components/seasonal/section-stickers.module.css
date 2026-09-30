@@ -1,0 +1,399 @@
+/* Offsets calés sur les refs 1440 px (coords ÷ 2). */
+
+/* —— 02 Diagnostic —— */
+.diagMoonWrap {
+  top: 0;
+  right: 0;
+}
+
+.diagMoon {
+  bottom: 100%;
+  left: 100%;
+  margin-bottom: 12px;
+  margin-left: 12px;
+}
+
+.diagBolt {
+  top: 50%;
+  right: 100%;
+  margin-top: calc(var(--sticker-size, 84px) * var(--sticker-scale, 1) / -2);
+  margin-right: 14px;
+}
+
+/* —— 03 Ambitions —— */
+.wantsSparkleWrap {
+  top: 0;
+  right: 0;
+}
+
+.wantsSparkle {
+  bottom: 100%;
+  left: 100%;
+  margin-bottom: 12px;
+  margin-left: 12px;
+}
+
+.wantsPumpkinWrap {
+  bottom: 0;
+  left: 0;
+}
+
+.wantsPumpkin {
+  top: 100%;
+  right: 100%;
+  margin-top: 16px;
+  margin-right: 14px;
+}
+
+.wantsCandleWrap {
+  bottom: 0;
+  right: 0;
+}
+
+.wantsCandle {
+  top: 100%;
+  left: 100%;
+  margin-top: 16px;
+  margin-left: 14px;
+}
+
+/* —— 04 Services —— */
+.svcHatWrap {
+  top: 0;
+  left: 0;
+}
+
+.svcHat {
+  bottom: 100%;
+  right: 100%;
+  margin-bottom: 12px;
+  margin-right: 12px;
+}
+
+.svcPaletteWrap {
+  bottom: 0;
+  left: 0;
+}
+
+.svcPalette {
+  top: 100%;
+  right: 100%;
+  margin-top: 14px;
+  margin-right: 14px;
+}
+
+.svcLoupeWrap {
+  top: 0;
+  right: 0;
+}
+
+.svcLoupe {
+  bottom: 100%;
+  left: 100%;
+  margin-bottom: 12px;
+  margin-left: 14px;
+}
+
+.svcCauldronWrap {
+  top: 50%;
+  right: clamp(0px, 4vw, 48px);
+  transform: translateY(-50%);
+}
+
+.svcCauldron {
+  top: 50%;
+  left: 100%;
+  margin-top: calc(var(--sticker-size, 116px) * var(--sticker-scale, 1) / -2);
+  margin-left: 14px;
+}
+
+/* —— 05 Réalisations —— */
+.realBrowser {
+  top: -52px;
+  left: 48px;
+}
+
+.realCat {
+  top: -72px;
+  left: 52%;
+  transform: translateX(-50%);
+}
+
+.realCursor {
+  bottom: -36px;
+  left: 24px;
+}
+
+.realSpooky {
+  bottom: -44px;
+  right: 48px;
+}
+
+/* —— 06 Processus —— */
+.procMushroomWrap {
+  top: 50%;
+  left: 0;
+}
+
+.procMushroom {
+  top: 50%;
+  right: 100%;
+  margin-top: calc(var(--sticker-size, 164px) * var(--sticker-scale, 1) / -2);
+  margin-right: 14px;
+}
+
+.procCheckWrap {
+  top: 50%;
+  right: 0;
+}
+
+.procCheck {
+  top: 50%;
+  left: 0;
+  margin-top: calc(var(--sticker-size, 84px) * var(--sticker-scale, 1) / -2);
+  margin-left: 14px;
+}
+
+.procAcornWrap {
+  bottom: 12px;
+  right: 0;
+}
+
+.procAcorn {
+  top: 50%;
+  left: 0;
+  margin-top: calc(var(--sticker-size, 116px) * var(--sticker-scale, 1) / -2);
+  margin-left: 18px;
+}
+
+.procToggle {
+  bottom: 28px;
+  left: 20px;
+}
+
+/* —— 07 Copilot —— */
+.copilotBoo {
+  top: 0.1em;
+  right: calc(100% + 12px);
+}
+
+.copilotChart {
+  top: -28px;
+  right: -36px;
+}
+
+.copilotGhost {
+  bottom: -36px;
+  left: -40px;
+}
+
+.copilotCursorWrap {
+  bottom: 88px;
+  right: clamp(8px, 4vw, 40px);
+}
+
+.copilotCursor {
+  bottom: 0;
+  right: 0;
+}
+
+/* —— 08 Parrainage —— */
+.refCandyWrap {
+  top: 42%;
+  left: calc(50% + 280px);
+}
+
+.refCandy {
+  top: 0;
+  left: 0;
+}
+
+.refHeart {
+  top: -24px;
+  left: -28px;
+}
+
+.refHello {
+  top: 50%;
+  right: -42px;
+  margin-top: calc(var(--sticker-size, 84px) * var(--sticker-scale, 1) / -2);
+}
+
+.refWebWrap {
+  bottom: 0;
+  left: 0;
+}
+
+.refWeb {
+  top: 100%;
+  right: 100%;
+  margin-top: 14px;
+  margin-right: 14px;
+}
+
+.refTrickWrap {
+  bottom: 0;
+  right: 0;
+}
+
+.refTrick {
+  top: 100%;
+  left: 100%;
+  margin-top: 14px;
+  margin-left: 14px;
+}
+
+/* —— 09 Technologies —— */
+.techMoon {
+  top: 0.2em;
+  right: calc(100% + 14px);
+}
+
+.techCauldronWrap {
+  bottom: 0;
+  left: 0;
+}
+
+.techCauldron {
+  top: 100%;
+  right: 100%;
+  margin-top: 16px;
+  margin-right: 14px;
+}
+
+.techBoltWrap {
+  top: 0;
+  right: 0;
+}
+
+.techBolt {
+  bottom: 100%;
+  left: 100%;
+  margin-bottom: 12px;
+  margin-left: 12px;
+}
+
+/* —— 10 À propos —— */
+.aboutMade {
+  top: -22px;
+  right: -28px;
+}
+
+.aboutPin {
+  bottom: -18px;
+  right: -32px;
+}
+
+.aboutLatteWrap {
+  top: calc(100% + 8px);
+  left: 8px;
+}
+
+.aboutLatte {
+  top: 0;
+  left: 0;
+}
+
+/* —— 11 Comparaison —— */
+.cmpTraffic {
+  top: -32px;
+  left: -48px;
+}
+
+.cmpSkull {
+  bottom: -36px;
+  right: -44px;
+}
+
+.cmpPumpkinWrap {
+  top: 50%;
+  left: clamp(0px, 8vw, 96px);
+  transform: translateY(-50%);
+}
+
+.cmpPumpkin {
+  top: 0;
+  left: 0;
+}
+
+/* —— 12 FAQ —— */
+.faqGhost {
+  top: 0.15em;
+  right: calc(100% + 10px);
+}
+
+.faqLoupe {
+  top: -26px;
+  right: -30px;
+}
+
+.faqMushroomWrap {
+  bottom: 0;
+  left: clamp(0px, 18vw, 220px);
+}
+
+.faqMushroom {
+  bottom: -36px;
+  left: 0;
+}
+
+/* —— 13 Contact —— */
+.finalHat {
+  top: -28px;
+  right: -32px;
+}
+
+.finalCatWrap {
+  top: 50%;
+  left: clamp(8px, 5vw, 48px);
+  transform: translateY(-50%);
+}
+
+.finalCat {
+  top: 50%;
+  left: 0;
+  margin-top: calc(var(--sticker-size, 164px) * var(--sticker-scale, 1) / -2);
+}
+
+.finalArrow {
+  bottom: -24px;
+  right: -28px;
+}
+
+@media (max-width: 1279px) {
+  .realCat {
+    top: -58px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .wantsPumpkin,
+  .realCat,
+  .procMushroom,
+  .copilotGhost,
+  .refCandy,
+  .techCauldron,
+  .aboutLatte,
+  .cmpPumpkin,
+  .faqMushroom,
+  .finalCat {
+    /* L seuls : légers ajustements */
+  }
+}
+
+@media (max-width: 767px) {
+  .wantsCandle,
+  .realBrowser,
+  .realCursor,
+  .realSpooky,
+  .copilotBoo,
+  .copilotCursor,
+  .refCandy,
+  .techMoon,
+  .cmpTraffic,
+  .cmpPumpkin,
+  .faqGhost,
+  .finalCat {
+    display: none;
+  }
+}

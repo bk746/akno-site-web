@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { isSeasonalThemeActive, seasonalStickerSrc } from "@/lib/seasonal-theme";
+import { isHalloweenPackEnabled, seasonalStickerSrc } from "@/lib/seasonal-theme";
 
 import styles from "@/components/seasonal/hero-seasonal.module.css";
 
@@ -34,7 +34,7 @@ function HeroSticker({
 
 /** Couche stickers hero — positions identiques à hero-halloween.html */
 export function HeroSeasonalDecor() {
-  if (!isSeasonalThemeActive()) return null;
+  if (!isHalloweenPackEnabled()) return null;
 
   return (
     <div className={styles.plane} data-seasonal-animate aria-hidden="true">
@@ -84,7 +84,7 @@ export function HeroSeasonalDecor() {
 }
 
 export function HeroTagPumpkin() {
-  if (!isSeasonalThemeActive()) return null;
+  if (!isHalloweenPackEnabled()) return null;
 
   return (
     <Image

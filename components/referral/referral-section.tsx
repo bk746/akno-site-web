@@ -8,6 +8,9 @@ import {
   type ReferralIcon,
 } from "@/components/referral/referral-icons";
 
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
+import { Sticker } from "@/components/seasonal/sticker";
 import styles from "@/components/referral/referral-section.module.css";
 
 /* ================================================================
@@ -121,7 +124,19 @@ export function ReferralSection() {
       aria-labelledby="rfs-title"
     >
       <div className={styles.inner}>
-        <header className={styles.head} data-akno-reveal>
+        <header className={`${styles.head} relative`} data-akno-reveal>
+          <StickerAnchor corner="tr" className={pos.refCandyWrap}>
+            <Sticker
+              name="bonbon"
+              pack="halloween"
+              size="L"
+              rotate={10}
+              className={pos.refCandy}
+              sectionLarge
+              voidMobile
+              floatDelay={0.15}
+            />
+          </StickerAnchor>
           <p className={styles.tag}>
             <span className={styles.tagIc}>
               <Icon name="sparkles" />
@@ -144,6 +159,17 @@ export function ReferralSection() {
 
         <div className={styles.duo} data-akno-reveal>
           <div className={styles.panel}>
+            <StickerAnchor corner="tl">
+              <Sticker
+                name="coeur"
+                pack="akno"
+                size="M"
+                rotate={-12}
+                className={pos.refHeart}
+                hideBelowLg
+                floatDelay={0.3}
+              />
+            </StickerAnchor>
             <div className={styles.side}>
               <p className={styles.sideKick}>Pour vous, le parrain</p>
               <h3 className={styles.sideTitle}>Choisissez votre récompense</h3>
@@ -300,11 +326,22 @@ export function ReferralSection() {
                 <p className={styles.stepP}>{STEP2_TEXT}</p>
               </div>
             </li>
-            <li className={styles.step}>
+            <li className={`${styles.step} relative`}>
               <span className={`${styles.num} ${styles.numLast}`} aria-hidden="true">
                 <Icon name="gift" />
               </span>
-              <div className={styles.stepCard}>
+              <div className={`${styles.stepCard} relative`}>
+                <StickerAnchor corner="edge-r">
+                  <Sticker
+                    name="bulle-hello"
+                    pack="akno"
+                    size="S"
+                    rotate={0}
+                    className={pos.refHello}
+                    hideBelowLg
+                    floatDelay={0.45}
+                  />
+                </StickerAnchor>
                 <div className={styles.stepK}>Étape 3</div>
                 <h4 className={styles.stepT}>Vous êtes récompensé</h4>
                 <p className={styles.stepP}>
@@ -316,7 +353,30 @@ export function ReferralSection() {
           </ol>
         </div>
 
-        <div className={styles.bonus} data-akno-reveal>
+        <div className={styles.bonusOuter} data-akno-reveal>
+          <StickerAnchor corner="bl" className={pos.refWebWrap}>
+            <Sticker
+              name="toile-araignee"
+              pack="halloween"
+              size="S"
+              rotate={0}
+              className={pos.refWeb}
+              hideBelowLg
+              floatDelay={0.55}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="br" className={pos.refTrickWrap}>
+            <Sticker
+              name="trick-or-trafic"
+              pack="halloween"
+              size="M"
+              rotate={5}
+              className={pos.refTrick}
+              hideBelowLg
+              floatDelay={0.7}
+            />
+          </StickerAnchor>
+          <div className={styles.bonus}>
             <article className={styles.card}>
               <div className={styles.cardHead}>
                 <span className={styles.kicker}>
@@ -455,6 +515,7 @@ export function ReferralSection() {
                 </div>
               </div>
             </article>
+          </div>
         </div>
 
         <div className={styles.cta}>

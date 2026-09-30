@@ -121,6 +121,7 @@
 }
 
 .panel {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
   gap: 0;
@@ -624,8 +625,13 @@
   text-wrap: pretty;
 }
 
-.bonus {
+.bonusOuter {
+  position: relative;
   margin-top: 56px;
+  overflow: visible;
+}
+
+.bonus {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;

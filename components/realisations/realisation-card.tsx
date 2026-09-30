@@ -3,6 +3,9 @@ import Image from "next/image";
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import type { RealisationProject } from "@/components/realisations/realisations-data";
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
+import { Sticker } from "@/components/seasonal/sticker";
 
 type RealisationCardProps = {
   project: RealisationProject;
@@ -82,6 +85,58 @@ export function RealisationCard({
 
   return (
     <article className="realisation-case-card">
+      {isActive ? (
+        <>
+          <StickerAnchor corner="tl">
+            <Sticker
+              name="mini-navigateur"
+              pack="akno"
+              size="M"
+              rotate={8}
+              className={pos.realBrowser}
+              hideBelowLg
+              voidMobile
+              floatDelay={0.15}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="tr">
+            <Sticker
+              name="chat-noir"
+              pack="halloween"
+              size="L"
+              rotate={-6}
+              className={pos.realCat}
+              sectionLarge
+              voidMobile
+              floatDelay={0.3}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="bl">
+            <Sticker
+              name="curseur-design"
+              pack="akno"
+              size="S"
+              rotate={-2}
+              className={pos.realCursor}
+              hideBelowLg
+              voidMobile
+              floatDelay={0.55}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="br">
+            <Sticker
+              name="spooky-season"
+              pack="halloween"
+              size="M"
+              rotate={10}
+              className={pos.realSpooky}
+              hideBelowLg
+              voidMobile
+              floatDelay={0.7}
+            />
+          </StickerAnchor>
+        </>
+      ) : null}
       <div className="realisation-case-card__grid">
         <div className="realisation-case-card__visual">
           <Image

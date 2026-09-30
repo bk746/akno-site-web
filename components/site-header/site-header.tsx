@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { ContactCta } from "@/components/contact/contact-cta";
 import pos from "@/components/seasonal/seasonal-positions.module.css";
-import { SeasonalLayer } from "@/components/seasonal/seasonal-layer";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
 import { Sticker } from "@/components/seasonal/sticker";
 import { isSeasonalThemeActive } from "@/lib/seasonal-theme";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
@@ -132,17 +132,19 @@ export function SiteHeader({ heroTone = false }: SiteHeaderProps) {
             </svg>
           </ContactCta>
           {heroTone ? (
-            <SeasonalLayer variant="header">
+            <StickerAnchor corner="tr" className={pos.headerPumpkinWrap}>
               <Sticker
-                src="citrouille"
-                size={52}
+                name="citrouille"
+                pack="halloween"
+                size="S"
                 rotate={14}
                 className={pos.headerPumpkin}
                 eager
-                keepMobile
                 float={false}
+                sectionLarge
+                keepOnMobile
               />
-            </SeasonalLayer>
+            </StickerAnchor>
           ) : null}
         </span>
       </div>

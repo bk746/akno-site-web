@@ -167,6 +167,7 @@
 }
 
 .panel {
+  position: relative;
   display: grid;
   grid-template-columns: 408px minmax(0, 712px);
   gap: 56px;

@@ -1,6 +1,9 @@
 import { ContactCta } from "@/components/contact/contact-cta";
 import { COMPARISON_ROWS } from "@/components/comparison/comparison-data";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
+import { Sticker } from "@/components/seasonal/sticker";
 
 function ComparisonCheckIcon() {
   return (
@@ -42,6 +45,29 @@ export function ComparisonSection() {
           aria-label="Comparaison AKNO et approche classique"
           data-akno-reveal-stagger
         >
+          <StickerAnchor corner="tl">
+            <Sticker
+              name="plus-trafic"
+              pack="akno"
+              size="S"
+              rotate={-6}
+              className={pos.cmpTraffic}
+              hideBelowLg
+              voidMobile
+              floatDelay={0.15}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="br">
+            <Sticker
+              name="crane"
+              pack="halloween"
+              size="M"
+              rotate={10}
+              className={pos.cmpSkull}
+              hideBelowLg
+              floatDelay={0.4}
+            />
+          </StickerAnchor>
           <div
             className="comparison-table__row comparison-table__row--head"
             role="row"
@@ -142,7 +168,19 @@ export function ComparisonSection() {
           ))}
         </ul>
 
-        <div className="comparison-section__cta">
+        <div className="comparison-section__cta relative">
+          <StickerAnchor corner="bl" className={pos.cmpPumpkinWrap}>
+            <Sticker
+              name="citrouille"
+              pack="halloween"
+              size="L"
+              rotate={5}
+              className={pos.cmpPumpkin}
+              sectionLarge
+              voidMobile
+              floatDelay={0.55}
+            />
+          </StickerAnchor>
           <p className="comparison-section__cta-text">
             Tu veux la méthode AKNO ?
           </p>

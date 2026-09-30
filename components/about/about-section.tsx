@@ -3,6 +3,9 @@ import Link from "next/link";
 import { AboutProfileCard } from "@/components/about/about-profile-card";
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
+import { Sticker } from "@/components/seasonal/sticker";
 
 const CHIPS = [
   "Sites · SEO · Growth",
@@ -45,7 +48,7 @@ export function AboutSection() {
               ))}
             </ul>
 
-            <div className="about-ctas">
+            <div className="about-ctas relative">
               <ContactCta className="about-cta-primary btn btn-primary group">
                 On en parle
                 <ArrowUpRight className="size-4" />
@@ -53,6 +56,18 @@ export function AboutSection() {
               <Link href="#realisations" className="about-cta-ghost btn btn-ghost">
                 Voir des projets
               </Link>
+              <StickerAnchor corner="bl" className={pos.aboutLatteWrap}>
+                <Sticker
+                  name="pumpkin-spice-latte"
+                  pack="halloween"
+                  size="L"
+                  rotate={-9}
+                  className={pos.aboutLatte}
+                  sectionLarge
+                  voidMobile
+                  floatDelay={0.6}
+                />
+              </StickerAnchor>
             </div>
           </div>
 

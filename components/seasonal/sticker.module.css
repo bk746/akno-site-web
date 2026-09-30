@@ -25,13 +25,31 @@
 .sticker {
   position: absolute;
   display: block;
-  width: calc(var(--sticker-size, 64px) * var(--seasonal-scale, 1));
-  height: auto;
+  box-sizing: border-box;
+  width: calc(var(--sticker-size, 84px) * var(--sticker-scale, 1)) !important;
+  height: calc(var(--sticker-size, 84px) * var(--sticker-scale, 1)) !important;
+  max-width: none !important;
+  min-width: 0;
+  object-fit: contain;
   user-select: none;
   pointer-events: none;
+  z-index: 2;
   transform: rotate(var(--sticker-rotate, 0deg));
   animation: seasonal-float var(--float-duration, 5s) ease-in-out infinite;
   animation-delay: var(--float-delay, 0s);
+  --sticker-scale: 1;
+}
+
+.hideBelowLg {
+  /* masqué sous 1024 px via media query */
+}
+
+.voidMobile {
+  /* masqué sous 768 px via media query */
+}
+
+.sectionLarge {
+  /* conservé seul sous 1024 px */
 }
 
 .stickerNoFloat {
@@ -90,7 +108,21 @@
     --seasonal-scale: 0.8;
   }
 
+  .sticker {
+    --sticker-scale: 0.8;
+  }
+
   .hideTablet {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hideBelowLg {
+    display: none !important;
+  }
+
+  .fallingRoot {
     display: none !important;
   }
 }
@@ -102,6 +134,10 @@
     --seasonal-scale: 0.6;
   }
 
+  .voidMobile {
+    display: none !important;
+  }
+
   .hideMobile {
     display: none !important;
   }
@@ -110,13 +146,6 @@
     display: none;
   }
 
-  .layer .sticker:not(.keepMobile) {
-    display: none !important;
-  }
-
-  .layerHeader .sticker:not(.keepMobile) {
-    display: none !important;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

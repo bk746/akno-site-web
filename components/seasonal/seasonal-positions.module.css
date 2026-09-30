@@ -155,7 +155,13 @@
   right: clamp(12px, 6vw, 72px);
 }
 
+.headerPumpkinWrap {
+  top: 0;
+  right: 0;
+}
+
 .headerPumpkin {
-  top: -12px;
-  right: -8px;
+  top: 0;
+  right: 0;
+  transform: translate(20px, calc(-64% - 3px)) rotate(var(--sticker-rotate, 14deg));
 }

@@ -1,0 +1,49 @@
+.anchor {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  line-height: 0;
+  overflow: visible;
+}
+
+.cornerTl {
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.cornerTr {
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+}
+
+.cornerBl {
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.cornerBr {
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+}
+
+.edgeL {
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.edgeR {
+  top: 50%;
+  right: 0;
+  width: 0;
+  height: 0;
+}

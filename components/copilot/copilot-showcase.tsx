@@ -8,6 +8,9 @@ import { copilotAccentFont } from "@/components/copilot/copilot-font";
 import { ICON_PATHS, type IconKey } from "@/components/copilot/copilot-icons";
 
 import styles from "@/components/copilot/copilot-showcase.module.css";
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
+import { Sticker } from "@/components/seasonal/sticker";
 
 const RING_C = 2 * Math.PI * 16;
 
@@ -104,7 +107,19 @@ export function CopilotShowcase() {
             <span className={styles.eyebrowDot} aria-hidden="true" />
             AKNO Copilot · Espace client
           </span>
-          <h2 className={styles.title} id="cps-title">
+          <h2 className={`${styles.title} relative`} id="cps-title">
+            <StickerAnchor corner="tl">
+              <Sticker
+                name="curseur-fantome-boo"
+                pack="halloween"
+                size="M"
+                rotate={-11}
+                className={pos.copilotBoo}
+                hideBelowLg
+                voidMobile
+                floatDelay={0.1}
+              />
+            </StickerAnchor>
             Pilotez votre site avec une{" "}
             <span
               className={`${styles.accent} ${copilotAccentFont.className}`}
@@ -149,6 +164,28 @@ export function CopilotShowcase() {
 
         <div className={styles.panelWrap} data-akno-reveal>
           <div className={styles.panel}>
+            <StickerAnchor corner="tr">
+              <Sticker
+                name="mini-graphique"
+                pack="akno"
+                size="S"
+                rotate={8}
+                className={pos.copilotChart}
+                hideBelowLg
+                floatDelay={0.35}
+              />
+            </StickerAnchor>
+            <StickerAnchor corner="bl">
+              <Sticker
+                name="fantome"
+                pack="halloween"
+                size="L"
+                rotate={-4}
+                className={pos.copilotGhost}
+                sectionLarge
+                floatDelay={0.5}
+              />
+            </StickerAnchor>
             <div className={styles.texts}>
               {COPILOT_TABS.map((tab, i) => (
                 <div
@@ -254,6 +291,19 @@ export function CopilotShowcase() {
             </div>
           </div>
         </div>
+
+        <StickerAnchor corner="br" className={pos.copilotCursorWrap}>
+          <Sticker
+            name="curseur"
+            pack="akno"
+            size="S"
+            rotate={12}
+            className={pos.copilotCursor}
+            hideBelowLg
+            voidMobile
+            floatDelay={0.75}
+          />
+        </StickerAnchor>
 
         <ul className={styles.trust}>
           <li>

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { isSeasonalThemeActive } from "@/lib/seasonal-theme";
+import { isHalloweenPackEnabled } from "@/lib/seasonal-theme";
 
 import styles from "@/components/seasonal/sticker.module.css";
 
@@ -15,7 +15,7 @@ export function SeasonalLayer({
   className,
   variant = "section",
 }: SeasonalLayerProps) {
-  if (!isSeasonalThemeActive()) return null;
+  if (!isHalloweenPackEnabled()) return null;
 
   const base = variant === "header" ? styles.layerHeader : styles.layer;
 

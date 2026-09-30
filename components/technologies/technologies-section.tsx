@@ -2,6 +2,9 @@ import type { ReactNode } from "react";
 
 import { technologiesAccentFont } from "@/components/technologies/technologies-font";
 
+import pos from "@/components/seasonal/section-stickers.module.css";
+import { StickerAnchor } from "@/components/seasonal/sticker-anchor";
+import { Sticker } from "@/components/seasonal/sticker";
 import styles from "@/components/technologies/technologies-section.module.css";
 
 /* ================================================================
@@ -98,7 +101,19 @@ export function TechnologiesSection() {
             <span className={styles.eyebrowDot} aria-hidden="true" />
             Nos technologies
           </span>
-          <h2 className={styles.title} id="tks-title">
+          <h2 className={`${styles.title} relative`} id="tks-title">
+            <StickerAnchor corner="tl">
+              <Sticker
+                name="lune-etoiles"
+                pack="akno"
+                size="S"
+                rotate={-8}
+                className={pos.techMoon}
+                hideBelowLg
+                voidMobile
+                floatDelay={0.1}
+              />
+            </StickerAnchor>
             Des technologies adaptées aux besoins de{" "}
             <span
               className={`${styles.accent} ${technologiesAccentFont.className}`}
@@ -114,7 +129,30 @@ export function TechnologiesSection() {
             </p>
           )}
         </header>
-        <ul className={styles.grid} data-akno-reveal>
+        <div className={styles.gridShell}>
+          <StickerAnchor corner="bl" className={pos.techCauldronWrap}>
+            <Sticker
+              name="chaudron"
+              pack="halloween"
+              size="L"
+              rotate={-5}
+              className={pos.techCauldron}
+              sectionLarge
+              floatDelay={0.35}
+            />
+          </StickerAnchor>
+          <StickerAnchor corner="tr" className={pos.techBoltWrap}>
+            <Sticker
+              name="eclair"
+              pack="akno"
+              size="S"
+              rotate={10}
+              className={pos.techBolt}
+              hideBelowLg
+              floatDelay={0.5}
+            />
+          </StickerAnchor>
+          <ul className={styles.grid} data-akno-reveal>
           {TECHNOLOGIES.map((t) => (
             <li key={t.id} className={styles.card} data-tech={t.id}>
               <div className={styles.well}>
@@ -126,7 +164,8 @@ export function TechnologiesSection() {
               </div>
             </li>
           ))}
-        </ul>
+          </ul>
+        </div>
         {TECHNOLOGIES_OPTIONS.showNote && (
           <p className={styles.note}>
             Vous hésitez ? Nous vous recommandons la plus adaptée dès le premier

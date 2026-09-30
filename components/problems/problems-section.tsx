@@ -1,7 +1,6 @@
 import { ContactCta } from "@/components/contact/contact-cta";
 import { ArrowUpRight } from "@/components/icons/arrow-up-right";
 import { ProblemsCardsList } from "@/components/problems/problems-cards-list";
-
 const problemsCtaClassName =
   "btn btn-primary w-full items-center justify-center gap-2 rounded-full bg-akno-cta px-6 py-3.5 text-[15px] font-medium tracking-[-0.01em] text-white lg:w-max";
 
@@ -21,7 +20,7 @@ export function ProblemsSection() {
     >
       <div className="mx-auto max-w-[1120px] px-6 pb-20 pt-[6.25rem] sm:pb-[5.625rem] sm:pt-28 lg:pb-[6.25rem] lg:pt-[7.25rem]">
         <div className="problems">
-          <div className="problems-left" data-akno-reveal-stagger>
+          <div className="problems-left relative" data-akno-reveal-stagger>
             <p
               className="text-[11px] font-semibold uppercase leading-none tracking-[0.16em] text-akno-cta"
               data-akno-reveal
@@ -48,12 +47,14 @@ export function ProblemsSection() {
               débloquer ça.
             </p>
 
-            <ContactCta
-              className={`${problemsCtaClassName} mt-7 hidden lg:mt-8 lg:inline-flex`}
-              data-akno-reveal
-            >
-              {problemsCta}
-            </ContactCta>
+            <div className="problems-left__cta-stack mt-7 hidden lg:mt-8 lg:block">
+              <ContactCta
+                className={`${problemsCtaClassName} inline-flex`}
+                data-akno-reveal
+              >
+                {problemsCta}
+              </ContactCta>
+            </div>
           </div>
 
           <ProblemsCardsList />

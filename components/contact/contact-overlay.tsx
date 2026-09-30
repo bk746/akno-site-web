@@ -233,7 +233,8 @@ export function ContactOverlay({ onClose }: ContactOverlayProps) {
             <div className="contact-overlay__intro">
               <p className="contact-overlay__eyebrow">Contact</p>
               <h2 id={titleId} className="contact-overlay__title">
-                Parlons de ton projet
+                Parlons de ton{" "}
+                <span className="text-akno-cta">projet</span>
               </h2>
               <p className="contact-overlay__lead">
                 20 minutes pour clarifier ton besoin. Un seul interlocuteur, du
